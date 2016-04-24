@@ -1,8 +1,10 @@
 package adriftbook.utils;
+import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import adriftbook.entity.User;
+import java.util.Calendar;
 
+import adriftbook.entity.User;
 public class MysqlCheckUtil
 {
 
@@ -24,7 +26,7 @@ public class MysqlCheckUtil
         }
         return false;
     }
-    public static boolean userExist(String userName, String password)
+    public static boolean userExists(String userName, String password)
     {
         // TODO Auto-generated method stub
         String sqlString = "select count(*) from user where username='"
@@ -46,14 +48,21 @@ public class MysqlCheckUtil
     public static User getInfo(String userName)
     {
         User user = null;
-        String sqlString =
-                "select  username,type,tel,addr,registerDate,creditCardNumber,money ,userId from user where username="
-                        + "'" + userName + "'";
-        ResultSet rSet = MysqlDbConnection.getResultSet(sqlString);
         try
         {
+            String sqlString =
+                    "select user_id,username,userpassword,registerdate,level from user where username='" +
+                            userName + "'";
+            ResultSet rSet = MysqlDbConnection.getResultSet(sqlString);
             if (rSet.next())
             {
+                user = new User(rSet.getString("username"),
+                        rSet.getString("userpassword"));
+                user.setId(rSet.getInt(1));
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(rSet.getLong(4));
+                user.setRegisterDate(calendar);
+                user.setLevel(rSet.getInt("level"));
             }
         }
         catch (Exception e)

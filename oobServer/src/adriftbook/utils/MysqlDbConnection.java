@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class MysqlDbConnection
 {
 
-	private static String url = "jdbc:mysql://localhost:3306/netbookstore";
+	private static String url = "jdbc:mysql://localhost:3306/adriftbook";
 	private static String user = "zhoujianguo";
 	private static String password = "hello";
 	private static Connection conn;

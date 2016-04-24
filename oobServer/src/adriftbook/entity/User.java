@@ -9,6 +9,7 @@
 //
 //
 package adriftbook.entity;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 public class User
 {
@@ -18,6 +19,23 @@ public class User
     private String password;
     private Calendar registerDate;
     private int level;
+    public User(String name, String password)
+    {
+        this.name = name;
+        this.password = password;
+    }
+    @Override public String toString()
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat();
+        dateFormat.applyPattern("yyyy-MM-dd HH:mm:ss");
+        return "User{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", password='" + password + '\'' +
+                ", registerDate=" + dateFormat.format(registerDate.getTime()) +
+                ", level=" + level +
+                '}';
+    }
     public String getName()
     {
         return name;
@@ -49,5 +67,13 @@ public class User
     public void setLevel(int level)
     {
         this.level = level;
+    }
+    public int getId()
+    {
+        return id;
+    }
+    public void setId(int id)
+    {
+        this.id = id;
     }
 }

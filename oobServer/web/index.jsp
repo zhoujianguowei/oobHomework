@@ -11,6 +11,7 @@
     <title>$Title$</title>
 </head>
 <body>
-<jsp:forward page="/register"/>
+<%--<jsp:forward page="/register"/>--%>
+<font color=red><h1>hello world你是好人</h1>></font>
 </body>
 </html>
