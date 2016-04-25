@@ -10,6 +10,7 @@
 //
 package adriftbook.entity;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 public class User
 {
@@ -19,12 +20,12 @@ public class User
     private String password;
     private Calendar registerDate;
     private int userLevel;
-    Post posts;
-    public Post getPosts()
+    ArrayList<Post> posts;
+    public ArrayList<Post> getPosts()
     {
         return posts;
     }
-    public void setPosts(Post posts)
+    public void setPosts(ArrayList<Post> posts)
     {
         this.posts = posts;
     }
@@ -32,7 +33,8 @@ public class User
     {
         this.userName = userName;
         this.password = password;
-        registerDate=Calendar.getInstance();
+        registerDate = Calendar.getInstance();
+        posts = new ArrayList<Post>();
     }
     @Override public String toString()
     {

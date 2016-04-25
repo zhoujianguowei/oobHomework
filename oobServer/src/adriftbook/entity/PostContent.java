@@ -7,10 +7,19 @@ class PostContent
 {
 
     String contentTitle;
-    String books;
+    ArrayList<AdriftBook> books;
     PostContent(String contentTitle)
     {
         this.contentTitle = contentTitle;
+        books = new ArrayList<AdriftBook>();
+    }
+    public ArrayList<AdriftBook> getBooks()
+    {
+        return books;
+    }
+    public void setBooks(ArrayList<AdriftBook> books)
+    {
+        this.books = books;
     }
     public String getContentTitle()
     {
@@ -19,13 +28,5 @@ class PostContent
     public void setContentTitle(String contentTitle)
     {
         this.contentTitle = contentTitle;
-    }
-    public String getBooks()
-    {
-        return books;
-    }
-    public void setBooks(String books)
-    {
-        this.books = books;
     }
 }
