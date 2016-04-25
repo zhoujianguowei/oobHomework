@@ -5,7 +5,7 @@
 //  @ Project : Untitled
 //  @ File Name : User.java
 //  @ Date : 2016/4/23
-//  @ Author : 
+//  @ Author :
 //
 //
 package adriftbook.entity;
@@ -14,35 +14,45 @@ import java.util.Calendar;
 public class User
 {
 
-    private String name;
-    private int id;
+    private String userName;
+    private int userId;
     private String password;
     private Calendar registerDate;
-    private int level;
-    public User(String name, String password)
+    private int userLevel;
+    Post posts;
+    public Post getPosts()
     {
-        this.name = name;
+        return posts;
+    }
+    public void setPosts(Post posts)
+    {
+        this.posts = posts;
+    }
+    public User(String userName, String password)
+    {
+        this.userName = userName;
         this.password = password;
+        registerDate=Calendar.getInstance();
     }
     @Override public String toString()
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         dateFormat.applyPattern("yyyy-MM-dd HH:mm:ss");
         return "User{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
+                "userName='" + userName + '\'' +
+                ", userId=" + userId +
                 ", password='" + password + '\'' +
                 ", registerDate=" + dateFormat.format(registerDate.getTime()) +
-                ", level=" + level +
+                ", userLevel=" + userLevel +
                 '}';
     }
-    public String getName()
+    public String getUserName()
     {
-        return name;
+        return userName;
     }
-    public void setName(String name)
+    public void setUserName(String userName)
     {
-        this.name = name;
+        this.userName = userName;
     }
     public String getPassword()
     {
@@ -60,20 +70,20 @@ public class User
     {
         this.registerDate = registerDate;
     }
-    public int getLevel()
+    public int getUserLevel()
     {
-        return level;
+        return userLevel;
     }
-    public void setLevel(int level)
+    public void setUserLevel(int userLevel)
     {
-        this.level = level;
+        this.userLevel = userLevel;
     }
-    public int getId()
+    public int getUserId()
     {
-        return id;
+        return userId;
     }
-    public void setId(int id)
+    public void setUserId(int userId)
     {
-        this.id = id;
+        this.userId = userId;
     }
 }

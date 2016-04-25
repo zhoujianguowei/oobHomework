@@ -64,11 +64,10 @@ public class RegisterServlet extends HttpServlet
     }
     private void insertUser(User user)
     {
-        long currentMills = System.currentTimeMillis();
         String sqlString =
                 "insert into user(username,userpassword,registerdate) values('" +
-                        user.getName() + "','" + user.getPassword() + "'," +
-                        currentMills +
+                        user.getUserName() + "','" + user.getPassword() + "'," +
+                        user.getRegisterDate().getTimeInMillis() +
                         ")";
         MysqlDbConnection.execute(sqlString);
     }

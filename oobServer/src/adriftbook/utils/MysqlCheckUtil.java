@@ -1,5 +1,4 @@
 package adriftbook.utils;
-import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -58,11 +57,11 @@ public class MysqlCheckUtil
             {
                 user = new User(rSet.getString("username"),
                         rSet.getString("userpassword"));
-                user.setId(rSet.getInt(1));
+                user.setUserId(rSet.getInt(1));
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(rSet.getLong(4));
                 user.setRegisterDate(calendar);
-                user.setLevel(rSet.getInt("level"));
+                user.setUserLevel(rSet.getInt("level"));
             }
         }
         catch (Exception e)

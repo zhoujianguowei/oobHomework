@@ -13,20 +13,38 @@ import java.util.Calendar;
 public class Comment
 {
 
-    private String content;
+    private String commentId;
+    private Post commentPost;
+    User commentUser;
+    private String commentContent;
     private Calendar reviewDate;
-    public Comment(String content, Calendar reviewDate)
+    public Comment(Post commentPost, User commentUser, String commentContent)
     {
-        this.content = content;
+        this.commentPost = commentPost;
+        this.commentUser = commentUser;
+        this.commentContent = commentContent;
+        reviewDate = Calendar.getInstance();
+    }
+    public String getCommentId()
+    {
+        return commentId;
+    }
+    public void setCommentId(String commentId)
+    {
+        this.commentId = commentId;
+    }
+    public Comment(String commentContent, Calendar reviewDate)
+    {
+        this.commentContent = commentContent;
         this.reviewDate = reviewDate;
     }
-    public String getContent()
+    public String getCommentContent()
     {
-        return content;
+        return commentContent;
     }
-    public void setContent(String content)
+    public void setCommentContent(String commentContent)
     {
-        this.content = content;
+        this.commentContent = commentContent;
     }
     public Calendar getReviewDate()
     {

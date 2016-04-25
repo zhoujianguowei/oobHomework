@@ -12,20 +12,48 @@ package adriftbook.entity;
 public class AdriftBook
 {
 
-    private int bookId;
-    private String name;
-    private String author;
-    private float rating;
-    public AdriftBook(String name)
+    public static final String ENTITYBOOK = "entitybook";
+    public static final String EBOOK = "ebook";
+    int bookId;
+    String bookName;
+    String author;
+    float rating;
+    protected int type;  //0实体书,1电子书
+    String bookImageUrl;
+    public int getBookId()
     {
-        this.name=name;
+        return bookId;
     }
-    public AdriftBook(String name,String author)
+    public void setBookId(int bookId)
     {
-        this(name);
-        this.author=author;
+        this.bookId = bookId;
     }
-
+    public int getType()
+    {
+        return type;
+    }
+    public void setType(int type)
+    {
+        this.type = type;
+    }
+    public String getBookImageUrl()
+    {
+        return bookImageUrl;
+    }
+    public void setBookImageUrl(String bookImageUrl)
+    {
+        this.bookImageUrl = bookImageUrl;
+    }
+    public AdriftBook(String bookName)
+    {
+        this.bookName = bookName;
+    }
+    public AdriftBook(String bookName, String author)
+    {
+        this(bookName);
+        this.author = author;
+        type = 0;
+    }
     public int getRiviewPeopleCount()
     {
         return riviewPeopleCount;
@@ -35,13 +63,13 @@ public class AdriftBook
         this.riviewPeopleCount = riviewPeopleCount;
     }
     private int riviewPeopleCount;//对该书评论的个数
-    public String getName()
+    public String getBookName()
     {
-        return name;
+        return bookName;
     }
-    public void setName(String name)
+    public void setBookName(String bookName)
     {
-        this.name = name;
+        this.bookName = bookName;
     }
     public String getAuthor()
     {

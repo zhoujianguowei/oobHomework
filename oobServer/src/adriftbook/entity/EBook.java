@@ -19,6 +19,7 @@ public class EBook extends AdriftBook
 	{
 		super(name);
 		this.ebookUrl=ebookUrl;
+		type=1;
 	}
 	public EBook(String name,String author,String ebookUrl)
 	{

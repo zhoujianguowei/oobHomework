@@ -13,18 +13,18 @@ import java.util.Calendar;
 public class Post
 {
 
+    User postUser;
     private int postId;
-    private String title;
+    private String postTitle;
+    private PostContent postContent;
     private Calendar postDate;
-    private int type;  //1求漂区，2放漂区，3电子书籍
+    private int postType;  //1求漂区，2放漂区，3电子书籍
     private int readCount;
-    private String getTitle()
+    public Post(User postUser, String postTitle, String content)
     {
-        return title;
-    }
-    public void setTitle(String title)
-    {
-        this.title = title;
+        this.postUser = postUser;
+        this.postTitle = postTitle;
+        postContent = new PostContent(content);
     }
     public Calendar getPostDate()
     {
@@ -34,13 +34,13 @@ public class Post
     {
         this.postDate = postDate;
     }
-    public int getType()
+    public int getPostType()
     {
-        return type;
+        return postType;
     }
-    public void setType(int type)
+    public void setPostType(int postType)
     {
-        this.type = type;
+        this.postType = postType;
     }
     public int getReadCount()
     {
@@ -51,3 +51,4 @@ public class Post
         this.readCount = readCount;
     }
 }
+
