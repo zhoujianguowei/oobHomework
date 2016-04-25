@@ -20,6 +20,7 @@ public class AdriftBook
     float rating;
     protected int type;  //0实体书,1电子书
     String bookImageUrl;
+    Post post;
     public int getBookId()
     {
         return bookId;

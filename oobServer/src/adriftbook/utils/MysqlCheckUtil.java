@@ -29,7 +29,7 @@ public class MysqlCheckUtil
     {
         // TODO Auto-generated method stub
         String sqlString = "select count(*) from user where username='"
-                + userName + "' and password=" + "'" + password + "'";
+                + userName + "' and userpassword=" + "'" + password + "'";
         ResultSet rSet = null;
         try
         {

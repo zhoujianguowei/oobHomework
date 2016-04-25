@@ -9,6 +9,7 @@
 //
 //
 package adriftbook.entity;
+import java.util.ArrayList;
 import java.util.Calendar;
 public class Post
 {
@@ -20,6 +21,7 @@ public class Post
     private Calendar postDate;
     private int postType;  //1求漂区，2放漂区，3电子书籍
     private int readCount;
+    ArrayList<Comment> comments;
     public Post(User postUser, String postTitle, String content)
     {
         this.postUser = postUser;

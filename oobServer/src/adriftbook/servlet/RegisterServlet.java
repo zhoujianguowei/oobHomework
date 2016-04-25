@@ -30,14 +30,6 @@ public class RegisterServlet extends HttpServlet
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException
     {
-//        super.doPost(req, resp);
-      /*  resp.setContentType("text/html");
-        PrintWriter out = resp.getWriter();
-        out.println("<HTML>");
-        out.println("<HEAD><TITLE>Hello World</TITLE></HEAD>");
-        out.println("<BODY>");
-        out.println("<BIG>Hello World</BIG>");
-        out.println("</BODY></HTML>");*/
         String username = CodeTransformUtil.getParameter(req, "username");
         String password = CodeTransformUtil.getParameter(req, "password");
         JSONObject resInfo = new JSONObject();

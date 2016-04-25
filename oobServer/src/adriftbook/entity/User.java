@@ -38,14 +38,15 @@ public class User
     }
     @Override public String toString()
     {
-        SimpleDateFormat dateFormat = new SimpleDateFormat();
-        dateFormat.applyPattern("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        simpleDateFormat.applyPattern("yyyy-MM-dd HH:mm:ss");
         return "User{" +
                 "userName='" + userName + '\'' +
                 ", userId=" + userId +
                 ", password='" + password + '\'' +
-                ", registerDate=" + dateFormat.format(registerDate.getTime()) +
+                ", registerDate=" + simpleDateFormat.format(registerDate.getTime()) +
                 ", userLevel=" + userLevel +
+                ", posts=" + posts +
                 '}';
     }
     public String getUserName()
