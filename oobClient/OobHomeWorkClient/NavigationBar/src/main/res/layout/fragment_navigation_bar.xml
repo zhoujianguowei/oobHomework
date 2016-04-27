@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:background="@color/navigationbar_bar_bg"
+    android:layout_height="@dimen/navigationbar_bar_height"
+    tools:context="com.klicen.navigationbar.NavigationBarFragment">
+
+    <FrameLayout
+        android:id="@+id/fragment_navigation_bar_home"
+        android:padding="10dp"
+        android:layout_width="@dimen/navigationbar_bar_height"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_toEndOf="@id/fragment_navigation_bar_home"
+        android:layout_toRightOf="@id/fragment_navigation_bar_home"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginRight="@dimen/navigationbar_bar_height"
+        android:layout_marginEnd="@dimen/navigationbar_bar_height"
+        android:id="@+id/fragment_navigation_bar_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:layout_gravity="end"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:id="@+id/fragment_navigation_bar_menu"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <View
+        android:layout_alignParentBottom="true"
+        android:background="#4f000000"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
+</RelativeLayout>

@@ -1,0 +1,65 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
+
+
+
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+
+
+
+
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    <!-- 拨号和发送短信TextView的组件 -->
+    <style name="dialSmsStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/large</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+    <!--查询联系人信息时候使用-->
+    <style name="query_contacts_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/large</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_marginLeft">8dp</item>
+    </style>
+    <!--设置界面标签-->
+    <style name="setting_lable_style">
+
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/large</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:lineSpacingExtra">6dp</item>
+    </style>
+    <!--设置界面内容标签-->
+    <style name="setting_content_style">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center_vertical|right</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textSize">@dimen/middle</item>
+        <item name="android:layout_marginLeft">40dp</item>
+    </style>
+
+</resources>

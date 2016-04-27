@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="shallow_red">#fff45275</color>
+    <color name="red">#ffff0000</color>
+    <color name="blue">#ff0000ff</color>
+    <color name="green">#ff00ff00</color>
+    <color name="orange">#ffffc800</color>
+    <color name="dark_gray">#ffD4D4D4</color>
+    <color name="yellow">#ffff00</color>
+    <color name="pink">#ffffa0a0</color>
+    <color name="shallow_green">#ff4bfefb</color>
+    <color name="cyan">#ff7bd4fe</color>
+    <color name="black">#ff000000</color>
+    <color name="sms_send_color">#FF0C9F51</color>
+    <color name="sms_cancel_color">#FFD33232</color>
+
+</resources>
