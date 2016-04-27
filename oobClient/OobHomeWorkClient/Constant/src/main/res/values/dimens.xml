@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- text size -->
+    <dimen name="super_large">70sp</dimen>
+    <dimen name="huge_large">40sp</dimen>
+    <dimen name="xx_large">25sp</dimen>
+    <dimen name="x_large">22sp</dimen>
+    <dimen name="large">18sp</dimen>
+    <dimen name="middle">16sp</dimen>
+    <dimen name="little">14sp</dimen>
+    <dimen name="least">12sp</dimen>
+    <dimen name="x_least">10sp</dimen>
+    <dimen name="xx_least">8sp</dimen>
+
+    <dimen name="navigation_bar_height">45dp</dimen>
+    <dimen name="navigation_bar_menu_icon_padding">10dp</dimen>
+    <dimen name="navigation_bar_home_height">60dp</dimen>
+
+
+</resources>

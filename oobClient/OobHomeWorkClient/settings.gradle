@@ -1,2 +1,2 @@
-include ':app', ':CustomViewsModule'
+include ':app', ':CustomViewsModule', ':Constant'
 include ':FileChooserModule'

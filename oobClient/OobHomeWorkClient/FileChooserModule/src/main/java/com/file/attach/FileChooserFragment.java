@@ -1,7 +1,7 @@
 package com.file.attach;
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -13,13 +13,17 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-public class FileChooser extends ListActivity
+/**
+ * Created by Administrator on 2016/4/27.
+ */
+public class FileChooserFragment extends ListFragment
 {
 
     private File currentDir;
     private FileArrayAdapter adapter;
     private static final File EXTERNAL_SDCARD_STORAGE = Environment
             .getExternalStorageDirectory();
+    private FileChooserFragmentListItemClickListener onListItemClickListener;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -27,10 +31,28 @@ public class FileChooser extends ListActivity
         currentDir = EXTERNAL_SDCARD_STORAGE;
         fill(currentDir);
     }
+    @Override public void onResume()
+    {
+        super.onResume();
+        if (getActivity() instanceof FileChooserFragmentListItemClickListener)
+            setOnListItemClickListener(
+                    (FileChooserFragmentListItemClickListener) getActivity());
+    }
+    @Override public void onDestroy()
+    {
+        super.onDestroy();
+        if (onListItemClickListener != null)
+            onListItemClickListener = null;
+    }
+    private void setOnListItemClickListener(
+            FileChooserFragmentListItemClickListener onListItemClickListener)
+    {
+        this.onListItemClickListener = onListItemClickListener;
+    }
     private void fill(File f)
     {
         File[] dirs = f.listFiles();
-        this.setTitle("Current Dir: " + f.getName());
+        getActivity().setTitle("Current Dir: " + f.getName());
         List<Option> dir = new ArrayList<Option>();
         List<Option> fls = new ArrayList<Option>();
         try
@@ -55,15 +77,17 @@ public class FileChooser extends ListActivity
         dir.addAll(fls);
         if (!f.getName().equalsIgnoreCase("sdcard"))
             dir.add(0, new Option("..", "Parent Directory", f.getParent()));
-        adapter = new FileArrayAdapter(FileChooser.this, R.layout.file_view, dir);
+        adapter = new FileArrayAdapter(getActivity(), R.layout.file_view, dir);
         this.setListAdapter(adapter);
     }
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id)
+    public void onListItemClick(ListView l, View v, int position, long id)
     {
         // TODO Auto-generated method stub
         super.onListItemClick(l, v, position, id);
         Option o = adapter.getItem(position);
+        if(onListItemClickListener!=null)
+            onListItemClickListener.onListItemClickListener(o);
         //if folder we go to the folder
         if (o.getData().equalsIgnoreCase("folder") ||
                 o.getData().equalsIgnoreCase("parent directory"))
@@ -82,8 +106,9 @@ public class FileChooser extends ListActivity
     private void onFileClick(Option o)
     {
         formStream(o);
-        Toast.makeText(this, "File Clicked: " + o.getName(), Toast.LENGTH_SHORT)
-                .show();
+        /*Toast.makeText(getActivity(), "File Clicked: " + o.getName(),
+                Toast.LENGTH_SHORT)
+                .show();*/
     }
     private void formStream(Option o)
     {
@@ -106,10 +131,15 @@ public class FileChooser extends ListActivity
         }
         catch (IOException e)
         {
-            Toast.makeText(this, "Something went wrong with streams: " + o.getName(),
+            Toast.makeText(getActivity(),
+                    "Something went wrong with streams: " + o.getName(),
                     Toast.LENGTH_SHORT).show();
             System.out.println(e.getMessage());
         }
     }
-}
+    public interface FileChooserFragmentListItemClickListener
+    {
 
+        void onListItemClickListener(Option option);
+    }
+}
