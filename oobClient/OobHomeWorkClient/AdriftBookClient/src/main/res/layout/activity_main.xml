@@ -8,8 +8,16 @@
     tools:context="com.example.adriftbookclient.oobhomeworkclient.MainActivity">
 
     <FrameLayout
-        android:id="@+id/file_chooser_fl_container"
+        android:id="@+id/activity_main_navigation_bar_fr_container"
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+        android:layout_height="@dimen/navigation_bar_height"
+        />
+
+    <FrameLayout
+        android:id="@+id/activity_main_content_fr_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/activity_main_navigation_bar_fr_container"
+        />
 
 </RelativeLayout>

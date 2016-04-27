@@ -25,4 +25,5 @@ dependencies {
     compile 'com.android.support:design:22.2.1'
     compile project(':FileChooserModule')
     compile project(':volley')
+    compile project(':NavigationBar')
 }
