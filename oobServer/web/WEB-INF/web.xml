@@ -6,12 +6,14 @@
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>adriftbook.servlet.RegisterServlet</servlet-class>
-
-
     </servlet>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>adriftbook.servlet.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MainFrame</servlet-name>
+        <servlet-class>adriftbook.servlet.MainFrameServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
@@ -20,5 +22,9 @@
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MainFrame</servlet-name>
+        <url-pattern>/main_frame</url-pattern>
     </servlet-mapping>
 </web-app>

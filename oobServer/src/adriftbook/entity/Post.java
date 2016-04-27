@@ -14,6 +14,9 @@ import java.util.Calendar;
 public class Post
 {
 
+    public static final int REQUEST_BOOK_AREA=1;
+    public static final int SEND_BOOK_AREA=2;
+    public  static final int EBOOK_AREA=3;
     User postUser;
     private int postId;
     private String postTitle;
@@ -27,6 +30,59 @@ public class Post
         this.postUser = postUser;
         this.postTitle = postTitle;
         postContent = new PostContent(content);
+    }
+    public PostContent getPostContent()
+    {
+        return postContent;
+    }
+    public void setPostContent(PostContent postContent)
+    {
+        this.postContent = postContent;
+    }
+    public ArrayList<Comment> getComments()
+    {
+        return comments;
+    }
+    public void setComments(ArrayList<Comment> comments)
+    {
+        this.comments = comments;
+    }
+    public String getPostTitle()
+    {
+        return postTitle;
+    }
+    public void setPostTitle(String postTitle)
+    {
+        this.postTitle = postTitle;
+    }
+    public int getPostId()
+    {
+        return postId;
+    }
+    public void setPostId(int postId)
+    {
+        this.postId = postId;
+    }
+    @Override public String toString()
+    {
+        return "Post{" +
+                "postUser=" + postUser +
+                ", postId=" + postId +
+                ", postTitle='" + postTitle + '\'' +
+                ", postContent=" + postContent +
+                ", postDate=" + postDate +
+                ", postType=" + postType +
+                ", readCount=" + readCount +
+                ", comments=" + comments +
+                '}';
+    }
+    public User getPostUser()
+    {
+        return postUser;
+    }
+    public void setPostUser(User postUser)
+    {
+        this.postUser = postUser;
     }
     public Calendar getPostDate()
     {

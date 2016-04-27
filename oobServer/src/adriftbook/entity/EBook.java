@@ -26,6 +26,12 @@ public class EBook extends AdriftBook
 		super(name,author);
 		this.ebookUrl=ebookUrl;
 	}
+	@Override public String toString()
+	{
+		return  super.toString()+"EBook{" +
+				"ebookUrl='" + ebookUrl + '\'' +
+				'}';
+	}
 	public String getEbookUrl()
 	{
 		return ebookUrl;

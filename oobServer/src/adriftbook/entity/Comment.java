@@ -13,7 +13,7 @@ import java.util.Calendar;
 public class Comment
 {
 
-    private String commentId;
+    private int commentId;
     private Post commentPost;
     User commentUser;
     private String commentContent;
@@ -25,18 +25,23 @@ public class Comment
         this.commentContent = commentContent;
         reviewDate = Calendar.getInstance();
     }
-    public String getCommentId()
+    public int getCommentId()
     {
         return commentId;
     }
-    public void setCommentId(String commentId)
+    @Override public String toString()
+    {
+        return "Comment{" +
+                "commentId=" + commentId +
+                ", commentPost=" + commentPost +
+                ", commentUser=" + commentUser +
+                ", commentContent='" + commentContent + '\'' +
+                ", reviewDate=" + reviewDate +
+                '}';
+    }
+    public void setCommentId(int commentId)
     {
         this.commentId = commentId;
-    }
-    public Comment(String commentContent, Calendar reviewDate)
-    {
-        this.commentContent = commentContent;
-        this.reviewDate = reviewDate;
     }
     public String getCommentContent()
     {

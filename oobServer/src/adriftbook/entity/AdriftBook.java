@@ -12,8 +12,21 @@ package adriftbook.entity;
 public class AdriftBook
 {
 
-    public static final String ENTITYBOOK = "entitybook";
-    public static final String EBOOK = "ebook";
+    public static final int ENTITYBOOK = 0;
+    @Override public String toString()
+    {
+        return "AdriftBook{" +
+                "bookId=" + bookId +
+                ", bookName='" + bookName + '\'' +
+                ", author='" + author + '\'' +
+                ", rating=" + rating +
+                ", type=" + type +
+                ", bookImageUrl='" + bookImageUrl + '\'' +
+                ", post=" + post +
+                ", riviewPeopleCount=" + riviewPeopleCount +
+                '}';
+    }
+    public static final int EBOOK =1;
     int bookId;
     String bookName;
     String author;
@@ -41,8 +54,17 @@ public class AdriftBook
     {
         return bookImageUrl;
     }
+    public Post getPost()
+    {
+        return post;
+    }
+    public void setPost(Post post)
+    {
+        this.post = post;
+    }
     public void setBookImageUrl(String bookImageUrl)
     {
+
         this.bookImageUrl = bookImageUrl;
     }
     public AdriftBook(String bookName)
