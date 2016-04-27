@@ -1,7 +1,10 @@
 package adriftbook.servlet;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,13 +29,63 @@ public class RegisterServlet extends HttpServlet
 //        super.doGet(req, resp);
         doPost(req, resp);
     }
+    private boolean isRequestParamLegal(HttpServletRequest req,
+                                        HttpServletResponse resp)
+    {
+        HashSet<String> paramsSet = new HashSet<>();
+        paramsSet.add("username");
+        paramsSet.add("password");
+        int matchCount = 0;
+        int paramSize = paramsSet.size();
+        Enumeration<String> enumeration = req.getParameterNames();
+        while (enumeration.hasMoreElements())
+        {
+            String param = enumeration.nextElement();
+            if (paramsSet.contains(param))
+            {
+                matchCount++;
+                paramsSet.remove(param);
+            }
+        }
+        if (matchCount != paramSize)
+        {
+            JSONObject jsonObject = new JSONObject();
+            try
+            {
+                jsonObject.put(Constant.STATUS_KEY, Constant.FAIL_VALUE);
+                jsonObject.put(Constant.INFO_KEY, "bad request params");
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                try
+                {
+                    resp.getOutputStream().write(jsonObject.toString()
+                            .getBytes(Constant.DEFAULT_CODE));
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            return false;
+        }
+        return true;
+    }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException
     {
+        if (!isRequestParamLegal(req, resp))
+            return;
         String username = CodeTransformUtil.getParameter(req, "username");
         String password = CodeTransformUtil.getParameter(req, "password");
         JSONObject resInfo = new JSONObject();
+        if (username == null || password == null)
+            return;
         try
         {
             if (!MysqlCheckUtil.userExists(username))

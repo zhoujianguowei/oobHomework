@@ -31,7 +31,7 @@ public class RegisterFragment extends BackStackFragmentWithProgressDialog
     interface RegisterFragmentOnClickListener
     {
 
-        void onClick(View v);
+        void onClick(View v, Bundle bundle);
     }
     void setRegisterFragmentOnClickListener(
             RegisterFragmentOnClickListener onClickListener)
@@ -87,7 +87,14 @@ public class RegisterFragment extends BackStackFragmentWithProgressDialog
             return;
         }
         if (onClickListener != null)
-            onClickListener.onClick(v);
+        {
+            Bundle bundle = new Bundle();
+            bundle.putString(LoginFragment.USER_NAME,
+                    userNameEt.getText().toString());
+            bundle.putString(LoginFragment.PASSWORD,
+                    passwordEt.getText().toString());
+            onClickListener.onClick(v, bundle);
+        }
     }
     @Override public void onDestroy()
     {

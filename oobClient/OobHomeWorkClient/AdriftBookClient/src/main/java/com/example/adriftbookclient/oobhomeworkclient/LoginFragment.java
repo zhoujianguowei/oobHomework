@@ -28,6 +28,8 @@ public class LoginFragment extends BackStackFragmentWithProgressDialog
     Button loginBt;
     Button registerBt;
     private LoginFragmentOnClickListener loginFragmentOnClickListener;
+    public static final String USER_NAME = "user_name";
+    public static final String PASSWORD = "password";
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -78,7 +80,12 @@ public class LoginFragment extends BackStackFragmentWithProgressDialog
     @Override public void onClick(View v)
     {
         if (loginFragmentOnClickListener != null)
-            loginFragmentOnClickListener.onClick(v);
+        {
+            Bundle bundle = new Bundle();
+            bundle.putString(USER_NAME, userNameEt.getText().toString());
+            bundle.putString(PASSWORD, passwordEt.getText().toString());
+            loginFragmentOnClickListener.onClick(v, bundle);
+        }
     }
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after)
@@ -98,10 +105,11 @@ public class LoginFragment extends BackStackFragmentWithProgressDialog
             loginBt.setEnabled(false);
         else
             loginBt.setEnabled(true);
+
     }
     interface LoginFragmentOnClickListener
     {
 
-        void onClick(View v);
+        void onClick(View v, Bundle bundle);
     }
 }
