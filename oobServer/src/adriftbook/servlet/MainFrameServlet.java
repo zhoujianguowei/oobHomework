@@ -37,7 +37,7 @@ public class MainFrameServlet extends HttpServlet
         Set<String> legalSet = new HashSet<String>();
         legalSet.add("username");
         legalSet.add("password");
-        if (RequestFilter.isRequestParamsLegal(req, resp, legalSet))
+        if (!RequestFilter.isRequestParamsLegal(req, resp, legalSet))
             return;
         int requestBookType, sendBookType, ebookType, isLogin;
         int page = 1, requestType;

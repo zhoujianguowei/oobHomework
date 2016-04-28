@@ -141,5 +141,60 @@ public class MainActivity extends AppCompatActivity
     }
     private void startLoginRequet(Bundle bundle)
     {
+        RequestQueue loginQueue = Volley.newRequestQueue(this);
+        String loginUrl = null;
+        try
+        {
+            loginUrl = Constant.CONSTANT_IP + "login?username=" +
+                    URLEncoder.encode(bundle.getString(LoginFragment.USER_NAME),
+                            Constant.DEFAULT_CODE) +
+                    "&password=" + URLEncoder.encode(bundle
+                    .getString(LoginFragment.PASSWORD), Constant.DEFAULT_CODE);
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
+        loginFragment.showProgressDialog("登陆中...");
+        MyStringRequest loginRequest = new MyStringRequest(loginUrl,
+                new Response.Listener<String>()
+                {
+                    @Override public void onResponse(String response)
+                    {
+                        loginFragment.dismissProgressDialog();
+                        JSONObject jsonObject = null;
+                        Log.i("login", response);
+                        try
+                        {
+                            jsonObject = new JSONObject(new String(
+                                    response.getBytes(Constant.DEFAULT_CODE)));
+                            String status = jsonObject
+                                    .getString(Constant.STATUS_KEY);
+                            if (status.equals(Constant.SUCCESS_VALUE))
+                                Toast.makeText(MainActivity.this, "用户登陆成功" +
+                                                jsonObject.getString(
+                                                        Constant.INFO_KEY),
+                                        Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(MainActivity.this,
+                                        jsonObject.getString(Constant.INFO_KEY),
+                                        Toast.LENGTH_SHORT).show();
+                        }
+                        catch (JSONException | UnsupportedEncodingException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener()
+        {
+            @Override public void onErrorResponse(VolleyError error)
+            {
+                loginFragment.dismissProgressDialog();
+                Toast.makeText(MainActivity.this, error.getMessage(),
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+        loginQueue.add(loginRequest);
     }
 }

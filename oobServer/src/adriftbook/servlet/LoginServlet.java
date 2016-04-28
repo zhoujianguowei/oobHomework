@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import adriftbook.entity.User;
+import adriftbook.utils.CodeTransformUtil;
 import adriftbook.utils.Constant;
 import adriftbook.utils.MysqlCheckUtil;
 import adriftbook.utils.RequestFilter;
@@ -33,7 +34,33 @@ public class LoginServlet extends HttpServlet
         Set<String> legalSet = new HashSet<String>();
         legalSet.add("username");
         legalSet.add("password");
-        if (RequestFilter.isRequestParamsLegal(req, resp, legalSet))
+        if (!RequestFilter.isRequestParamsLegal(req, resp, legalSet))
             return;
+        JSONObject resJson = new JSONObject();
+        try
+        {
+            resJson.put(Constant.STATUS_KEY, Constant.FAIL_VALUE);
+            String username = CodeTransformUtil.getParameter(req, "username");
+            String password = CodeTransformUtil.getParameter(req, "password");
+            if (MysqlCheckUtil.userExists(username))
+            {
+                if (MysqlCheckUtil.userExists(username, password))
+                {
+                    resJson.put(Constant.STATUS_KEY, Constant.SUCCESS_VALUE);
+                    resJson.put(Constant.INFO_KEY,
+                            MysqlCheckUtil.getUserInfo(username));
+                }
+                else
+                    resJson.put(Constant.INFO_KEY, "用户名和密码不匹配");
+            }
+            else
+                resJson.put(Constant.INFO_KEY, "没有该用户");
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+        resp.getOutputStream()
+                .write(resJson.toString().getBytes(Constant.DEFAULT_CODE));
     }
 }

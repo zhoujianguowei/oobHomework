@@ -14,6 +14,8 @@
             <option value="$PROJECT_DIR$/CustomViewsModule" />
             <option value="$PROJECT_DIR$/FileChooserModule" />
             <option value="$PROJECT_DIR$/NavigationBar" />
+            <option value="$PROJECT_DIR$/PullRefreshLayoutModule" />
+            <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/volley" />
           </set>
         </option>

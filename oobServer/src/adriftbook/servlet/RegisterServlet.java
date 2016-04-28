@@ -38,7 +38,7 @@ public class RegisterServlet extends HttpServlet
         Set<String> legalSet = new HashSet<String>();
         legalSet.add("username");
         legalSet.add("password");
-        if (RequestFilter.isRequestParamsLegal(req, resp, legalSet))
+        if (!RequestFilter.isRequestParamsLegal(req, resp, legalSet))
             return;
         String username = CodeTransformUtil.getParameter(req, "username");
         String password = CodeTransformUtil.getParameter(req, "password");

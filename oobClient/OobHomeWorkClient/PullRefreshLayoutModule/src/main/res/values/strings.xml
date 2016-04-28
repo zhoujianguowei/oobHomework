@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">android-PullRefreshLayout</string>
+
+    <array name="scheme_colors">
+        <item>@color/orange</item>
+        <item>@color/pink</item>
+        <item>@color/green</item>
+        <item>@color/blue</item>
+    </array>
+    <integer-array name="google_colors">
+        <item>@color/red</item>
+        <item>@color/blue</item>
+        <item>@color/yellow</item>
+        <item>@color/green</item>
+    </integer-array>
+</resources>

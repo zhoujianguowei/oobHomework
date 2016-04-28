@@ -2,7 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="45d854dc-71eb-437f-8234-b8e913807707" name="Default" comment="add RequstFilter to set headers as well as filtering request params">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/adriftbook/utils/RequestFilter.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/AdriftBookClient/src/main/java/com/example/adriftbookclient/oobhomeworkclient/PostMainActivity.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/res/layout/content_main.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/res/menu/menu_main.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/res/mipmap-hdpi/ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/res/mipmap-mdpi/ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/res/mipmap-xhdpi/ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/res/mipmap-xxhdpi/ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/res/mipmap-xxxhdpi/ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/res/values-v21/styles.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/res/values-w820dp/dimens.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/res/values/colors.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/res/values/dimens.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/res/values/strings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/res/values/styles.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/volley" afterPath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/volley" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/.idea/gradle.xml" afterPath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/.idea/gradle.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/.idea/modules.xml" afterPath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/AdriftBookClient/build.gradle" afterPath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/AdriftBookClient/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/AdriftBookClient/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/AdriftBookClient/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/AdriftBookClient/src/main/java/com/example/adriftbookclient/oobhomeworkclient/MainActivity.java" afterPath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/AdriftBookClient/src/main/java/com/example/adriftbookclient/oobhomeworkclient/MainActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/AdriftBookClient/src/main/java/entity/User.java" afterPath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/AdriftBookClient/src/main/java/entity/User.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/CustomViewsModule/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/FileChooserModule/build.gradle" afterPath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/FileChooserModule/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/settings.gradle" afterPath="$PROJECT_DIR$/../oobClient/OobHomeWorkClient/settings.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/adriftbook/servlet/LoginServlet.java" afterPath="$PROJECT_DIR$/src/adriftbook/servlet/LoginServlet.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/adriftbook/servlet/MainFrameServlet.java" afterPath="$PROJECT_DIR$/src/adriftbook/servlet/MainFrameServlet.java" />
@@ -34,7 +57,14 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="234">
               <caret line="13" column="30" selection-start-line="13" selection-start-column="30" selection-end-line="13" selection-end-column="30" />
-              <folding />
+              <folding>
+                <element signature="e#375#376#0" expanded="false" />
+                <element signature="e#403#404#0" expanded="false" />
+                <element signature="e#463#464#0" expanded="false" />
+                <element signature="e#497#498#0" expanded="false" />
+                <element signature="e#539#540#0" expanded="false" />
+                <element signature="e#574#575#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -42,8 +72,8 @@
       <file leaf-file-name="Constant.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/adriftbook/utils/Constant.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
+            <state relative-caret-position="167">
+              <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -62,8 +92,8 @@
       <file leaf-file-name="RegisterServlet.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/adriftbook/servlet/RegisterServlet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="41" column="19" selection-start-line="37" selection-start-column="7" selection-end-line="41" selection-end-column="19" />
+            <state relative-caret-position="149">
+              <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1097#1105#0" expanded="true" />
@@ -72,15 +102,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginServlet.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="LoginServlet.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/adriftbook/servlet/LoginServlet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
+            <state relative-caret-position="621">
+              <caret line="36" column="13" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#970#978#0" expanded="true" />
+                <element signature="e#1013#1021#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="web.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/WEB-INF/web.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="198">
+              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -88,7 +128,7 @@
       <file leaf-file-name="RequestFilter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/adriftbook/utils/RequestFilter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="524">
+            <state relative-caret-position="810">
               <caret line="53" column="13" selection-start-line="53" selection-start-column="13" selection-end-line="53" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -97,11 +137,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainFrameServlet.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainFrameServlet.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/adriftbook/servlet/MainFrameServlet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="29" column="48" selection-start-line="29" selection-start-column="48" selection-end-line="29" selection-end-column="48" />
+            <state relative-caret-position="221">
+              <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
               <folding>
                 <element signature="e#1174#1182#0" expanded="true" />
               </folding>
@@ -181,8 +221,8 @@
         <option value="$PROJECT_DIR$/src/adriftbook/utils/Constant.java" />
         <option value="$PROJECT_DIR$/src/adriftbook/utils/RequestFilter.java" />
         <option value="$PROJECT_DIR$/src/adriftbook/servlet/RegisterServlet.java" />
-        <option value="$PROJECT_DIR$/src/adriftbook/servlet/LoginServlet.java" />
         <option value="$PROJECT_DIR$/src/adriftbook/servlet/MainFrameServlet.java" />
+        <option value="$PROJECT_DIR$/src/adriftbook/servlet/LoginServlet.java" />
       </list>
     </option>
   </component>
@@ -234,8 +274,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -354,7 +393,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -942,11 +982,13 @@
       <workItem from="1461778029665" duration="9000" />
       <workItem from="1461806261859" duration="2415000" />
       <workItem from="1461810978766" duration="549000" />
+      <workItem from="1461842087602" duration="596000" />
+      <workItem from="1461844872273" duration="3071000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="53511000" />
+    <option name="totallyTimeSpent" value="57178000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -954,7 +996,7 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3282313" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3282313" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -962,24 +1004,24 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31042296" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3194864" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21601209" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3993174" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3993174" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" x="855" y="431" width="419" height="205" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1255,13 +1297,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/adriftbook/entity/Content.java" />
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/web.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/adriftbook/entity/AdriftBook.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
@@ -1308,7 +1343,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="234">
           <caret line="13" column="30" selection-start-line="13" selection-start-column="30" selection-end-line="13" selection-end-column="30" />
-          <folding />
+          <folding>
+            <element signature="e#375#376#0" expanded="false" />
+            <element signature="e#403#404#0" expanded="false" />
+            <element signature="e#463#464#0" expanded="false" />
+            <element signature="e#497#498#0" expanded="false" />
+            <element signature="e#539#540#0" expanded="false" />
+            <element signature="e#574#575#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1342,17 +1384,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/adriftbook/utils/Constant.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/adriftbook/utils/RequestFilter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="524">
+        <state relative-caret-position="810">
           <caret line="53" column="13" selection-start-line="53" selection-start-column="13" selection-end-line="53" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1360,10 +1394,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/web.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/adriftbook/utils/Constant.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="167">
+          <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/adriftbook/servlet/RegisterServlet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="41" column="19" selection-start-line="37" selection-start-column="7" selection-end-line="41" selection-end-column="19" />
+        <state relative-caret-position="149">
+          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1097#1105#0" expanded="true" />
@@ -1371,23 +1421,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/adriftbook/servlet/LoginServlet.java">
+    <entry file="file://$PROJECT_DIR$/src/adriftbook/servlet/MainFrameServlet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
+        <state relative-caret-position="221">
+          <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#970#978#0" expanded="true" />
+            <element signature="e#1174#1182#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/adriftbook/servlet/MainFrameServlet.java">
+    <entry file="file://$PROJECT_DIR$/src/adriftbook/servlet/LoginServlet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="29" column="48" selection-start-line="29" selection-start-column="48" selection-end-line="29" selection-end-column="48" />
+        <state relative-caret-position="621">
+          <caret line="36" column="13" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
           <folding>
-            <element signature="e#1174#1182#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#1013#1021#0" expanded="true" />
           </folding>
         </state>
       </provider>
