@@ -32,6 +32,8 @@ public class MainFrameServlet extends HttpServlet
             throws ServletException, IOException
     {
 //        super.doPost(req, resp);
+        resp.setHeader(Constant.HTTP_CONTENT_TYPE,
+                "text/html;charset=" + Constant.DEFAULT_CODE);
         int requestBookType, sendBookType, ebookType, isLogin;
         int page = 1, requestType;
         ArrayList<Post> posts;

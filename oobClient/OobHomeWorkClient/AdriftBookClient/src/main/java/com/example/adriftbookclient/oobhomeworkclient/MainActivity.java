@@ -107,15 +107,22 @@ public class MainActivity extends AppCompatActivity
                     {
                         registerFragment.dismissProgressDialog();
                         JSONObject jsonObject = null;
-                        Log.e("res",response);
+                        Log.e("res", response);
                         try
                         {
-                            jsonObject = new JSONObject(new String(response.getBytes(Constant.DEFAULT_CODE)));
-                            Toast.makeText(MainActivity.this,
-                                    jsonObject.getString(Constant.INFO_KEY),
-                                    Toast.LENGTH_SHORT).show();
+                            jsonObject = new JSONObject(new String(
+                                    response.getBytes(Constant.DEFAULT_CODE)));
+                            String status = jsonObject
+                                    .getString(Constant.STATUS_KEY);
+                            if (status.equals(Constant.SUCCESS_VALUE))
+                                Toast.makeText(MainActivity.this, "用户注册成功",
+                                        Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(MainActivity.this,
+                                        jsonObject.getString(Constant.INFO_KEY),
+                                        Toast.LENGTH_SHORT).show();
                         }
-                        catch (JSONException|UnsupportedEncodingException e)
+                        catch (JSONException | UnsupportedEncodingException e)
                         {
                             e.printStackTrace();
                         }

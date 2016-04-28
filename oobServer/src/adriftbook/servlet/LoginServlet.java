@@ -27,5 +27,7 @@ public class LoginServlet extends HttpServlet
     @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException
     {
+        resp.setHeader(Constant.HTTP_CONTENT_TYPE,
+                "text/html;charset=" + Constant.DEFAULT_CODE);
     }
 }
