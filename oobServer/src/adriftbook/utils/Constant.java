@@ -16,6 +16,7 @@ public class Constant
     public static final String SERVER_CODE = "ISO-8859-1";
     public static final String DEFAULT_CODE = "UTF-8";
     public static final int PER_REQUEST_ITEMS = 8;   //每次返回的帖子(post)个数
+    public static final String HTTP_CONTENT_TYPE = "Content-Type";//设置请求header字段
     public static void main(String[] args)
     {
 //        System.out.println(MysqlCheckUtil.getUserInfo("周建国"));

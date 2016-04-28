@@ -79,6 +79,8 @@ public class RegisterServlet extends HttpServlet
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException
     {
+        resp.setHeader(Constant.HTTP_CONTENT_TYPE,
+                "text/html;charset=" + Constant.DEFAULT_CODE);
         if (!isRequestParamLegal(req, resp))
             return;
         String username = CodeTransformUtil.getParameter(req, "username");
@@ -104,6 +106,7 @@ public class RegisterServlet extends HttpServlet
         {
             e.printStackTrace();
         }
+
         resp.getOutputStream()
                 .write(resInfo.toString().getBytes(Constant.DEFAULT_CODE));
     }
