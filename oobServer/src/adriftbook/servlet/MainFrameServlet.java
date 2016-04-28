@@ -3,6 +3,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +15,7 @@ import adriftbook.entity.Post;
 import adriftbook.utils.CodeTransformUtil;
 import adriftbook.utils.Constant;
 import adriftbook.utils.MysqlCheckUtil;
+import adriftbook.utils.RequestFilter;
 import javafx.geometry.Pos;
 /**
  * Created by Administrator on 2016/4/25.
@@ -31,9 +34,11 @@ public class MainFrameServlet extends HttpServlet
     @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException
     {
-//        super.doPost(req, resp);
-        resp.setHeader(Constant.HTTP_CONTENT_TYPE,
-                "text/html;charset=" + Constant.DEFAULT_CODE);
+        Set<String> legalSet = new HashSet<String>();
+        legalSet.add("username");
+        legalSet.add("password");
+        if (RequestFilter.isRequestParamsLegal(req, resp, legalSet))
+            return;
         int requestBookType, sendBookType, ebookType, isLogin;
         int page = 1, requestType;
         ArrayList<Post> posts;

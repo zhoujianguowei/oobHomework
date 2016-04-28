@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +17,7 @@ import adriftbook.utils.CodeTransformUtil;
 import adriftbook.utils.Constant;
 import adriftbook.utils.MysqlCheckUtil;
 import adriftbook.utils.MysqlDbConnection;
+import adriftbook.utils.RequestFilter;
 /**
  * Created by Administrator on 2016/4/23.
  */
@@ -29,59 +31,14 @@ public class RegisterServlet extends HttpServlet
 //        super.doGet(req, resp);
         doPost(req, resp);
     }
-    private boolean isRequestParamLegal(HttpServletRequest req,
-                                        HttpServletResponse resp)
-    {
-        HashSet<String> paramsSet = new HashSet<>();
-        paramsSet.add("username");
-        paramsSet.add("password");
-        int matchCount = 0;
-        int paramSize = paramsSet.size();
-        Enumeration<String> enumeration = req.getParameterNames();
-        while (enumeration.hasMoreElements())
-        {
-            String param = enumeration.nextElement();
-            if (paramsSet.contains(param))
-            {
-                matchCount++;
-                paramsSet.remove(param);
-            }
-        }
-        if (matchCount != paramSize)
-        {
-            JSONObject jsonObject = new JSONObject();
-            try
-            {
-                jsonObject.put(Constant.STATUS_KEY, Constant.FAIL_VALUE);
-                jsonObject.put(Constant.INFO_KEY, "bad request params");
-            }
-            catch (JSONException e)
-            {
-                e.printStackTrace();
-            }
-            finally
-            {
-                try
-                {
-                    resp.getOutputStream().write(jsonObject.toString()
-                            .getBytes(Constant.DEFAULT_CODE));
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            return false;
-        }
-        return true;
-    }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException
     {
-        resp.setHeader(Constant.HTTP_CONTENT_TYPE,
-                "text/html;charset=" + Constant.DEFAULT_CODE);
-        if (!isRequestParamLegal(req, resp))
+        Set<String> legalSet = new HashSet<String>();
+        legalSet.add("username");
+        legalSet.add("password");
+        if (RequestFilter.isRequestParamsLegal(req, resp, legalSet))
             return;
         String username = CodeTransformUtil.getParameter(req, "username");
         String password = CodeTransformUtil.getParameter(req, "password");
@@ -106,7 +63,6 @@ public class RegisterServlet extends HttpServlet
         {
             e.printStackTrace();
         }
-
         resp.getOutputStream()
                 .write(resInfo.toString().getBytes(Constant.DEFAULT_CODE));
     }
