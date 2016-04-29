@@ -1,4 +1,6 @@
 package com.example.adriftbookclient.oobhomeworkclient;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -9,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.klicen.navigationbar.BackStackFragmentWithProgressDialog;
 
+import adriftbook.entity.User;
 import utils.ScreenSize;
 /**
  * Created by Administrator on 2016/4/27.
@@ -27,9 +31,11 @@ public class LoginFragment extends BackStackFragmentWithProgressDialog
     EditText passwordEt;
     Button loginBt;
     Button registerBt;
+    private CheckBox rememberCb;
     private LoginFragmentOnClickListener loginFragmentOnClickListener;
     public static final String USER_NAME = "user_name";
     public static final String PASSWORD = "password";
+    public static final String USER_INFO_RECORD = "user_info";
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -39,8 +45,10 @@ public class LoginFragment extends BackStackFragmentWithProgressDialog
         passwordEt = (EditText) view.findViewById(R.id.fragment_login_password_et);
         loginBt = (Button) view.findViewById(R.id.fragment_login_login_bt);
         registerBt = (Button) view.findViewById(R.id.fragment_login_register_bt);
+        rememberCb = (CheckBox) view.findViewById(R.id.fragment_login_remember_cb);
         loginBt.setEnabled(false);
         loginBt.setOnClickListener(this);
+        rememberCb.setOnClickListener(this);
         registerBt.setOnClickListener(this);
         userNameEt.addTextChangedListener(this);
         passwordEt.addTextChangedListener(this);
@@ -53,6 +61,7 @@ public class LoginFragment extends BackStackFragmentWithProgressDialog
     }
     @Override public void onResume()
     {
+        super.onResume();
         if (getActivity() instanceof LoginFragmentOnClickListener)
             setLoginFragmentOnClickListener(
                     (LoginFragmentOnClickListener) getActivity());
@@ -60,7 +69,19 @@ public class LoginFragment extends BackStackFragmentWithProgressDialog
                 .getLayoutParams();
         params.width = (int) (ScreenSize.getScreenWidth() * 3 / 5);
         params.height = (int) (ScreenSize.getScreenHeight() / 12);
-        super.onResume();
+        SharedPreferences preferences = getActivity()
+                .getSharedPreferences(USER_INFO_RECORD,
+                        Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        if (preferences.contains(User.USER_NAME) && rememberCb.isChecked())
+        {
+            userNameEt.setText(preferences.getString(User.USER_NAME, ""));
+            passwordEt.setText(preferences.getString(User.PASSWORD, ""));
+        } else
+        {
+            editor.clear();
+        }
+        editor.commit();
     }
     @Override public void onDestroy()
     {
@@ -76,6 +97,22 @@ public class LoginFragment extends BackStackFragmentWithProgressDialog
         tv.setText("登陆");
         tv.setTextColor(getResources().getColor(R.color.shallow_blue));
         return tv;
+    }
+    public void storeUserInfoRecord()
+    {
+        SharedPreferences preferences = getActivity()
+                .getSharedPreferences(USER_INFO_RECORD,
+                        Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        if (!rememberCb.isChecked())
+        {
+            editor.clear();
+            editor.apply();
+            return;
+        }
+        editor.putString(User.USER_NAME, userNameEt.getText().toString());
+        editor.putString(User.PASSWORD, passwordEt.getText().toString());
+        editor.apply();
     }
     @Override public void onClick(View v)
     {
@@ -105,7 +142,6 @@ public class LoginFragment extends BackStackFragmentWithProgressDialog
             loginBt.setEnabled(false);
         else
             loginBt.setEnabled(true);
-
     }
     interface LoginFragmentOnClickListener
     {

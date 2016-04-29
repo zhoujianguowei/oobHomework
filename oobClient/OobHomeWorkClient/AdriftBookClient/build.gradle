@@ -26,4 +26,5 @@ dependencies {
     compile project(':FileChooserModule')
     compile project(':volley')
     compile project(':NavigationBar')
+    compile project(':CustomViewsModule')
 }

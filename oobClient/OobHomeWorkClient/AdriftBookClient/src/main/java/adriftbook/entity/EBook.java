@@ -10,11 +10,15 @@
 //
 
 
-package entity;
+package adriftbook.entity;
 
 public class EBook extends AdriftBook
 {
 	private String ebookUrl;
+
+	public EBook()
+	{}
+
 	public EBook(String name,String ebookUrl)
 	{
 		super(name);

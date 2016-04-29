@@ -8,11 +8,16 @@
 //  @ Author : 
 //
 //
-package entity;
+package adriftbook.entity;
 public class AdriftBook
 {
 
     public static final int ENTITYBOOK = 0;
+    public  static final String TAG=AdriftBook.class.getName();
+    public AdriftBook()
+    {
+
+    }
     @Override public String toString()
     {
         return "AdriftBook{" +
@@ -34,6 +39,13 @@ public class AdriftBook
     protected int type;  //0实体书,1电子书
     String bookImageUrl;
     Post post;
+    public static final String BOOK_ID="book_id";
+    public static final String BOOK_NAME="book_name";
+    public static  final String AUTHOR="author";
+    public static final String RATING="rating";
+    public static final String TYPE="type";
+    public static final String BOOK_IMAGE_URL="book_image_url";
+    public static final String EBOOK_URL="ebook_url";
     public int getBookId()
     {
         return bookId;

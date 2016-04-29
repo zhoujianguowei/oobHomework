@@ -8,7 +8,7 @@
 //  @ Author : 
 //
 //
-package entity;
+package adriftbook.entity;
 import java.util.Calendar;
 public class Comment
 {
@@ -18,6 +18,12 @@ public class Comment
     User commentUser;
     private String commentContent;
     private Calendar reviewDate;
+    public static final String COMMENT_ID="comment_id";
+    public static final String COMMENT_CONTENT="comment_content";
+    public static final String REVIEW_DATE="review_date";
+    public static final String TAG=Comment.class.getName();
+    public Comment()
+    {}
     public Comment(Post commentPost, User commentUser, String commentContent)
     {
         this.commentPost = commentPost;

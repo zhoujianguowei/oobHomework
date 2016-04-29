@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/fragment_post_main_requestbook_tv"
+                style="@style/commen_textview_style"
+                android:text="求漂区"/>
+
+            <CheckBox
+                android:id="@+id/fragment_post_main_requestbook_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/fragment_post_main_requestbook_tv"
+                android:layout_toRightOf="@+id/fragment_post_main_requestbook_tv"
+                android:checked="true"
+                android:padding="6dp"/>
+
+            <TextView
+                android:id="@+id/fragment_post_main_sendbook_tv"
+                style="@style/commen_textview_style"
+                android:layout_toRightOf="@+id/fragment_post_main_requestbook_cb"
+                android:text="放漂区"
+                />
+
+            <CheckBox
+                android:id="@+id/fragment_post_main_sendbook_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/fragment_post_main_requestbook_tv"
+                android:layout_toRightOf="@+id/fragment_post_main_sendbook_tv"
+                android:checked="true"
+                android:padding="6dp"/>
+
+            <TextView
+                android:id="@+id/fragment_post_main_ebook_tv"
+                style="@style/commen_textview_style"
+                android:layout_toRightOf="@+id/fragment_post_main_sendbook_cb"
+                android:text="电子书"/>
+
+            <CheckBox
+                android:id="@+id/fragment_post_main_ebook_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/fragment_post_main_requestbook_tv"
+                android:layout_toRightOf="@+id/fragment_post_main_ebook_tv"
+                android:checked="true"
+                android:padding="6dp"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:orientation="vertical">
+
+            <com.jianguo.adriftbookclient.customviews.MyScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/fragment_post_main_search_et"
+                            style="@style/common_edittext_style"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/post_search_back"
+                            android:hint="输入书名或者作者"/>
+
+                        <ImageButton
+                            android:id="@+id/fragment_post_main_search_ib"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/fragment_post_main_search_et"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="20dp"
+                            android:scaleType="centerInside"
+                            android:src="@mipmap/post_main_search_icon"
+                            />
+
+                    </RelativeLayout>
+
+                    <com.baoyz.widget.PullRefreshLayout
+                        android:id="@+id/fragment_post_main_fresh_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        >
+
+                        <ListView
+                            android:id="@+id/fragment_post_main_fresh_lv"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:cacheColorHint="@null"
+                            android:scrollbars="none"
+                            />
+
+                    </com.baoyz.widget.PullRefreshLayout>
+
+                </LinearLayout>
+            </com.jianguo.adriftbookclient.customviews.MyScrollView>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

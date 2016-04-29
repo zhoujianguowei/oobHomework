@@ -1,4 +1,5 @@
 package com.example.adriftbookclient.oobhomeworkclient;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -22,6 +23,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import adriftbook.entity.EntityEnum;
+import adriftbook.entity.User;
+import utils.JsonEntityParser;
 import utils.MyStringRequest;
 import utils.ScreenSize;
 public class MainActivity extends AppCompatActivity
@@ -141,7 +145,7 @@ public class MainActivity extends AppCompatActivity
     }
     private void startLoginRequet(Bundle bundle)
     {
-        RequestQueue loginQueue = Volley.newRequestQueue(this);
+        final RequestQueue loginQueue = Volley.newRequestQueue(this);
         String loginUrl = null;
         try
         {
@@ -162,6 +166,7 @@ public class MainActivity extends AppCompatActivity
                     @Override public void onResponse(String response)
                     {
                         loginFragment.dismissProgressDialog();
+                        loginFragment.storeUserInfoRecord();
                         JSONObject jsonObject = null;
                         Log.i("login", response);
                         try
@@ -171,11 +176,18 @@ public class MainActivity extends AppCompatActivity
                             String status = jsonObject
                                     .getString(Constant.STATUS_KEY);
                             if (status.equals(Constant.SUCCESS_VALUE))
-                                Toast.makeText(MainActivity.this, "用户登陆成功" +
-                                                jsonObject.getString(
-                                                        Constant.INFO_KEY),
-                                        Toast.LENGTH_SHORT).show();
-                            else
+                            {
+                                Intent intent = new Intent(MainActivity.this,
+                                        PostMainActivity.class);
+                                User user = (User) JsonEntityParser
+                                        .getSingleInstance()
+                                        .parseJsonEntity(
+                                                EntityEnum.User,
+                                                jsonObject.getJSONObject("user"));
+                                intent.putExtra("user", user);
+                                MainActivity.this.startActivity(intent);
+                                MainActivity.this.finish();
+                            } else
                                 Toast.makeText(MainActivity.this,
                                         jsonObject.getString(Constant.INFO_KEY),
                                         Toast.LENGTH_SHORT).show();

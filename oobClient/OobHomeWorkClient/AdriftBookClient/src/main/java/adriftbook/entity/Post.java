@@ -8,7 +8,7 @@
 //  @ Author : 
 //
 //
-package entity;
+package adriftbook.entity;
 import java.util.ArrayList;
 import java.util.Calendar;
 public class Post
@@ -25,6 +25,13 @@ public class Post
     private int postType;  //1求漂区，2放漂区，3电子书籍
     private int readCount;
     ArrayList<Comment> comments;
+    public static final String POST_ID="post_id";
+    public static final String POST_TITLE="post_title";
+    public static final String POST_DATE="post_date";
+    public static final String POST_TYPE="post_type";
+    public static final String READ_COUNT="read_count";
+    public static final String TAG=Post.class.getName();
+    public Post(){}
     public Post(User postUser, String postTitle, String content)
     {
         this.postUser = postUser;

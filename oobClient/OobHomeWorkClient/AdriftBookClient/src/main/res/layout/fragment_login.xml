@@ -44,14 +44,31 @@
         android:inputType="textPassword"
         />
 
+    <CheckBox
+        android:id="@+id/fragment_login_remember_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/fragment_login_remember_tv"
+        android:layout_toLeftOf="@+id/fragment_login_remember_tv"
+        android:checked="true"
+        android:layout_marginBottom="4dp"
+        />
+
+    <TextView
+        android:id="@+id/fragment_login_remember_tv"
+        style="@style/commen_textview_style"
+        android:layout_alignRight="@+id/fragment_login_login_bt"
+        android:layout_below="@+id/fragment_login_password_tv"
+        android:text="记住我"
+        />
 
     <Button
         android:id="@+id/fragment_login_login_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_login_password_tv"
+        android:layout_below="@+id/fragment_login_remember_tv"
         android:layout_centerInParent="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/fragment_login"
         android:text="登陆"
         android:textSize="@dimen/xx_large"

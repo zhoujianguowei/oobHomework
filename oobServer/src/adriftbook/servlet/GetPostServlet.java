@@ -20,7 +20,7 @@ import javafx.geometry.Pos;
 /**
  * Created by Administrator on 2016/4/25.
  */
-public class MainFrameServlet extends HttpServlet
+public class GetPostServlet extends HttpServlet
 {
 
     public static final int REQUESTBOOKMASTER = 1 << 2;
