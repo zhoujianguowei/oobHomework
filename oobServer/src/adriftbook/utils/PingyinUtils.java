@@ -51,10 +51,11 @@ public class PingyinUtils
         }
         return pinyinName;
     }
-    private static String filterPunctuations(String s)
+    public static String filterPunctuations(String s)
     {
-        String[] punctuations = new String[]{",", ".", "?", "\'", "\"", "-", "，", "。", "？", "-",
-                "——"};
+        String[] punctuations = new String[]{",", ".", "?", "\'", "\"", "-", "，",
+                "。", "？", "-",
+                "——", "\t", "\n"," ","!","、","！"};
         HashSet<String> punctuationSet = new HashSet<String>();
         int i = 0;
         for (i = 0; i < punctuations.length; i++)

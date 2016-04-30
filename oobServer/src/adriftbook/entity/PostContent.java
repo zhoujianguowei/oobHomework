@@ -8,7 +8,7 @@ public class PostContent
 
     String postContentDetail;
     ArrayList<AdriftBook> books;
-    PostContent(String postContentDetail)
+    public PostContent(String postContentDetail)
     {
         this.postContentDetail = postContentDetail;
         books = new ArrayList<AdriftBook>();

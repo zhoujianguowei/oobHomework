@@ -166,7 +166,6 @@ public class MainActivity extends AppCompatActivity
                     @Override public void onResponse(String response)
                     {
                         loginFragment.dismissProgressDialog();
-                        loginFragment.storeUserInfoRecord();
                         JSONObject jsonObject = null;
                         Log.i("login", response);
                         try
@@ -177,14 +176,15 @@ public class MainActivity extends AppCompatActivity
                                     .getString(Constant.STATUS_KEY);
                             if (status.equals(Constant.SUCCESS_VALUE))
                             {
+                                loginFragment.storeUserInfoRecord();
                                 Intent intent = new Intent(MainActivity.this,
                                         PostMainActivity.class);
                                 User user = (User) JsonEntityParser
                                         .getSingleInstance()
                                         .parseJsonEntity(
                                                 EntityEnum.User,
-                                                jsonObject.getJSONObject("user"));
-                                intent.putExtra("user", user);
+                                                jsonObject.getJSONObject(Constant.INFO_KEY));
+                                intent.putExtra(User.TAG, user);
                                 MainActivity.this.startActivity(intent);
                                 MainActivity.this.finish();
                             } else

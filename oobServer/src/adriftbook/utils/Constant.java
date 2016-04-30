@@ -20,9 +20,9 @@ public class Constant
     public static final int PER_REQUEST_ITEMS = 8;   //每次返回的帖子(post)个数
     public static final String HTTP_CONTENT_TYPE = "Content-Type";//设置请求header字段
     public static final String UPLOAD_BOOK_IMAGE_DIR =
-            CONSTANT_IP + "out/artifacts/oobServer_war_exploded/bookImage/";
+            CONSTANT_IP + "upload/bookImage/";
     public static final String UPLOAD_EBOOK_FILE_DIR =
-            CONSTANT_IP + "out/artifacts/oobServer_war_exploded/ebookFile/";
+            CONSTANT_IP + "upload/ebookFile/";
     public static void main(String[] args)
     {
 //        System.out.println(MysqlCheckUtil.getUserInfo("周建国"));

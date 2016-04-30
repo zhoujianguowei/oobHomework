@@ -15,7 +15,6 @@ package adriftbook.entity;
 public class EBook extends AdriftBook
 {
 	private String ebookUrl;
-
 	public EBook()
 	{}
 

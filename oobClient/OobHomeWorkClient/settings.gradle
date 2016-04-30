@@ -1,2 +1,2 @@
-include ':AdriftBookClient', ':CustomViewsModule', ':Constant', ':volley', ':NavigationBar', ':library', ':PullRefreshLayoutModule'
+include ':AdriftBookClient', ':CustomViewsModule', ':Constant', ':volley', ':NavigationBar', ':PullRefreshLayoutLibraryModule', ':PullRefreshLayoutApplicationModule'
 include ':FileChooserModule'

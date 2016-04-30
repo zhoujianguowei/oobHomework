@@ -1,6 +1,5 @@
 package adapter;
 import android.content.Context;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,12 +57,12 @@ public class PostMainAdapter extends BaseAdapter
         } else
             postViewHolder = (PostMainItemViewHolder) convertView.getTag();
         Post currentPost = postList.get(position);
-        if (currentPost.getPostLabel().equals(Post.NEW_POST))
+     /*   if (currentPost.getPostLabel().equals(Post.NEW_POST))
             postViewHolder.postLabel.setText(Html.fromHtml(
                     "<b><font color=green>" + Post.NEW_POST + "</font></b>"));
         else if (currentPost.getPostLabel().equals(Post.HOT_POST))
             postViewHolder.postLabel.setText(Html.fromHtml(
-                    "<b><font color=green>" + Post.HOT_POST + "</font></b>"));
+                    "<b><font color=green>" + Post.HOT_POST + "</font></b>"));*/
         postViewHolder.postTitle.setText(currentPost.getPostTitle());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         dateFormat.applyPattern("MM-dd");

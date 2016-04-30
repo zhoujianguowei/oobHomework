@@ -8,8 +8,8 @@
       <module fileurl="file://$PROJECT_DIR$/FileChooserModule/FileChooserModule.iml" filepath="$PROJECT_DIR$/FileChooserModule/FileChooserModule.iml" />
       <module fileurl="file://$PROJECT_DIR$/NavigationBar/NavigationBar.iml" filepath="$PROJECT_DIR$/NavigationBar/NavigationBar.iml" />
       <module fileurl="file://$PROJECT_DIR$/OobHomeWorkClient.iml" filepath="$PROJECT_DIR$/OobHomeWorkClient.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PullRefreshLayoutModule/PullRefreshLayoutModule.iml" filepath="$PROJECT_DIR$/PullRefreshLayoutModule/PullRefreshLayoutModule.iml" />
-      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PullRefreshLayoutApplicationModule/PullRefreshLayoutApplicationModule.iml" filepath="$PROJECT_DIR$/PullRefreshLayoutApplicationModule/PullRefreshLayoutApplicationModule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PullRefreshLayoutLibraryModule/PullRefreshLayoutLibraryModule.iml" filepath="$PROJECT_DIR$/PullRefreshLayoutLibraryModule/PullRefreshLayoutLibraryModule.iml" />
       <module fileurl="file://$PROJECT_DIR$/volley/volley.iml" filepath="$PROJECT_DIR$/volley/volley.iml" />
     </modules>
   </component>

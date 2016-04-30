@@ -6,11 +6,11 @@ import java.util.ArrayList;
 public class PostContent
 {
 
-    String contentTitle;
+    String postContentDetail;
     ArrayList<AdriftBook> books;
-    PostContent(String contentTitle)
+    public PostContent(String postContentDetail)
     {
-        this.contentTitle = contentTitle;
+        this.postContentDetail = postContentDetail;
         books = new ArrayList<AdriftBook>();
     }
     public ArrayList<AdriftBook> getBooks()
@@ -21,12 +21,12 @@ public class PostContent
     {
         this.books = books;
     }
-    public String getContentTitle()
+    public String getPostContentDetail()
     {
-        return contentTitle;
+        return postContentDetail;
     }
-    public void setContentTitle(String contentTitle)
+    public void setPostContentDetail(String postContentDetail)
     {
-        this.contentTitle = contentTitle;
+        this.postContentDetail = postContentDetail;
     }
 }

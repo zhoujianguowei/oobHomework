@@ -13,41 +13,22 @@ import java.util.Calendar;
 public class Comment
 {
 
-    private int commentId;
-    private Post commentPost;
+    private AdriftBook commentBook;
     User commentUser;
     private String commentContent;
     private Calendar reviewDate;
-    public static final String COMMENT_ID="comment_id";
-    public static final String COMMENT_CONTENT="comment_content";
-    public static final String REVIEW_DATE="review_date";
-    public static final String TAG=Comment.class.getName();
+    public static final String COMMENT_CONTENT = "comment_content";
+    public static final String REVIEW_DATE = "review_date";
     public Comment()
-    {}
-    public Comment(Post commentPost, User commentUser, String commentContent)
     {
-        this.commentPost = commentPost;
-        this.commentUser = commentUser;
-        this.commentContent = commentContent;
-        reviewDate = Calendar.getInstance();
     }
-    public int getCommentId()
+    public Calendar getReviewDate()
     {
-        return commentId;
+        return reviewDate;
     }
-    @Override public String toString()
+    public void setReviewDate(Calendar reviewDate)
     {
-        return "Comment{" +
-                "commentId=" + commentId +
-                ", commentPost=" + commentPost +
-                ", commentUser=" + commentUser +
-                ", commentContent='" + commentContent + '\'' +
-                ", reviewDate=" + reviewDate +
-                '}';
-    }
-    public void setCommentId(int commentId)
-    {
-        this.commentId = commentId;
+        this.reviewDate = reviewDate;
     }
     public String getCommentContent()
     {
@@ -57,12 +38,20 @@ public class Comment
     {
         this.commentContent = commentContent;
     }
-    public Calendar getReviewDate()
+    public AdriftBook getCommentBook()
     {
-        return reviewDate;
+        return commentBook;
     }
-    public void setReviewDate(Calendar reviewDate)
+    public void setCommentBook(AdriftBook commentBook)
     {
-        this.reviewDate = reviewDate;
+        this.commentBook = commentBook;
+    }
+    public User getCommentUser()
+    {
+        return commentUser;
+    }
+    public void setCommentUser(User commentUser)
+    {
+        this.commentUser = commentUser;
     }
 }

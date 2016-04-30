@@ -24,6 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/fragment_post_main_requestbook_tv"
+                android:layout_marginTop="4dp"
                 android:layout_toRightOf="@+id/fragment_post_main_requestbook_tv"
                 android:checked="true"
                 android:padding="6dp"/>
@@ -40,6 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/fragment_post_main_requestbook_tv"
+                android:layout_marginTop="4dp"
                 android:layout_toRightOf="@+id/fragment_post_main_sendbook_tv"
                 android:checked="true"
                 android:padding="6dp"/>
@@ -55,6 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/fragment_post_main_requestbook_tv"
+                android:layout_marginTop="4dp"
                 android:layout_toRightOf="@+id/fragment_post_main_ebook_tv"
                 android:checked="true"
                 android:padding="6dp"/>
@@ -69,7 +72,8 @@
 
             <com.jianguo.adriftbookclient.customviews.MyScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -86,29 +90,32 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="15dp"
                             android:background="@drawable/post_search_back"
-                            android:hint="输入书名或者作者"/>
+                            android:hint="输入书名或者作者"
+                            android:padding="4dp"/>
 
-                        <ImageButton
-                            android:id="@+id/fragment_post_main_search_ib"
+                        <ImageView
+                            android:id="@+id/fragment_post_main_search_iv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignBottom="@+id/fragment_post_main_search_et"
                             android:layout_alignParentRight="true"
-                            android:layout_marginRight="20dp"
-                            android:scaleType="centerInside"
+                            android:layout_alignTop="@+id/fragment_post_main_search_et"
+                            android:layout_marginLeft="-40dp"
+                            android:layout_toRightOf="@+id/fragment_post_main_search_et"
+                            android:scaleType="fitCenter"
                             android:src="@mipmap/post_main_search_icon"
                             />
 
                     </RelativeLayout>
 
                     <com.baoyz.widget.PullRefreshLayout
-                        android:id="@+id/fragment_post_main_fresh_layout"
+                        android:id="@+id/fragment_post_main_refresh_layout"
                         android:layout_width="match_parent"
                         android:layout_height="400dp"
                         >
 
                         <ListView
-                            android:id="@+id/fragment_post_main_fresh_lv"
+                            android:id="@+id/fragment_post_main_refresh_lv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:cacheColorHint="@null"
@@ -116,6 +123,43 @@
                             />
 
                     </com.baoyz.widget.PullRefreshLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        >
+
+                        <TextView
+                            style="@style/commen_textview_style"
+                            android:text="1"
+                            android:textColor="@color/shallow_blue"/>
+
+                        <TextView
+                            style="@style/commen_textview_style"
+                            android:text="2"
+                            android:textColor="@color/shallow_blue"/>
+
+                        <TextView
+                            style="@style/commen_textview_style"
+                            android:text="1"
+                            android:textColor="@color/shallow_blue"/>
+
+                        <TextView
+                            style="@style/commen_textview_style"
+                            android:text="2"
+                            android:textColor="@color/shallow_blue"/>
+
+                        <TextView
+                            style="@style/commen_textview_style"
+                            android:text="1"
+                            android:textColor="@color/shallow_blue"/>
+
+                        <TextView
+                            style="@style/commen_textview_style"
+                            android:text="2"
+                            android:textColor="@color/shallow_blue"/>
+                    </LinearLayout>
 
                 </LinearLayout>
             </com.jianguo.adriftbookclient.customviews.MyScrollView>

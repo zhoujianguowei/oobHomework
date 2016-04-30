@@ -140,7 +140,6 @@ public class MysqlCheckUtil
         {
             Comment comment = (Comment) obj;
             resJson.put(Comment.COMMENT_CONTENT, comment.getCommentContent());
-            resJson.put(Comment.COMMENT_ID, comment.getCommentId());
             resJson.put(Comment.REVIEW_DATE,
                     comment.getReviewDate().getTimeInMillis());
             JSONObject userJson = getJsonObj(MysqlCheckUtil.getUserInfo(params[0]));

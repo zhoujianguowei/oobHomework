@@ -27,4 +27,5 @@ dependencies {
     compile project(':volley')
     compile project(':NavigationBar')
     compile project(':CustomViewsModule')
+    compile project(':PullRefreshLayoutLibraryModule')
 }

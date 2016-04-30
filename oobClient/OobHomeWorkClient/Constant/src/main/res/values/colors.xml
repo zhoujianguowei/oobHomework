@@ -15,5 +15,6 @@
     <color name="sms_cancel_color">#FFD33232</color>
     <color name="white">#ffffffff</color>
     <color name="shallow_blue">#FF00A2EC</color>
+    <color name="gray">#ff808080</color>
 
 </resources>
