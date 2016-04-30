@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Set;
 
 import adriftbook.entity.AdriftBook;
 import adriftbook.entity.Comment;
 import adriftbook.entity.EBook;
 import adriftbook.entity.Post;
+import adriftbook.entity.PostContent;
 import adriftbook.entity.User;
 import adriftbook.servlet.GetPostsServlet;
 public class MysqlCheckUtil
@@ -71,7 +73,7 @@ public class MysqlCheckUtil
                         rSet.getString("userpassword"));
                 user.setUserId(rSet.getInt("user_id"));
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(rSet.getLong("resiterdate"));
+                calendar.setTimeInMillis(rSet.getLong("registerdate"));
                 user.setRegisterDate(calendar);
                 user.setUserLevel(rSet.getInt("level"));
             }
@@ -148,11 +150,12 @@ public class MysqlCheckUtil
         else if (obj instanceof Post)
         {
             Post post = (Post) obj;
-            resJson.put(Post.POST_DATE, post.getPostId());
             resJson.put(Post.POST_TITLE, post.getPostTitle());
-            resJson.put(Post.POST_DATE, post.getPostDate());
+            resJson.put(Post.POST_DATE, post.getPostDate().getTimeInMillis());
             resJson.put(Post.READ_COUNT, post.getReadCount());
             resJson.put(Post.POST_TYPE, post.getPostType());
+            resJson.put(Post.POST_CONTENT,
+                    post.getPostContent().getPostContentDetail());
             if (params.length > 0)
             {
                 JSONObject userJson = getJsonObj(
@@ -184,10 +187,10 @@ public class MysqlCheckUtil
     public static JSONArray getPostJsonArray(ArrayList<Post> posts)
     {
         JSONArray postJArray = new JSONArray();
-        for (Post post :posts)
+        for (Post post : posts)
             try
             {
-                postJArray.put(getJsonObj(post,post.getPostUser().getUserId()));
+                postJArray.put(getJsonObj(post, post.getPostUser().getUserId()));
             }
             catch (Exception e)
             {
@@ -197,46 +200,53 @@ public class MysqlCheckUtil
     }
     /**
      *
-     * @param isLogin
      * @param requestType
      * @param m index item database starts to search
      * @param n  max return number
-     * @return
+     * @return key posts denotes required posts and count denotes posts count
      */
-    public static ArrayList<Post> getPostsByType(boolean isLogin, int requestType,
-                                                 int m, int n)
+    public static HashMap<String, Object> getPostsByType(int requestType,
+                                                         int m, int n, String tag)
     {
         ArrayList<Post> posts = new ArrayList<Post>();
+        Integer postsCount = 0;
+        HashMap<String, Object> resMap = new HashMap<>();
         synchronized (MysqlCheckUtil.class)
         {
             String sqlString = "select * from post where  ";
+            String append = "";
             if (requestType >= GetPostsServlet.REQUESTBOOKMASTER)
             {
-                sqlString += " posttype=1";
+                append = " posttype=1";
                 requestType -= GetPostsServlet.REQUESTBOOKMASTER;
             }
             if (requestType >= GetPostsServlet.SENDBOOKMASTER)
             {
-                if (sqlString.contains("1"))
-                    sqlString += " or posttype=2";
+                if (append.contains("1"))
+                    append += " or posttype=2";
                 else
-                    sqlString += " posttype=2";
+                    append += " posttype=2";
                 requestType -= GetPostsServlet.SENDBOOKMASTER;
             }
             if (requestType >= GetPostsServlet.EBOOKMASTER)
             {
-                if (sqlString.contains("1") || sqlString.contains("2"))
-                    sqlString += " or posttype=3";
+                if (append.contains("1") || append.contains("2"))
+                    append += " or posttype=3";
                 else
-                    sqlString += " posttype=3";
+                    append += " posttype=3";
                 requestType -= GetPostsServlet.EBOOKMASTER;
             }
-            sqlString += " order by registerdate desc limits " + m + "," + n + "";
-            ResultSet rSet = MysqlDbConnection.getResultSet(sqlString);
-            Calendar calendar = Calendar.getInstance();
+            sqlString += append;
             try
             {
-                while (rSet.first())
+                ResultSet rSet = MysqlDbConnection
+                        .getResultSet("select count(*) from post where " + append);
+                if (rSet.next())
+                    postsCount = rSet.getInt(1);
+                sqlString += " order by postdate desc limit " + m + "," + n + "";
+                rSet = MysqlDbConnection.getResultSet(sqlString);
+                Calendar calendar = Calendar.getInstance();
+                while (rSet.next())
                 {
                     int userId = rSet.getInt("user_id");
                     User user = MysqlCheckUtil.getUserInfo(userId);
@@ -246,8 +256,11 @@ public class MysqlCheckUtil
                     post.setPostTitle(rSet.getString("posttitle"));
                     post.setPostDate(calendar);
                     post.setPostType(rSet.getInt("posttype"));
-                    post.setPostId(rSet.getInt("post_id"));
+                    post.setPostId(rSet.getInt("post.post_id"));
                     post.setReadCount(rSet.getInt("readcount"));
+                    PostContent postContent = new PostContent(
+                            rSet.getString("content"));
+                    post.setPostContent(postContent);
                     posts.add(post);
                 }
             }
@@ -257,6 +270,8 @@ public class MysqlCheckUtil
             }
         }
         Collections.sort(posts, new PostComparator());
-        return posts;
+        resMap.put(Post.POSTS_COUNT_KEY, postsCount);
+        resMap.put(Post.POSTS_KEY, posts);
+        return resMap;
     }
 }

@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +33,7 @@ public class GetPostsServlet extends HttpServlet
             throws ServletException, IOException
     {
 //        super.doGet(req, resp);
+        doPost(req, resp);
     }
     @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException
@@ -45,8 +47,8 @@ public class GetPostsServlet extends HttpServlet
             return;
         int requestBookType, sendBookType, ebookType, isLogin;
         int page = 1, requestType;
-        ArrayList<Post> posts;
-        JSONObject resJs = null;
+        HashMap<String, Object> postsMap;
+        JSONObject resJs = new JSONObject();
         try
         {
             requestBookType = Integer.parseInt(
@@ -55,24 +57,24 @@ public class GetPostsServlet extends HttpServlet
                     .parseInt(CodeTransformUtil.getParameter(req, "sendbooktype"));
             ebookType = Integer
                     .parseInt(CodeTransformUtil.getParameter(req, "ebooktype"));
-            isLogin = Integer
-                    .parseInt(CodeTransformUtil.getParameter(req, "islogin"));
             page = Integer.parseInt(CodeTransformUtil.getParameter(req, "page"));
-            requestType = requestBookType << 2 + sendBookType << 1 + ebookType;
+            requestType = (requestBookType << 2) + (sendBookType << 1) + ebookType;
             HashSet<String> tagSet = new HashSet<>();
             tagSet.add("tag");
             if (MysqlCheckUtil
                     .containsSpecifyRequestParam(req.getParameterNames(), tagSet))
-                posts = getPosts(isLogin == 1 ? true : false, requestType, page,
+                postsMap = getPosts(requestType, page,
                         CodeTransformUtil.getParameter(req, "tag"));
             else
-                posts = getPosts(isLogin == 1 ? true : false, requestType, page,
+                postsMap = getPosts(requestType, page,
                         null);
             resJs = new JSONObject();
-            if (posts.size() > 0)
+            if (postsMap.size() > 0)
             {
                 resJs.put(Constant.STATUS_KEY, Constant.SUCCESS_VALUE);
-                resJs.put(Constant.INFO_KEY, MysqlCheckUtil.getPostJsonArray(posts));
+                resJs.put(Constant.INFO_KEY, MysqlCheckUtil.getPostJsonArray(
+                        (ArrayList<Post>) postsMap.get(Post.POSTS_KEY)));
+                resJs.put(Post.POSTS_COUNT_KEY, postsMap.get(Post.POSTS_COUNT_KEY));
             }
             else
                 resJs.put(Constant.STATUS_KEY, Constant.FAIL_VALUE);
@@ -81,12 +83,15 @@ public class GetPostsServlet extends HttpServlet
         {
             e.printStackTrace();
         }
+        resp.getOutputStream()
+                .write(resJs.toString().getBytes(Constant.DEFAULT_CODE));
     }
-    ArrayList<Post> getPosts(boolean isLogin, int requestType, int page,
-                             @Nullable String tag)
+    HashMap<String, Object> getPosts(int requestType, int page,
+                                     @Nullable String tag)
     {
-        ArrayList<Post> posts = MysqlCheckUtil
-                .getPostsByType(isLogin, requestType, 0, -1);
-        return posts;
+        HashMap<String, Object> postsMap = MysqlCheckUtil
+                .getPostsByType(requestType, Constant.PER_REQUEST_ITEMS * (page - 1),
+                        Constant.PER_REQUEST_ITEMS * page, tag);
+        return postsMap;
     }
 }

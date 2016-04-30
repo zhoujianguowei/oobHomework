@@ -31,6 +31,10 @@ public class Post
     public static final String POST_DATE = "post_date";
     public static final String POST_TYPE = "post_type";
     public static final String READ_COUNT = "read_count";
+    public static final String POSTS_KEY="posts";
+    public static final String POSTS_COUNT_KEY ="posts_count";
+    public static final String POST_CONTENT="content";
+
     public Post()
     {
     }

@@ -12,7 +12,7 @@
         <servlet-class>adriftbook.servlet.LoginServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>MainFrame</servlet-name>
+        <servlet-name>GetPost</servlet-name>
         <servlet-class>adriftbook.servlet.GetPostsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
@@ -24,7 +24,7 @@
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>MainFrame</servlet-name>
-        <url-pattern>/main_frame</url-pattern>
+        <servlet-name>GetPost</servlet-name>
+        <url-pattern>/get_post</url-pattern>
     </servlet-mapping>
 </web-app>
