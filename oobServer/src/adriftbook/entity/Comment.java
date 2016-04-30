@@ -18,6 +18,19 @@ public class Comment
     User commentUser;
     private String commentContent;
     private Calendar reviewDate;
+    public static final String COMMENT_ID="comment_id";
+    public static final String COMMENT_CONTENT="comment_content";
+    public static final String REVIEW_DATE="review_date";
+    public Comment()
+    {}
+    public User getCommentUser()
+    {
+        return commentUser;
+    }
+    public void setCommentUser(User commentUser)
+    {
+        this.commentUser = commentUser;
+    }
     public Comment(Post commentPost, User commentUser, String commentContent)
     {
         this.commentPost = commentPost;

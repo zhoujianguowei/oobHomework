@@ -13,7 +13,7 @@
     </servlet>
     <servlet>
         <servlet-name>MainFrame</servlet-name>
-        <servlet-class>adriftbook.servlet.MainFrameServlet</servlet-class>
+        <servlet-class>adriftbook.servlet.GetPostsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>

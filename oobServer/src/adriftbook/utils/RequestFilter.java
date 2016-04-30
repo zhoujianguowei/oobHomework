@@ -29,18 +29,9 @@ public class RequestFilter
         int matchCount = 0;
         int paramSize = legalRequestParamsSet.size();
         resp.setHeader(Constant.HTTP_CONTENT_TYPE,
-                "text/html;charset=" + Constant.DEFAULT_CODE);
-        Enumeration<String> enumeration = req.getParameterNames();
-        while (enumeration.hasMoreElements())
-        {
-            String param = enumeration.nextElement();
-            if (legalRequestParamsSet.contains(param))
-            {
-                matchCount++;
-                legalRequestParamsSet.remove(param);
-            }
-        }
-        if (matchCount != paramSize)
+                "application/json;charset=" + Constant.DEFAULT_CODE);
+        if (!MysqlCheckUtil.containsSpecifyRequestParam(req.getParameterNames(),
+                legalRequestParamsSet))
         {
             JSONObject jsonObject = new JSONObject();
             try

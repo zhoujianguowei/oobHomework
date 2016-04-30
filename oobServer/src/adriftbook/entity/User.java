@@ -9,10 +9,11 @@
 //
 //
 package adriftbook.entity;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-public class User
+public class User implements Serializable
 {
 
     private String userName;
@@ -21,6 +22,14 @@ public class User
     private Calendar registerDate;
     private int userLevel;
     ArrayList<Post> posts;
+    public static final String USER_ID="user_id";
+    public static final String USER_NAME="user_name";
+    public static final String PASSWORD="password";
+    public static final String REGISTER_DATE="register_date";
+    public static final String USER_LEVEL="user_level";
+
+    public User()
+    {}
     public ArrayList<Post> getPosts()
     {
         return posts;

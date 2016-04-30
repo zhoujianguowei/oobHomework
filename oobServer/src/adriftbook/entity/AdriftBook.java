@@ -13,6 +13,9 @@ public class AdriftBook
 {
 
     public static final int ENTITYBOOK = 0;
+    public AdriftBook()
+    {
+    }
     @Override public String toString()
     {
         return "AdriftBook{" +
@@ -23,10 +26,10 @@ public class AdriftBook
                 ", type=" + type +
                 ", bookImageUrl='" + bookImageUrl + '\'' +
                 ", post=" + post +
-                ", riviewPeopleCount=" + riviewPeopleCount +
+                ", reviewPeopleCount=" + reviewPeopleCount +
                 '}';
     }
-    public static final int EBOOK =1;
+    public static final int EBOOK = 1;
     int bookId;
     String bookName;
     String author;
@@ -34,6 +37,14 @@ public class AdriftBook
     protected int type;  //0实体书,1电子书
     String bookImageUrl;
     Post post;
+    public static final String BOOK_ID = "book_id";
+    public static final String BOOK_NAME = "book_name";
+    public static final String AUTHOR = "author";
+    public static final String RATING = "rating";
+    public static final String TYPE = "type";
+    public static final String BOOK_IMAGE_URL = "book_image_url";
+    public static final String EBOOK_URL = "ebook_url";
+    public static final String REVIEW_COUNT="review_count";
     public int getBookId()
     {
         return bookId;
@@ -64,7 +75,6 @@ public class AdriftBook
     }
     public void setBookImageUrl(String bookImageUrl)
     {
-
         this.bookImageUrl = bookImageUrl;
     }
     public AdriftBook(String bookName)
@@ -77,15 +87,15 @@ public class AdriftBook
         this.author = author;
         type = 0;
     }
-    public int getRiviewPeopleCount()
+    public int getReviewPeopleCount()
     {
-        return riviewPeopleCount;
+        return reviewPeopleCount;
     }
-    public void setRiviewPeopleCount(int riviewPeopleCount)
+    public void setReviewPeopleCount(int reviewPeopleCount)
     {
-        this.riviewPeopleCount = riviewPeopleCount;
+        this.reviewPeopleCount = reviewPeopleCount;
     }
-    private int riviewPeopleCount;//对该书评论的个数
+    private int reviewPeopleCount;//对该书评论的个数
     public String getBookName()
     {
         return bookName;

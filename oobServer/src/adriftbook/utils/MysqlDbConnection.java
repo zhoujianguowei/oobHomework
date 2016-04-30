@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.Calendar;
 public class MysqlDbConnection
 {
 
@@ -91,8 +91,12 @@ public class MysqlDbConnection
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args)
+	public static void main(String[] args)throws  Exception
 	{
-
+//		Calendar calendar=Calendar.getInstance();
+//		String encode="周建国"+calendar.getTimeInMillis()+".png";
+//		System.out.println(CommonUtils.transformFileToByte(encode));
+		File currentFile=new File(".");
+		System.out.println(currentFile.getAbsolutePath());
 	}
 }

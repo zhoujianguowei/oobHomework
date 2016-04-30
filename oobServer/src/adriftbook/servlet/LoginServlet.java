@@ -26,6 +26,7 @@ public class LoginServlet extends HttpServlet
             throws ServletException, IOException
     {
 //        super.doGet(req, resp);
+
         doPost(req, resp);
     }
     @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -47,8 +48,16 @@ public class LoginServlet extends HttpServlet
                 if (MysqlCheckUtil.userExists(username, password))
                 {
                     resJson.put(Constant.STATUS_KEY, Constant.SUCCESS_VALUE);
+                    User user = MysqlCheckUtil.getUserInfo(username);
+                    JSONObject userJson = new JSONObject();
+                    userJson.put(User.USER_ID, user.getUserId());
+                    userJson.put(User.USER_NAME, user.getUserName());
+                    userJson.put(User.PASSWORD, user.getPassword());
+                    userJson.put(User.REGISTER_DATE,
+                            user.getRegisterDate().getTimeInMillis());
+                    userJson.put(User.USER_LEVEL, user.getUserLevel());
                     resJson.put(Constant.INFO_KEY,
-                            MysqlCheckUtil.getUserInfo(username));
+                            userJson);
                 }
                 else
                     resJson.put(Constant.INFO_KEY, "用户名和密码不匹配");

@@ -1,4 +1,6 @@
 package adriftbook.servlet;
+import com.sun.istack.internal.Nullable;
+
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -20,7 +22,7 @@ import javafx.geometry.Pos;
 /**
  * Created by Administrator on 2016/4/25.
  */
-public class GetPostServlet extends HttpServlet
+public class GetPostsServlet extends HttpServlet
 {
 
     public static final int REQUESTBOOKMASTER = 1 << 2;
@@ -35,8 +37,10 @@ public class GetPostServlet extends HttpServlet
             throws ServletException, IOException
     {
         Set<String> legalSet = new HashSet<String>();
-        legalSet.add("username");
-        legalSet.add("password");
+        legalSet.add("requestbooktype");
+        legalSet.add("sendbooktype");
+        legalSet.add("ebooktype");
+        legalSet.add("page");
         if (!RequestFilter.isRequestParamsLegal(req, resp, legalSet))
             return;
         int requestBookType, sendBookType, ebookType, isLogin;
@@ -55,12 +59,20 @@ public class GetPostServlet extends HttpServlet
                     .parseInt(CodeTransformUtil.getParameter(req, "islogin"));
             page = Integer.parseInt(CodeTransformUtil.getParameter(req, "page"));
             requestType = requestBookType << 2 + sendBookType << 1 + ebookType;
-            posts = getPosts(isLogin == 1 ? true : false, requestType, page);
+            HashSet<String> tagSet = new HashSet<>();
+            tagSet.add("tag");
+            if (MysqlCheckUtil
+                    .containsSpecifyRequestParam(req.getParameterNames(), tagSet))
+                posts = getPosts(isLogin == 1 ? true : false, requestType, page,
+                        CodeTransformUtil.getParameter(req, "tag"));
+            else
+                posts = getPosts(isLogin == 1 ? true : false, requestType, page,
+                        null);
             resJs = new JSONObject();
             if (posts.size() > 0)
             {
                 resJs.put(Constant.STATUS_KEY, Constant.SUCCESS_VALUE);
-                resJs.put(Constant.INFO_KEY, posts);
+                resJs.put(Constant.INFO_KEY, MysqlCheckUtil.getPostJsonArray(posts));
             }
             else
                 resJs.put(Constant.STATUS_KEY, Constant.FAIL_VALUE);
@@ -70,22 +82,11 @@ public class GetPostServlet extends HttpServlet
             e.printStackTrace();
         }
     }
-    ArrayList<Post> getPosts(boolean isLogin, int requestType, int page)
+    ArrayList<Post> getPosts(boolean isLogin, int requestType, int page,
+                             @Nullable String tag)
     {
-        ArrayList<Post> posts = new ArrayList<Post>();
-        ArrayList<Post> requestbookPosts = new ArrayList<Post>();
-        ArrayList<Post> sendBookPosts = new ArrayList<Post>();
-        ArrayList<Post> ebookPosts = new ArrayList<Post>();
-        String sqlString = "";
-        //求漂区
-      /*  if(requestbookType==1)
-        {
-
-            requestbookPosts= MysqlCheckUtil.getPostsByType(isLogin,requestbookType,(page-1)*
-                    Constant.PER_REQUEST_ITEMS,Constant.PER_REQUEST_ITEMS);
-        }
-        if(sendBookType==1)
-            sendBookPosts=MysqlCheckUtil.getPostsByType(isLogin,sendBookType,(page-1))*/
+        ArrayList<Post> posts = MysqlCheckUtil
+                .getPostsByType(isLogin, requestType, 0, -1);
         return posts;
     }
 }

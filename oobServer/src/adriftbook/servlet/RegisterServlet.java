@@ -2,6 +2,7 @@ package adriftbook.servlet;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -28,6 +29,7 @@ public class RegisterServlet extends HttpServlet
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException
     {
+        System.out.println(req.getRealPath("/"));//获取当前绝对路径
 //        super.doGet(req, resp);
         doPost(req, resp);
     }
