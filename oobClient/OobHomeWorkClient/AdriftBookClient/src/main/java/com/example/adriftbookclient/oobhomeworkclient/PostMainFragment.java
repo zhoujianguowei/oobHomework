@@ -1,8 +1,10 @@
 package com.example.adriftbookclient.oobhomeworkclient;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextPaint;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -51,6 +54,7 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
     private PostMainAdapter postAdpater;
     PopupWindow popupWindow;
     private int currentPage = 1;
+    LinearLayout pageContainer;
     private void updateLabelStatus(ArrayList<Post> postList)
     {
         if (postList.isEmpty())
@@ -80,6 +84,8 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
         ebookCb.setOnCheckedChangeListener(this);
         refreshLayout = (PullRefreshLayout) view
                 .findViewById(R.id.fragment_post_main_refresh_layout);
+        pageContainer = (LinearLayout) view
+                .findViewById(R.id.fragment_post_main_page_lr);
         refreshLayout.setOnRefreshListener(this);
         lv = (ListView) view.findViewById(R.id.fragment_post_main_refresh_lv);
         lv.setOnItemClickListener(this);
@@ -98,8 +104,128 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
                     (ArrayList<Post>) bundle.getSerializable(Post.POSTS_KEY));
             updateLabelStatus(postList);
             postCount = bundle.getInt(Post.POSTS_COUNT_KEY);
+            configurePageContainer(postCount, currentPage);
             postAdpater.notifyDataSetChanged();
         }
+    }
+    private void configurePageContainer(int postCount, int currentPage)
+    {
+        pageContainer.removeAllViews();
+        int totalPage = (int) Math.ceil(postCount / Constant.PER_REQUEST_ITEMS);
+        TextView pageTv = null;
+        int pageIndex = 1;
+        if (totalPage <= 10)
+        {
+            while (pageIndex <= totalPage)
+            {
+                pageTv = (TextView) LayoutInflater.from(getActivity()).inflate(
+                        R.layout.fragment_post_main_page_textview, null);
+                pageTv.setText(pageIndex + "");
+                pageContainer.addView(pageTv);
+                pageIndex++;
+            }
+        } else
+        {
+            if (currentPage >= 6)
+            {
+                pageTv = (TextView) LayoutInflater.from(getActivity())
+                        .inflate(R.layout.fragment_post_main_page_textview,
+                                null);
+                pageTv.setText("1...");
+                pageContainer.addView(pageTv);
+                if (totalPage - currentPage >= 4)
+                {
+                    pageIndex = 1;
+                    while (pageIndex <= 8)
+                    {
+                        pageTv = (TextView) LayoutInflater.from(getActivity())
+                                .inflate(R.layout.fragment_post_main_page_textview,
+                                        null);
+                        pageTv.setText((currentPage - 5 + pageIndex) + "");
+                        pageContainer.addView(pageTv);
+                        pageIndex++;
+                    }
+                    pageTv = (TextView) LayoutInflater.from(getActivity())
+                            .inflate(R.layout.fragment_post_main_page_textview,
+                                    null);
+                    pageTv.setText("..." + totalPage);
+                    pageContainer.addView(pageTv);
+                } else
+                {
+                    pageIndex = 1;
+                    while (pageIndex <= 9)
+                    {
+                        pageTv = (TextView) LayoutInflater.from(getActivity())
+                                .inflate(R.layout.fragment_post_main_page_textview,
+                                        null);
+                        pageTv.setText((totalPage - 9 + pageIndex) + "");
+                        pageContainer.addView(pageTv);
+                        pageIndex++;
+                    }
+                  /*  pageTv = (TextView) LayoutInflater.from(getActivity())
+                            .inflate(R.layout.fragment_post_main_page_textview,
+                                    null);
+                    pageTv.setText("..." + totalPage);
+                    pageContainer.addView(pageTv);*/
+                }
+            } else
+            {
+                if (totalPage - currentPage >= 4)
+                {
+                    pageIndex = 1;
+                    while (pageIndex <= 9)
+                    {
+                        pageTv = (TextView) LayoutInflater.from(getActivity())
+                                .inflate(R.layout.fragment_post_main_page_textview,
+                                        null);
+                        pageTv.setText(pageIndex + "");
+                        pageContainer.addView(pageTv);
+                        pageIndex++;
+                    }
+                    pageTv = (TextView) LayoutInflater.from(getActivity())
+                            .inflate(R.layout.fragment_post_main_page_textview,
+                                    null);
+                    pageTv.setText("..." + totalPage);
+                    pageContainer.addView(pageTv);
+                }
+            }
+        }
+        pageIndex = 1;
+        int childCount = pageContainer.getChildCount();
+        for (; pageIndex <= childCount; pageIndex++)
+        {
+            TextView child = (TextView) pageContainer.getChildAt(pageIndex - 1);
+            child.setOnClickListener(this);
+            TextPaint textPaint = child.getPaint();
+            if (getPageNum(child) == currentPage)
+            {
+                textPaint.setFakeBoldText(true);
+                child.setTextColor(Color.RED);
+            } else
+            {
+                textPaint.setFakeBoldText(false);
+                textPaint.setColor(getResources().getColor(R.color.shallow_blue));
+            }
+        }
+        TextView totalCountPageTv = new TextView(getActivity());
+        totalCountPageTv.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                getResources().getDimensionPixelSize(R.dimen.large));
+        totalCountPageTv.setTextColor(Color.BLACK);
+        totalCountPageTv.setText("共" + totalPage + "页");
+        pageContainer.addView(totalCountPageTv);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) totalCountPageTv
+                .getLayoutParams();
+        params.leftMargin = ScreenSize.getScreenWidth() / 12;
+//        totalCountPageTv.setLayoutParams(params);
+    }
+    private int getPageNum(TextView tv)
+    {
+        String s = tv.getText().toString();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < s.length(); i++)
+            if (s.charAt(i) >= '0' && s.charAt(i) <= '9')
+                builder.append(s.charAt(i));
+        return Integer.parseInt(builder.toString());
     }
     @Override protected View onTitleCreate()
     {
@@ -139,20 +265,20 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
     }
     @Override public void onMenuClick(View view)
     {
-        if(searchEt.hasFocus())
+        if (searchEt.hasFocus())
             searchEt.clearFocus();
         if (!popupWindow.isShowing())
             popupWindow.showAsDropDown(settingIv);
     }
     @Override public void onRefresh()
     {
+        postList.clear();
         Handler loadPostsHandler = new Handler(this);
         int requestType = requestBookCb.isChecked() ? 1 : 0;
         int sendBookType = sendBookCb.isChecked() ? 1 : 0;
         int ebookType = ebookCb.isChecked() ? 1 : 0;
         if (requestType == 0 && sendBookType == 0 && ebookType == 0)
         {
-            postList.clear();
             postAdpater.notifyDataSetChanged();
             dismissProgressDialog();
             return;
@@ -168,15 +294,21 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
     {
-        if(searchEt.hasFocus())
+        if (searchEt.hasFocus())
             searchEt.clearFocus();
-        showProgressDialog("数据更新中");
+        showProgressDialog("数据加载中");
         onRefresh();
     }
     @Override public void onClick(View v)
     {
-        if(searchEt.hasFocus())
+        if (searchEt.hasFocus())
             searchEt.clearFocus();
+        if (v.getParent() != null && v.getParent().equals(pageContainer))
+        {
+            currentPage = getPageNum((TextView) v);
+            showProgressDialog("数据加载中");
+            onRefresh();
+        }
     }
     @Override public boolean handleMessage(Message msg)
     {
