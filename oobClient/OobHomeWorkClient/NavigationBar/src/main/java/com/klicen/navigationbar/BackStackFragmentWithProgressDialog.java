@@ -23,6 +23,7 @@ public class BackStackFragmentWithProgressDialog extends BackStackFragment
             progressDialog.show();
             progressDialog.setMessage(msg);
         }
+        progressDialog.setMessage(msg);
     }
     /**
      * close a progress if there is one.

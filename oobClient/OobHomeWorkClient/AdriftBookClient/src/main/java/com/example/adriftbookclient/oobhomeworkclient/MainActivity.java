@@ -1,6 +1,8 @@
 package com.example.adriftbookclient.oobhomeworkclient;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -17,16 +19,13 @@ import com.file.attach.Option;
 import com.klicen.constant.Constant;
 import com.klicen.navigationbar.NavigationBarFragment;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 
 import adriftbook.entity.EntityEnum;
-import adriftbook.entity.Post;
 import adriftbook.entity.User;
 import utils.JsonEntityParser;
 import utils.MyStringRequest;
@@ -215,61 +214,28 @@ public class MainActivity extends AppCompatActivity
     }
     private void loadRequiredPosts(final Intent intent)
     {
-        loginFragment.showProgressDialog("获取帖子内容");
-        String loadPostsUrl = Constant.CONSTANT_IP +
-                "get_post?requestbooktype=1&sendbooktype=1&ebooktype=1&page=1";
-        RequestQueue queue = Volley.newRequestQueue(this);
-        MyStringRequest loadPostsRequest = new MyStringRequest(loadPostsUrl,
-                new Response.Listener<String>()
-                {
-                    @Override public void onResponse(String response)
-                    {
-                        loginFragment.dismissProgressDialog();
-                        try
-                        {
-                            JSONObject resJObj = new JSONObject(response);
-                            if (resJObj.getString(Constant.STATUS_KEY)
-                                    .equals(Constant.FAIL_VALUE))
-                                Toast.makeText(MainActivity.this, "文件列表获取失败",
-                                        Toast.LENGTH_LONG).show();
-                            else
-                            {
-                                Bundle bundle=new Bundle();
-                                bundle.putInt(Post.POSTS_COUNT_KEY,
-                                        resJObj.getInt(Post.POSTS_COUNT_KEY));
-                                JSONArray postsJArray = resJObj
-                                        .getJSONArray(Constant.INFO_KEY);
-                                ArrayList<Post> posts = new ArrayList<>();
-                                for (int i = 0; i < postsJArray.length(); i++)
-                                {
-                                    JSONObject postJObj = postsJArray
-                                            .getJSONObject(i);
-                                    posts.add((Post) JsonEntityParser
-                                            .getSingleInstance()
-                                            .parseJsonEntity(EntityEnum.Post,
-                                                    postJObj));
-                                }
-                                bundle.putSerializable(Post.POSTS_KEY, posts);
-                                intent.putExtras(bundle);
-                                MainActivity.this.startActivity(intent);
-                                MainActivity.this.finish();
-                            }
-                        }
-                        catch (JSONException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener()
+        Handler handler = new Handler()
         {
-            @Override public void onErrorResponse(VolleyError error)
+            @Override public void handleMessage(Message msg)
             {
+                super.handleMessage(msg);
                 loginFragment.dismissProgressDialog();
-                Toast.makeText(MainActivity.this, error.getMessage(),
-                        Toast.LENGTH_LONG)
-                        .show();
+                Bundle bundle = (Bundle) msg.obj;
+                if (bundle.getString(Constant.STATUS_KEY)
+                        .equals(Constant.FAIL_VALUE))
+                {
+                    Toast.makeText(MainActivity.this,
+                            bundle.getString(Constant.INFO_KEY), Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish();
             }
-        });
-        queue.add(loadPostsRequest);
+        };
+        new LoadEntityUtils(getApplicationContext(), handler)
+                .loadPosts(1, 1, 1, 1, null);
+        loginFragment.showProgressDialog("获取文件列表");
     }
 }

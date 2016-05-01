@@ -64,6 +64,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fragment_post_main_book_typ_rl"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         >
 
         <EditText

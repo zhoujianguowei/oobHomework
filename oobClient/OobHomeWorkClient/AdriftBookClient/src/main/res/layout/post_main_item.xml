@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
     >
 
     <TextView
         android:id="@+id/post_main_item_label_tv"
         style="@style/commen_textview_style"
-        android:layout_width="0dp"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="2"
-        android:singleLine="true"
-        android:text="新"
-        android:textColor="@color/red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="1dp"
+        android:text="火爆"
         android:textSize="@dimen/x_large"/>
 
     <TextView
         android:id="@+id/post_main_item_post_title_tv"
         style="@style/commen_textview_style"
-        android:layout_width="0dp"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/post_main_item_author_rl"
+        android:layout_toRightOf="@+id/post_main_item_label_tv"
         android:ellipsize="marquee"
+        android:layout_marginLeft="8dp"
+        android:padding="2dp"
+        android:singleLine="false"
         android:text="我是post的标题"/>
 
     <RelativeLayout
-        android:layout_width="0dp"
+        android:id="@+id/post_main_item_author_rl"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="3">
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center_vertical">
 
         <TextView
             android:id="@+id/post_main_item_post_author_tv"
@@ -36,7 +40,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
             android:text="作者姓名"
-            android:textSize="@dimen/middle"/>
+            android:textSize="@dimen/little"/>
 
         <TextView
             android:id="@+id/post_main_item_post_date_tv"
@@ -45,8 +49,8 @@
             android:layout_below="@+id/post_main_item_post_author_tv"
             android:paddingBottom="4dp"
             android:text="发表日期"
-            android:textSize="@dimen/middle"
+            android:textSize="@dimen/little"
             />
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

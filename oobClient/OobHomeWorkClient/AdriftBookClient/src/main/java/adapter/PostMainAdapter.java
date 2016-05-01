@@ -23,7 +23,7 @@ public class PostMainAdapter extends BaseAdapter
 
     Context context;
     List<Post> postList;
-    public static final int PER_POST_ITEM_HEIGTH = ScreenSize.getScreenWidth() / 6;
+    public static final int PER_POST_ITEM_HEIGTH = ScreenSize.getScreenWidth() / 8;
     public PostMainAdapter(Context context, List<Post> postList)
     {
         this.context = context;
@@ -69,6 +69,8 @@ public class PostMainAdapter extends BaseAdapter
             postViewHolder.postLabel.setText(Html.fromHtml(
                     "<big><b><font color=green>" + Post.NEW_POST_LABEL_STATUS +
                             "</font></b></big>"));
+        else
+            postViewHolder.postLabel.setText("");
         postViewHolder.postTitle.setText(currentPost.getPostTitle());
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         dateFormat.applyPattern("MM-dd");
