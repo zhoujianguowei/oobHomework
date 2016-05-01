@@ -18,6 +18,7 @@ import adriftbook.entity.Post;
 import adriftbook.utils.CodeTransformUtil;
 import adriftbook.utils.Constant;
 import adriftbook.utils.MysqlCheckUtil;
+import adriftbook.utils.MysqlDbConnection;
 import adriftbook.utils.RequestFilter;
 import javafx.geometry.Pos;
 /**
@@ -83,6 +84,7 @@ public class GetPostsServlet extends HttpServlet
         {
             e.printStackTrace();
         }
+        MysqlDbConnection.closeConnection();
         resp.getOutputStream()
                 .write(resJs.toString().getBytes(Constant.DEFAULT_CODE));
     }
@@ -91,7 +93,7 @@ public class GetPostsServlet extends HttpServlet
     {
         HashMap<String, Object> postsMap = MysqlCheckUtil
                 .getPostsByType(requestType, Constant.PER_REQUEST_ITEMS * (page - 1),
-                        Constant.PER_REQUEST_ITEMS * page, tag);
+                        Constant.PER_REQUEST_ITEMS, tag);
         return postsMap;
     }
 }

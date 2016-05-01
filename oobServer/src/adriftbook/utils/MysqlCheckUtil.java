@@ -37,7 +37,6 @@ public class MysqlCheckUtil
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        MysqlDbConnection.closeConnection();
         return false;
     }
     public static boolean userExists(String userName, String password)
@@ -57,7 +56,6 @@ public class MysqlCheckUtil
         {
             // TODO: handle exception
         }
-        MysqlDbConnection.closeConnection();
         return false;
     }
     public static User getUserInfo(int userId)
@@ -85,7 +83,6 @@ public class MysqlCheckUtil
             // TODO: handle exception
             e.printStackTrace();
         }
-        MysqlDbConnection.closeConnection();
         return user;
     }
     public static User getUserInfo(String userName)
@@ -113,7 +110,6 @@ public class MysqlCheckUtil
             // TODO: handle exception
             e.printStackTrace();
         }
-        MysqlDbConnection.closeConnection();
         return user;
     }
     public static boolean containsSpecifyRequestParam(
@@ -148,8 +144,12 @@ public class MysqlCheckUtil
             resJson.put(Comment.COMMENT_CONTENT, comment.getCommentContent());
             resJson.put(Comment.REVIEW_DATE,
                     comment.getReviewDate().getTimeInMillis());
-            JSONObject userJson = getJsonObj(MysqlCheckUtil.getUserInfo(params[0]));
-            resJson.put("user", userJson);
+            if (params.length > 0)
+            {
+                JSONObject userJson = getJsonObj(
+                        MysqlCheckUtil.getUserInfo(params[0]));
+                resJson.put("user", userJson);
+            }
         }
         else if (obj instanceof Post)
         {
@@ -184,9 +184,24 @@ public class MysqlCheckUtil
             resJson.put(AdriftBook.REVIEW_COUNT, book.getReviewPeopleCount());
             if (obj instanceof EBook)
                 resJson.put(AdriftBook.EBOOK_URL,
-                        ((EBook) book).getReviewPeopleCount());
+                        ((EBook) book).getEbookUrl());
         }
         return resJson;
+    }
+    public static JSONArray getCommentJsonArray(ArrayList<Comment> comments)
+    {
+        JSONArray commentJArray = new JSONArray();
+        for (Comment comment : comments)
+            try
+            {
+                commentJArray.put(getJsonObj(comment,
+                        comment.getCommentUser().getUserId()));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        return commentJArray;
     }
     public static JSONArray getPostJsonArray(ArrayList<Post> posts)
     {
@@ -276,7 +291,6 @@ public class MysqlCheckUtil
         Collections.sort(posts, new PostComparator());
         resMap.put(Post.POSTS_COUNT_KEY, postsCount);
         resMap.put(Post.POSTS_KEY, posts);
-        MysqlDbConnection.closeConnection();
         return resMap;
     }
 }

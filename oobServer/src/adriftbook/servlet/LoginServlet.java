@@ -15,6 +15,7 @@ import adriftbook.entity.User;
 import adriftbook.utils.CodeTransformUtil;
 import adriftbook.utils.Constant;
 import adriftbook.utils.MysqlCheckUtil;
+import adriftbook.utils.MysqlDbConnection;
 import adriftbook.utils.RequestFilter;
 /**
  * Created by Administrator on 2016/4/25.
@@ -69,6 +70,7 @@ public class LoginServlet extends HttpServlet
         {
             e.printStackTrace();
         }
+        MysqlDbConnection.closeConnection();
         resp.getOutputStream()
                 .write(resJson.toString().getBytes(Constant.DEFAULT_CODE));
     }

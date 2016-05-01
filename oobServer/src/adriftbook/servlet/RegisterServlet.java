@@ -65,6 +65,7 @@ public class RegisterServlet extends HttpServlet
         {
             e.printStackTrace();
         }
+        MysqlDbConnection.closeConnection();
         resp.getOutputStream()
                 .write(resInfo.toString().getBytes(Constant.DEFAULT_CODE));
     }

@@ -9,9 +9,19 @@
 //
 //
 package adriftbook.entity;
+import java.util.ArrayList;
 public class AdriftBook
 {
 
+    public ArrayList<Comment> getComments()
+    {
+        return comments;
+    }
+    public void setComments(ArrayList<Comment> comments)
+    {
+        this.comments = comments;
+    }
+    private ArrayList<Comment> comments;
     public static final int ENTITYBOOK = 0;
     public AdriftBook()
     {

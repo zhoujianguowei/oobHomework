@@ -213,9 +213,15 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
         totalCountPageTv.setTextColor(Color.BLACK);
         totalCountPageTv.setText("共" + totalPage + "页");
         pageContainer.addView(totalCountPageTv);
+
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) totalCountPageTv
                 .getLayoutParams();
         params.leftMargin = ScreenSize.getScreenWidth() / 12;
+        //填充空间使用，不然HorizontalScrollView无法顺利滚动
+        LinearLayout.LayoutParams blankParams=new LinearLayout.LayoutParams(ScreenSize.getScreenWidth()/8,params.height);
+        TextView blankTv=new TextView(getActivity());
+        pageContainer.addView(blankTv);
+        blankTv.setLayoutParams(blankParams);
 //        totalCountPageTv.setLayoutParams(params);
     }
     private int getPageNum(TextView tv)
@@ -297,6 +303,7 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
         if (searchEt.hasFocus())
             searchEt.clearFocus();
         showProgressDialog("数据加载中");
+        currentPage = 1;
         onRefresh();
     }
     @Override public void onClick(View v)
