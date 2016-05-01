@@ -11,8 +11,8 @@
 
 
 package adriftbook.entity;
-
-public class EBook extends AdriftBook
+import java.io.Serializable;
+public class EBook extends AdriftBook implements Serializable
 {
 	private String ebookUrl;
 	public EBook()

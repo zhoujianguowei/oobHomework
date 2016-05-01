@@ -1,170 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/fragment_post_main_book_typ_rl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/fragment_post_main_requestbook_tv"
+            style="@style/commen_textview_style"
+            android:text="求漂区"/>
+
+        <CheckBox
+            android:id="@+id/fragment_post_main_requestbook_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/fragment_post_main_requestbook_tv"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@+id/fragment_post_main_requestbook_tv"
+            android:checked="true"
+            android:padding="6dp"/>
+
+        <TextView
+            android:id="@+id/fragment_post_main_sendbook_tv"
+            style="@style/commen_textview_style"
+            android:layout_toRightOf="@+id/fragment_post_main_requestbook_cb"
+            android:text="放漂区"
+            />
+
+        <CheckBox
+            android:id="@+id/fragment_post_main_sendbook_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/fragment_post_main_requestbook_tv"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@+id/fragment_post_main_sendbook_tv"
+            android:checked="true"
+            android:padding="6dp"/>
+
+        <TextView
+            android:id="@+id/fragment_post_main_ebook_tv"
+            style="@style/commen_textview_style"
+            android:layout_toRightOf="@+id/fragment_post_main_sendbook_cb"
+            android:text="电子书"/>
+
+        <CheckBox
+            android:id="@+id/fragment_post_main_ebook_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/fragment_post_main_requestbook_tv"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@+id/fragment_post_main_ebook_tv"
+            android:checked="true"
+            android:padding="6dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragment_post_main_search_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_post_main_book_typ_rl"
+        >
+
+        <EditText
+            android:id="@+id/fragment_post_main_search_et"
+            style="@style/common_edittext_style"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/post_search_back"
+            android:hint="输入书名或者作者"
+            android:padding="4dp"/>
+
+        <ImageView
+            android:id="@+id/fragment_post_main_search_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/fragment_post_main_search_et"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/fragment_post_main_search_et"
+            android:layout_marginLeft="-40dp"
+            android:layout_toRightOf="@+id/fragment_post_main_search_et"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/post_main_search_icon"
+            />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/fragment_post_main_search_rl"
+        android:layout_marginTop="4dp"
+        android:background="@color/blue"/>
+
+
+    <com.baoyz.widget.PullRefreshLayout
+        android:id="@+id/fragment_post_main_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_post_main_search_rl"
+        android:layout_marginTop="8dp"
+        android:layout_above="@+id/fragment_post_main_page_lr"
+        >
+
+        <ListView
+            android:id="@+id/fragment_post_main_refresh_lv"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent"
+            android:cacheColorHint="@null"
+            android:scrollbars="none"
+            />
 
-            <TextView
-                android:id="@+id/fragment_post_main_requestbook_tv"
-                style="@style/commen_textview_style"
-                android:text="求漂区"/>
+    </com.baoyz.widget.PullRefreshLayout>
 
-            <CheckBox
-                android:id="@+id/fragment_post_main_requestbook_cb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/fragment_post_main_requestbook_tv"
-                android:layout_marginTop="4dp"
-                android:layout_toRightOf="@+id/fragment_post_main_requestbook_tv"
-                android:checked="true"
-                android:padding="6dp"/>
+    <LinearLayout
+        android:id="@+id/fragment_post_main_page_lr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        >
 
-            <TextView
-                android:id="@+id/fragment_post_main_sendbook_tv"
-                style="@style/commen_textview_style"
-                android:layout_toRightOf="@+id/fragment_post_main_requestbook_cb"
-                android:text="放漂区"
-                />
+        <TextView
+            style="@style/commen_textview_style"
+            android:text="1"
+            android:textColor="@color/shallow_blue"/>
 
-            <CheckBox
-                android:id="@+id/fragment_post_main_sendbook_cb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/fragment_post_main_requestbook_tv"
-                android:layout_marginTop="4dp"
-                android:layout_toRightOf="@+id/fragment_post_main_sendbook_tv"
-                android:checked="true"
-                android:padding="6dp"/>
+        <TextView
+            style="@style/commen_textview_style"
+            android:text="2"
+            android:textColor="@color/shallow_blue"/>
 
-            <TextView
-                android:id="@+id/fragment_post_main_ebook_tv"
-                style="@style/commen_textview_style"
-                android:layout_toRightOf="@+id/fragment_post_main_sendbook_cb"
-                android:text="电子书"/>
+        <TextView
+            style="@style/commen_textview_style"
+            android:text="1"
+            android:textColor="@color/shallow_blue"/>
 
-            <CheckBox
-                android:id="@+id/fragment_post_main_ebook_cb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/fragment_post_main_requestbook_tv"
-                android:layout_marginTop="4dp"
-                android:layout_toRightOf="@+id/fragment_post_main_ebook_tv"
-                android:checked="true"
-                android:padding="6dp"/>
+        <TextView
+            style="@style/commen_textview_style"
+            android:text="2"
+            android:textColor="@color/shallow_blue"/>
 
-        </RelativeLayout>
+        <TextView
+            style="@style/commen_textview_style"
+            android:text="1"
+            android:textColor="@color/shallow_blue"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:orientation="vertical">
-
-            <com.jianguo.adriftbookclient.customviews.MyScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <EditText
-                            android:id="@+id/fragment_post_main_search_et"
-                            style="@style/common_edittext_style"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="15dp"
-                            android:background="@drawable/post_search_back"
-                            android:hint="输入书名或者作者"
-                            android:padding="4dp"/>
-
-                        <ImageView
-                            android:id="@+id/fragment_post_main_search_iv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/fragment_post_main_search_et"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignTop="@+id/fragment_post_main_search_et"
-                            android:layout_marginLeft="-40dp"
-                            android:layout_toRightOf="@+id/fragment_post_main_search_et"
-                            android:scaleType="fitCenter"
-                            android:src="@mipmap/post_main_search_icon"
-                            />
-
-                    </RelativeLayout>
-
-                    <com.baoyz.widget.PullRefreshLayout
-                        android:id="@+id/fragment_post_main_refresh_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="400dp"
-                        >
-
-                        <ListView
-                            android:id="@+id/fragment_post_main_refresh_lv"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:cacheColorHint="@null"
-                            android:scrollbars="none"
-                            />
-
-                    </com.baoyz.widget.PullRefreshLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
-                        >
-
-                        <TextView
-                            style="@style/commen_textview_style"
-                            android:text="1"
-                            android:textColor="@color/shallow_blue"/>
-
-                        <TextView
-                            style="@style/commen_textview_style"
-                            android:text="2"
-                            android:textColor="@color/shallow_blue"/>
-
-                        <TextView
-                            style="@style/commen_textview_style"
-                            android:text="1"
-                            android:textColor="@color/shallow_blue"/>
-
-                        <TextView
-                            style="@style/commen_textview_style"
-                            android:text="2"
-                            android:textColor="@color/shallow_blue"/>
-
-                        <TextView
-                            style="@style/commen_textview_style"
-                            android:text="1"
-                            android:textColor="@color/shallow_blue"/>
-
-                        <TextView
-                            style="@style/commen_textview_style"
-                            android:text="2"
-                            android:textColor="@color/shallow_blue"/>
-                    </LinearLayout>
-
-                </LinearLayout>
-            </com.jianguo.adriftbookclient.customviews.MyScrollView>
-
-        </LinearLayout>
+        <TextView
+            style="@style/commen_textview_style"
+            android:text="2"
+            android:textColor="@color/shallow_blue"/>
     </LinearLayout>
 
-</LinearLayout>
+
+</RelativeLayout>

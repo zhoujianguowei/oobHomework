@@ -16,6 +16,7 @@
     <dimen name="navigation_bar_height">45dp</dimen>
     <dimen name="navigation_bar_menu_icon_padding">10dp</dimen>
     <dimen name="navigation_bar_home_height">60dp</dimen>
+    <dimen name="post_main_page_container_height">45dp</dimen>
 
 
 </resources>

@@ -1,17 +1,18 @@
 package com.liucanwen.asyncuploadfiletest;
-import java.io.File;
-import java.io.FileNotFoundException;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.apache.http.Header;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 public class MainActivity extends Activity
 {
 
@@ -46,28 +47,22 @@ public class MainActivity extends Activity
                     uploadInfo.setText("正在上传...");
                 }
                 @Override
-                public void onSuccess(String arg0)
+                public void onSuccess(int i, Header[] headers, byte[] bytes)
                 {
-                    super.onSuccess(arg0);
-                    Log.i("ck", "success>" + arg0);
-                    if (arg0.equals("success"))
-                    {
-                        Toast.makeText(MainActivity.this, "上传成功！", 1000).show();
-                    }
-                    uploadInfo.setText(arg0);
                 }
                 @Override
-                public void onFailure(Throwable arg0, String arg1)
+                public void onFailure(int i, Header[] headers, byte[] bytes,
+                                      Throwable throwable)
                 {
-                    super.onFailure(arg0, arg1);
-                    uploadInfo.setText("上传失败！");
                 }
+
+
             });
         }
         catch (FileNotFoundException e)
         {
             e.printStackTrace();
-            Toast.makeText(MainActivity.this, "上传文件不存在！", 1000).show();
+            Toast.makeText(MainActivity.this, "上传文件不存在！", Toast.LENGTH_LONG).show();
         }
     }
 }

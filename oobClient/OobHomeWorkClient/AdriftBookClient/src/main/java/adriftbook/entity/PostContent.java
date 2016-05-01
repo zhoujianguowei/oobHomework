@@ -1,9 +1,10 @@
 package adriftbook.entity;
+import java.io.Serializable;
 import java.util.ArrayList;
 /**
  * Created by Administrator on 2016/4/25.
  */
-public class PostContent
+public class PostContent implements Serializable
 {
 
     String postContentDetail;

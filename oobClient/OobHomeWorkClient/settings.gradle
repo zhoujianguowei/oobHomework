@@ -1,2 +1,3 @@
 include ':AdriftBookClient', ':CustomViewsModule', ':Constant', ':volley', ':NavigationBar', ':PullRefreshLayoutLibraryModule', ':PullRefreshLayoutApplicationModule'
 include ':FileChooserModule'
+include ':UploadFileModule'

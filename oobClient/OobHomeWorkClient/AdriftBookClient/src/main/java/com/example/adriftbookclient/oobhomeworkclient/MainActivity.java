@@ -17,13 +17,16 @@ import com.file.attach.Option;
 import com.klicen.constant.Constant;
 import com.klicen.navigationbar.NavigationBarFragment;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import adriftbook.entity.EntityEnum;
+import adriftbook.entity.Post;
 import adriftbook.entity.User;
 import utils.JsonEntityParser;
 import utils.MyStringRequest;
@@ -165,9 +168,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     @Override public void onResponse(String response)
                     {
-                        loginFragment.dismissProgressDialog();
                         JSONObject jsonObject = null;
-                        Log.i("login", response);
                         try
                         {
                             jsonObject = new JSONObject(new String(
@@ -183,14 +184,17 @@ public class MainActivity extends AppCompatActivity
                                         .getSingleInstance()
                                         .parseJsonEntity(
                                                 EntityEnum.User,
-                                                jsonObject.getJSONObject(Constant.INFO_KEY));
+                                                jsonObject.getJSONObject(
+                                                        Constant.INFO_KEY));
                                 intent.putExtra(User.TAG, user);
-                                MainActivity.this.startActivity(intent);
-                                MainActivity.this.finish();
+                                loadRequiredPosts(intent);
                             } else
+                            {
+                                loginFragment.dismissProgressDialog();
                                 Toast.makeText(MainActivity.this,
                                         jsonObject.getString(Constant.INFO_KEY),
                                         Toast.LENGTH_SHORT).show();
+                            }
                         }
                         catch (JSONException | UnsupportedEncodingException e)
                         {
@@ -208,5 +212,64 @@ public class MainActivity extends AppCompatActivity
             }
         });
         loginQueue.add(loginRequest);
+    }
+    private void loadRequiredPosts(final Intent intent)
+    {
+        loginFragment.showProgressDialog("获取帖子内容");
+        String loadPostsUrl = Constant.CONSTANT_IP +
+                "get_post?requestbooktype=1&sendbooktype=1&ebooktype=1&page=1";
+        RequestQueue queue = Volley.newRequestQueue(this);
+        MyStringRequest loadPostsRequest = new MyStringRequest(loadPostsUrl,
+                new Response.Listener<String>()
+                {
+                    @Override public void onResponse(String response)
+                    {
+                        loginFragment.dismissProgressDialog();
+                        try
+                        {
+                            JSONObject resJObj = new JSONObject(response);
+                            if (resJObj.getString(Constant.STATUS_KEY)
+                                    .equals(Constant.FAIL_VALUE))
+                                Toast.makeText(MainActivity.this, "文件列表获取失败",
+                                        Toast.LENGTH_LONG).show();
+                            else
+                            {
+                                Bundle bundle=new Bundle();
+                                bundle.putInt(Post.POSTS_COUNT_KEY,
+                                        resJObj.getInt(Post.POSTS_COUNT_KEY));
+                                JSONArray postsJArray = resJObj
+                                        .getJSONArray(Constant.INFO_KEY);
+                                ArrayList<Post> posts = new ArrayList<>();
+                                for (int i = 0; i < postsJArray.length(); i++)
+                                {
+                                    JSONObject postJObj = postsJArray
+                                            .getJSONObject(i);
+                                    posts.add((Post) JsonEntityParser
+                                            .getSingleInstance()
+                                            .parseJsonEntity(EntityEnum.Post,
+                                                    postJObj));
+                                }
+                                bundle.putSerializable(Post.POSTS_KEY, posts);
+                                intent.putExtras(bundle);
+                                MainActivity.this.startActivity(intent);
+                                MainActivity.this.finish();
+                            }
+                        }
+                        catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener()
+        {
+            @Override public void onErrorResponse(VolleyError error)
+            {
+                loginFragment.dismissProgressDialog();
+                Toast.makeText(MainActivity.this, error.getMessage(),
+                        Toast.LENGTH_LONG)
+                        .show();
+            }
+        });
+        queue.add(loadPostsRequest);
     }
 }

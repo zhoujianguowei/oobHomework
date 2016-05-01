@@ -5,8 +5,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.klicen.navigationbar.NavigationBarFragment;
-
-import adriftbook.entity.User;
 /**
  * Created by Administrator on 2016/4/28.
  */
@@ -21,12 +19,9 @@ public class PostMainActivity extends AppCompatActivity
         setContentView(R.layout.activity_post_main);
         if (postMainFragment == null)
             postMainFragment = new PostMainFragment();
+        postMainFragment.setArguments(getIntent().getExtras());
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        User user = (User) getIntent().getSerializableExtra(User.TAG);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(User.TAG, user);
-        postMainFragment.setArguments(bundle);
         transaction.add(R.id.activity_post_navigation_bar_fr_container,
                 new NavigationBarFragment(), NavigationBarFragment.TAG);
         transaction.add(R.id.activity_post_content_container, postMainFragment);

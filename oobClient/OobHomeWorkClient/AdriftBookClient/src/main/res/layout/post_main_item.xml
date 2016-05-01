@@ -24,15 +24,29 @@
         android:ellipsize="marquee"
         android:text="我是post的标题"/>
 
-    <TextView
-        android:id="@+id/post_main_item_post_date_tv"
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_weight="3"
-        android:paddingBottom="4dp"
-        android:text="发表日期"
-        android:textSize="@dimen/middle"
-        />
+        android:layout_gravity="center_vertical"
+        android:layout_weight="3">
+
+        <TextView
+            android:id="@+id/post_main_item_post_author_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="作者姓名"
+            android:textSize="@dimen/middle"/>
+
+        <TextView
+            android:id="@+id/post_main_item_post_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_main_item_post_author_tv"
+            android:paddingBottom="4dp"
+            android:text="发表日期"
+            android:textSize="@dimen/middle"
+            />
+    </RelativeLayout>
 
 </LinearLayout>

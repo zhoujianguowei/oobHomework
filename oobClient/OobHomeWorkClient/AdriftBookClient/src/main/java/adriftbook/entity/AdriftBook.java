@@ -9,7 +9,8 @@
 //
 //
 package adriftbook.entity;
-public class AdriftBook
+import java.io.Serializable;
+public class AdriftBook implements Serializable
 {
 
     public static final int ENTITYBOOK = 0;
@@ -44,7 +45,7 @@ public class AdriftBook
     public static final String TYPE = "type";
     public static final String BOOK_IMAGE_URL = "book_image_url";
     public static final String EBOOK_URL = "ebook_url";
-    public static final String REVIEW_COUNT="review_count";
+    public static final String REVIEW_COUNT = "review_count";
     public int getBookId()
     {
         return bookId;

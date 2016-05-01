@@ -37,6 +37,7 @@ public class MysqlCheckUtil
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        MysqlDbConnection.closeConnection();
         return false;
     }
     public static boolean userExists(String userName, String password)
@@ -56,6 +57,7 @@ public class MysqlCheckUtil
         {
             // TODO: handle exception
         }
+        MysqlDbConnection.closeConnection();
         return false;
     }
     public static User getUserInfo(int userId)
@@ -83,6 +85,7 @@ public class MysqlCheckUtil
             // TODO: handle exception
             e.printStackTrace();
         }
+        MysqlDbConnection.closeConnection();
         return user;
     }
     public static User getUserInfo(String userName)
@@ -110,6 +113,7 @@ public class MysqlCheckUtil
             // TODO: handle exception
             e.printStackTrace();
         }
+        MysqlDbConnection.closeConnection();
         return user;
     }
     public static boolean containsSpecifyRequestParam(
@@ -272,6 +276,7 @@ public class MysqlCheckUtil
         Collections.sort(posts, new PostComparator());
         resMap.put(Post.POSTS_COUNT_KEY, postsCount);
         resMap.put(Post.POSTS_KEY, posts);
+        MysqlDbConnection.closeConnection();
         return resMap;
     }
 }

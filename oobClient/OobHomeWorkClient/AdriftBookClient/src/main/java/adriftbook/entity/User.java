@@ -27,6 +27,7 @@ public class User implements Serializable
     public static final String PASSWORD="password";
     public static final String REGISTER_DATE="register_date";
     public static final String USER_LEVEL="user_level";
+    public static final String TAG="user";
 
     public User()
     {}

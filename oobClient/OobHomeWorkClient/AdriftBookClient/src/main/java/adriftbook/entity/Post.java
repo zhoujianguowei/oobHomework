@@ -9,15 +9,17 @@
 //
 //
 package adriftbook.entity;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
-public class Post
+public class Post implements Serializable
 {
 
     public static final int REQUEST_BOOK_AREA = 1;
     public static final int SEND_BOOK_AREA = 2;
     public static final int EBOOK_AREA = 3;
+    public static final String HOST_POST_LABEL_STATUS = "火";
+    public static final String NEW_POST_LABEL_STATUS = "新";
     User postUser;
     private int postId;
     private String postTitle;
@@ -25,12 +27,24 @@ public class Post
     private Calendar postDate;
     private int postType;  //1求漂区，2放漂区，3电子书籍
     private int readCount;
+    private String labelStatus="";
+    public String getLabelStatus()
+    {
+        return labelStatus;
+    }
+    public void setLabelStatus(String labelStatus)
+    {
+        this.labelStatus = labelStatus;
+    }
     ArrayList<Comment> comments;
     public static final String POST_ID = "post_id";
     public static final String POST_TITLE = "post_title";
     public static final String POST_DATE = "post_date";
     public static final String POST_TYPE = "post_type";
     public static final String READ_COUNT = "read_count";
+    public static final String POSTS_KEY = "posts";
+    public static final String POSTS_COUNT_KEY = "posts_count";
+    public static final String POST_CONTENT = "content";
     public Post()
     {
     }
@@ -117,6 +131,5 @@ public class Post
     {
         this.readCount = readCount;
     }
-
 }
 

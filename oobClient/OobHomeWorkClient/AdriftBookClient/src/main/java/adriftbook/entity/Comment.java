@@ -9,8 +9,9 @@
 //
 //
 package adriftbook.entity;
+import java.io.Serializable;
 import java.util.Calendar;
-public class Comment
+public class Comment implements Serializable
 {
 
     private AdriftBook commentBook;
