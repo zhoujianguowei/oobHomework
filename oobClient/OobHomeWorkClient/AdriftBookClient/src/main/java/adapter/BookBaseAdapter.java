@@ -1,5 +1,6 @@
 package adapter;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -19,24 +20,48 @@ import com.example.adriftbookclient.oobhomeworkclient.PostDetailFragment;
 import com.example.adriftbookclient.oobhomeworkclient.R;
 import com.klicen.constant.Constant;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import adriftbook.entity.AdriftBook;
+import adriftbook.entity.EBook;
 /**
  * Created by Administrator on 2016/5/2.
  */
-public class BookBaseAdapter extends BaseAdapter implements View.OnClickListener
+public class BookBaseAdapter extends BaseAdapter
 {
 
     private Context context;
     private ArrayList<AdriftBook> bookList;
     private RequestQueue requestQueue;
     private BitmapCache bitmapCache;
-    private OnBookItemClickListener onBookItemClickListener;
-    public void setOnBookItemClickListener(
-            OnBookItemClickListener onBookItemClickListener)
+    private OnBookListDownloadButtonClickListener onBookListDownloadButtonClickListener;
+    public void setOnBookListDownloadButtonClickListener(
+            OnBookListDownloadButtonClickListener onBookListDownloadButtonClickListener)
     {
-        this.onBookItemClickListener = onBookItemClickListener;
+        this.onBookListDownloadButtonClickListener = onBookListDownloadButtonClickListener;
+    }
+    public Bitmap getSpecifyBitmap(String url)
+    {
+        url = Constant.UPLOAD_BOOK_IMAGE_DIR + url;
+        String cacheKey = url;
+        try
+        {
+            Method method = ImageLoader.class
+                    .getDeclaredMethod("getCacheKey", String.class, int.class,
+                            int.class,
+                            ImageView.ScaleType.class);
+            method.setAccessible(true);
+            cacheKey = (String) method.invoke(ImageLoader.class,
+                    new Object[]{url, PostDetailFragment.PER_BOOK_ITEM_IMAGE_WIDTH,
+                            PostDetailFragment.PER_BOOK_ITEM_IMAGE_HEIGHT,
+                            ImageView.ScaleType.CENTER_INSIDE});
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return bitmapCache.getBitmap(cacheKey);
     }
     public BookBaseAdapter(Context context, ArrayList<AdriftBook> bookList)
     {
@@ -57,7 +82,8 @@ public class BookBaseAdapter extends BaseAdapter implements View.OnClickListener
     {
         return position;
     }
-    @Override public View getView(int position, View convertView, ViewGroup parent)
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent)
     {
         convertView = LayoutInflater.from(context)
                 .inflate(R.layout.post_detail_book_item, parent, false);
@@ -67,7 +93,8 @@ public class BookBaseAdapter extends BaseAdapter implements View.OnClickListener
                 .findViewById(R.id.post_detail_book_item_book_id);
         TextView bookName = (TextView) convertView
                 .findViewById(R.id.post_detail_book_item_book_name);
-        TextView author=(TextView)convertView.findViewById(R.id.post_detail_book_item_book_author);
+        TextView author = (TextView) convertView
+                .findViewById(R.id.post_detail_book_item_book_author);
         TextView rating = (TextView) convertView
                 .findViewById(R.id.post_detail_book_item_book_rating);
         Button ebookUrl = (Button) convertView
@@ -101,22 +128,31 @@ public class BookBaseAdapter extends BaseAdapter implements View.OnClickListener
         {
             ebookUrl.setText(((EBook) currnetBook).getEbookUrl());
         }*/
-        bookIv.setOnClickListener(this);
-        ebookUrl.setOnClickListener(this);
+        ebookUrl.setOnClickListener(new View.OnClickListener()
+        {
+            @Override public void onClick(View v)
+            {
+                if (onBookListDownloadButtonClickListener != null)
+                    onBookListDownloadButtonClickListener
+                            .onItemClick(
+                                    Constant.UPLOAD_BOOK_IMAGE_DIR +
+                                            ((EBook) bookList.get(position))
+                                                    .getBookImageUrl());
+            }
+        });
         AbsListView.LayoutParams params = new AbsListView.LayoutParams(
                 AbsListView.LayoutParams.MATCH_PARENT,
                 PostDetailFragment.PER_BOOK_ITEM_HEIGHT);
         convertView.setLayoutParams(params);
         return convertView;
     }
-    @Override public void onClick(View v)
+    public OnBookListDownloadButtonClickListener getOnBookListDownloadButtonClickListener()
     {
-        if (onBookItemClickListener != null)
-            onBookItemClickListener.onClick(v);
+        return onBookListDownloadButtonClickListener;
     }
-    public interface OnBookItemClickListener
+    public interface OnBookListDownloadButtonClickListener
     {
 
-        void onClick(View v);
+        void onItemClick(String ebookUrl);
     }
 }

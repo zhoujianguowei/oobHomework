@@ -23,7 +23,7 @@ public class PostMainAdapter extends BaseAdapter
 
     Context context;
     List<Post> postList;
-    public static final int PER_POST_ITEM_HEIGTH = ScreenSize.getScreenWidth() / 8;
+    public static final int PER_POST_ITEM_HEIGTH = ScreenSize.getScreenWidth() / 7;
     public PostMainAdapter(Context context, List<Post> postList)
     {
         this.context = context;

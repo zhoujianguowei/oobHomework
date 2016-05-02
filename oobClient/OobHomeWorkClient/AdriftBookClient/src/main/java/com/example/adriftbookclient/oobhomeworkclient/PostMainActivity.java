@@ -1,5 +1,6 @@
 package com.example.adriftbookclient.oobhomeworkclient;
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,12 +12,15 @@ import android.widget.Toast;
 import com.klicen.constant.Constant;
 import com.klicen.navigationbar.NavigationBarFragment;
 
+import adapter.BookBaseAdapter;
+import adriftbook.entity.AdriftBook;
 import adriftbook.entity.Post;
 /**
  * Created by Administrator on 2016/4/28.
  */
 public class PostMainActivity extends AppCompatActivity
-        implements PostMainFragment.OnPostItemClickListener, Handler.Callback
+        implements PostMainFragment.OnPostItemClickListener, Handler.Callback,
+        BookBaseAdapter.OnBookListDownloadButtonClickListener,PostDetailFragment.OnBookListItemClickListener
 {
 
     PostMainFragment postMainFragment;
@@ -75,5 +79,25 @@ public class PostMainActivity extends AppCompatActivity
         transaction.addToBackStack(null);
         transaction.commit();
         return true;
+    }
+    @Override public void onItemClick(String ebookUrl)
+    {
+        Toast.makeText(this, "下载文件", Toast.LENGTH_LONG).show();
+    }
+
+    @Override public void onBookItemClick(AdriftBook book, Bitmap bm)
+    {
+        CommentAdriftBookFragment commentFragment = new CommentAdriftBookFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("book", book);
+        bundle.putParcelable("bitmap", bm);
+        commentFragment.setArguments(bundle);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.activity_post_navigation_bar_fr_container,
+                new NavigationBarFragment(), NavigationBarFragment.TAG);
+        transaction.add(R.id.activity_post_content_container, commentFragment);
+        transaction.hide(postDetailFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

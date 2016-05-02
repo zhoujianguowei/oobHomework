@@ -1,4 +1,5 @@
 package com.example.adriftbookclient.oobhomeworkclient;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -6,6 +7,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -26,8 +28,7 @@ import utils.ScreenSize;
  */
 public class PostDetailFragment extends BackStackFragmentWithProgressDialog
         implements
-        View.OnClickListener, Handler.Callback,
-        BookBaseAdapter.OnBookItemClickListener
+        Handler.Callback, AdapterView.OnItemClickListener
 {
 
     TextView postContentTv;
@@ -55,6 +56,7 @@ public class PostDetailFragment extends BackStackFragmentWithProgressDialog
         bookAdapter = new BookBaseAdapter(getActivity(), bookList);
         configureBookList(bundle);
         bookInfoLv.setAdapter(bookAdapter);
+        bookInfoLv.setOnItemClickListener(this);
         return view;
     }
     private void configureComments()
@@ -76,13 +78,14 @@ public class PostDetailFragment extends BackStackFragmentWithProgressDialog
             SimpleDateFormat dateFormat = new SimpleDateFormat();
             dateFormat.applyPattern("yy:MM:dd");
             commentUserDate
-                    .setText(comment.getCommentUser().getUserName() + "\t" +
+                    .setText(comment.getCommentUser().getUserName() + "\t\t" +
                             dateFormat.format(comment.getReviewDate().getTime()));
             commentsContainer.addView(commentItem);
             LinearLayout.LayoutParams commentParams = (LinearLayout.LayoutParams) commentItem
                     .getLayoutParams();
             commentParams.topMargin = (int) (ScreenSize.getScreenDensity() * 20);
-            commentParams.leftMargin = commentParams.rightMargin = (int) (ScreenSize.getScreenDensity() * 8);
+            commentParams.leftMargin = commentParams.rightMargin = (int) (
+                    ScreenSize.getScreenDensity() * 8);
         }
     }
     private void configureBookList(final Bundle bundle)
@@ -102,6 +105,9 @@ public class PostDetailFragment extends BackStackFragmentWithProgressDialog
     @Override public void onResume()
     {
         super.onResume();
+        if (getActivity() instanceof BookBaseAdapter.OnBookListDownloadButtonClickListener)
+            bookAdapter.setOnBookListDownloadButtonClickListener(
+                    (BookBaseAdapter.OnBookListDownloadButtonClickListener) getActivity());
     }
     @Override protected View onTitleCreate()
     {
@@ -112,18 +118,24 @@ public class PostDetailFragment extends BackStackFragmentWithProgressDialog
         tv.setTextColor(getResources().getColor(R.color.shallow_blue));
         return tv;
     }
-    @Override public void onClick(View v)
-    {
-        switch (v.getId())
-        {
-            case R.id.post_detail_book_item_iv:
-                break;
-            case R.id.post_detail_book_item_ebookurl:
-                break;
-        }
-    }
     @Override public boolean handleMessage(Message msg)
     {
         return true;
+    }
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+    {
+        if (getActivity() instanceof OnBookListItemClickListener)
+        {
+            AdriftBook book = (AdriftBook) bookAdapter.getItem(position);
+            ((OnBookListItemClickListener) getActivity())
+                    .onBookItemClick(book, bookAdapter.getSpecifyBitmap(
+                            book.getBookImageUrl()));
+        }
+    }
+    interface OnBookListItemClickListener
+    {
+
+        void onBookItemClick(AdriftBook book, Bitmap bm);
     }
 }

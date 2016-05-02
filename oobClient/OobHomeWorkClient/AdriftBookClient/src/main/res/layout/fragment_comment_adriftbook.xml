@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <include
+        layout="@layout/post_detail_book_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <RatingBar
+        android:id="@+id/fragment_comment_adriftbook_ratingbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/post_detail_book_item_root_rl"
+        android:layout_marginTop="20dp"
+        android:isIndicator="false"
+        android:numStars="5"
+        android:rating="2.5"
+        android:stepSize="0.5"
+        />
+
+    <EditText
+        android:id="@+id/fragment_comment_adrifbook_comment_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_comment_adriftbook_ratingbar"
+        android:layout_marginTop="10dp"
+        android:hint="输入评论内容"
+        android:padding="6dp"
+        android:textSize="@dimen/large"/>
+
+    <Button
+        android:id="@+id/fragment_comment_adriftbook_deliver_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/fragment_comment_adrifbook_comment_content"
+        android:background="@null"
+        android:text="发表"
+        android:textSize="@dimen/x_large"
+        />
+
+</RelativeLayout>

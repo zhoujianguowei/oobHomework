@@ -9,8 +9,9 @@
 //
 //
 package adriftbook.entity;
+import java.io.Serializable;
 import java.util.ArrayList;
-public class AdriftBook
+public class AdriftBook implements Serializable
 {
 
     public ArrayList<Comment> getComments()
@@ -23,7 +24,7 @@ public class AdriftBook
     }
     private ArrayList<Comment> comments;
     public static final int ENTITYBOOK = 0;
-    public static final String BOOKS_KEY="books_key";
+    public static final String BOOKS_KEY = "books_key";
     public AdriftBook()
     {
     }
@@ -55,7 +56,7 @@ public class AdriftBook
     public static final String TYPE = "type";
     public static final String BOOK_IMAGE_URL = "book_image_url";
     public static final String EBOOK_URL = "ebook_url";
-    public static final String REVIEW_COUNT="review_count";
+    public static final String REVIEW_COUNT = "review_count";
     public int getBookId()
     {
         return bookId;
