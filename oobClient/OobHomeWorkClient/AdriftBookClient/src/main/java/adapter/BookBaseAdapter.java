@@ -101,6 +101,8 @@ public class BookBaseAdapter extends BaseAdapter implements View.OnClickListener
         {
             ebookUrl.setText(((EBook) currnetBook).getEbookUrl());
         }*/
+        bookIv.setOnClickListener(this);
+        ebookUrl.setOnClickListener(this);
         AbsListView.LayoutParams params = new AbsListView.LayoutParams(
                 AbsListView.LayoutParams.MATCH_PARENT,
                 PostDetailFragment.PER_BOOK_ITEM_HEIGHT);

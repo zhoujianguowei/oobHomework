@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity
             @Override public void onErrorResponse(VolleyError error)
             {
                 loginFragment.dismissProgressDialog();
-                Toast.makeText(MainActivity.this, error.getMessage(),
+                Toast.makeText(MainActivity.this, "服务器内部错误"+error.getMessage(),
                         Toast.LENGTH_SHORT)
                         .show();
             }
