@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/post_detail_item_post_content_tv"
+        style="@style/commen_textview_style"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:singleLine="false"
+        android:text="这是评论的具体内容"/>
+
+    <RelativeLayout
+        android:id="@+id/post_detail_item_comment_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/post_detail_item_post_content_tv"
+        android:layout_marginRight="20dp"
+        >
+
+        <TextView
+            android:id="@+id/post_detail_item_comment_author"
+            style="@style/pop_window_setting_edittext_style"
+            android:text="评论者"
+            android:textColor="@color/gray"
+            />
+
+        <TextView
+            android:id="@+id/post_detail_item_comment_date"
+            style="@style/pop_window_setting_edittext_style"
+            android:layout_alignParentTop="@+id/post_detail_item_comment_author"
+            android:layout_toRightOf="@+id/post_detail_item_comment_author"
+            android:text="评论日期"
+            android:textColor="@color/gray"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

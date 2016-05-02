@@ -4,6 +4,9 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 
+import adriftbook.entity.AdriftBook;
+import adriftbook.entity.Comment;
+import adriftbook.entity.EBook;
 import adriftbook.entity.EntityEnum;
 import adriftbook.entity.Post;
 import adriftbook.entity.PostContent;
@@ -35,6 +38,27 @@ public class JsonEntityParser
             switch (entityEnum)
             {
                 case AdriftBook:
+                    AdriftBook adriftBook = null;
+                    if (jsonObject.getInt("type") == AdriftBook.EBOOK)
+                    {
+                        adriftBook = new EBook();
+                        ((EBook) adriftBook)
+                                .setEbookUrl(
+                                        jsonObject.getString(AdriftBook.EBOOK_URL));
+                    } else
+                        adriftBook = new AdriftBook();
+                    adriftBook.setAuthor(jsonObject.getString(AdriftBook.AUTHOR));
+                    adriftBook.setBookId(jsonObject.getInt(AdriftBook.BOOK_ID));
+                    adriftBook.setBookImageUrl(
+                            jsonObject.optString(AdriftBook.BOOK_IMAGE_URL));
+                    adriftBook.setBookName(
+                            jsonObject.optString(AdriftBook.BOOK_NAME));
+                    adriftBook.setRating(
+                            (float) jsonObject.getDouble(AdriftBook.RATING));
+                    adriftBook.setReviewPeopleCount(
+                            jsonObject.getInt(AdriftBook.REVIEW_COUNT));
+                    adriftBook.setType(jsonObject.getInt(AdriftBook.TYPE));
+                    obj = adriftBook;
                     break;
                 case User:
                     User user = new User();
@@ -48,6 +72,7 @@ public class JsonEntityParser
                     break;
                 case Post:
                     Post post = new Post();
+                    post.setPostId(jsonObject.getInt(Post.POST_ID));
                     PostContent postContent = new PostContent(
                             jsonObject.getString(Post.POST_CONTENT));
                     post.setPostContent(postContent);
@@ -61,6 +86,15 @@ public class JsonEntityParser
                     obj = post;
                     break;
                 case Comment:
+                    Comment comment = new Comment();
+                    comment.setCommentContent(
+                            jsonObject.optString(Comment.COMMENT_CONTENT));
+                    calendar.setTimeInMillis(
+                            jsonObject.getLong(Comment.REVIEW_DATE));
+                    comment.setReviewDate(calendar);
+                    comment.setCommentUser((User) parseJsonEntity(EntityEnum.User,
+                            jsonObject.getJSONObject("user")));
+                    obj = comment;
                     break;
             }
         }

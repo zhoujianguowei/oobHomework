@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/post_detail_book_item_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:padding="8dp"
+        android:scaleType="centerInside"
+        android:src="@mipmap/default_req"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="6dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/post_detail_book_item_book_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="图书编号"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/post_detail_book_item_book_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="书名"
+            android:textSize="@dimen/least"/>
+
+        <TextView
+            android:id="@+id/post_detail_book_item_book_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="作者"
+            android:textSize="@dimen/least"
+            />
+
+        <TextView
+            android:id="@+id/post_detail_book_item_book_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="8.53"
+            android:textSize="@dimen/least"/>
+
+        <Button
+            android:id="@+id/post_detail_book_item_ebookurl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/fragment_login"
+            android:text="下载地址"
+            android:textSize="@dimen/least"/>
+    </LinearLayout>
+</RelativeLayout>

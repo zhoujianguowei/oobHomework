@@ -9,13 +9,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.html.parser.Entity;
-
 import adriftbook.entity.AdriftBook;
 import adriftbook.entity.Comment;
 import adriftbook.entity.EBook;
@@ -52,7 +49,7 @@ public class GetPostDetailServlet extends HttpServlet
                 {
                     book = new AdriftBook();
                 }
-                else if (bookType == AdriftBook.ENTITYBOOK)
+                else if (bookType == AdriftBook.EBOOK)
                 {
                     book = new EBook();
                     ((EBook) book).setEbookUrl(rSet.getString("ebookurl"));

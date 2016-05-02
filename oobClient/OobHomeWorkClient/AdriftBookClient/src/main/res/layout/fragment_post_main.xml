@@ -85,7 +85,7 @@
             android:layout_alignTop="@+id/fragment_post_main_search_et"
             android:layout_marginLeft="-40dp"
             android:layout_toRightOf="@+id/fragment_post_main_search_et"
-            android:scaleType="fitCenter"
+            android:scaleType="centerInside"
             android:src="@mipmap/post_main_search_icon"
             />
 
@@ -112,7 +112,7 @@
             android:id="@+id/fragment_post_main_refresh_lv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:cacheColorHint="@null"
+            android:cacheColorHint="@android:color/transparent"
             android:scrollbars="none"
             />
 

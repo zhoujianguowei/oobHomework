@@ -160,6 +160,7 @@ public class MysqlCheckUtil
             resJson.put(Post.POST_TYPE, post.getPostType());
             resJson.put(Post.POST_CONTENT,
                     post.getPostContent().getPostContentDetail());
+            resJson.put(Post.POST_ID,post.getPostId());
             if (params.length > 0)
             {
                 JSONObject userJson = getJsonObj(
@@ -280,6 +281,7 @@ public class MysqlCheckUtil
                     PostContent postContent = new PostContent(
                             rSet.getString("content"));
                     post.setPostContent(postContent);
+                    post.setPostId(rSet.getInt("post_id"));
                     posts.add(post);
                 }
             }

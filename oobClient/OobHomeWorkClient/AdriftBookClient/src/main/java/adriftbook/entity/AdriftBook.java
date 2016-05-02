@@ -23,6 +23,7 @@ public class AdriftBook
     }
     private ArrayList<Comment> comments;
     public static final int ENTITYBOOK = 0;
+    public static final String BOOKS_KEY="books_key";
     public AdriftBook()
     {
     }

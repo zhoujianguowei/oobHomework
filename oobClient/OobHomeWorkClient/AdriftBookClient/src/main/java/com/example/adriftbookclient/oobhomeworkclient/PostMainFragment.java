@@ -213,13 +213,13 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
         totalCountPageTv.setTextColor(Color.BLACK);
         totalCountPageTv.setText("共" + totalPage + "页");
         pageContainer.addView(totalCountPageTv);
-
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) totalCountPageTv
                 .getLayoutParams();
         params.leftMargin = ScreenSize.getScreenWidth() / 12;
         //填充空间使用，不然HorizontalScrollView无法顺利滚动
-        LinearLayout.LayoutParams blankParams=new LinearLayout.LayoutParams(ScreenSize.getScreenWidth()/8,params.height);
-        TextView blankTv=new TextView(getActivity());
+        LinearLayout.LayoutParams blankParams = new LinearLayout.LayoutParams(
+                ScreenSize.getScreenWidth() / 8, params.height);
+        TextView blankTv = new TextView(getActivity());
         pageContainer.addView(blankTv);
         blankTv.setLayoutParams(blankParams);
 //        totalCountPageTv.setLayoutParams(params);
@@ -296,6 +296,9 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
     {
+        if (getActivity() instanceof OnPostItemClickListener)
+            ((OnPostItemClickListener) getActivity())
+                    .onItemClick(postList.get(position));
     }
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
@@ -328,5 +331,10 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
         refreshLayout.setRefreshing(false);
         dismissProgressDialog();
         return true;
+    }
+    interface OnPostItemClickListener
+    {
+
+        void onItemClick(Post post);
     }
 }

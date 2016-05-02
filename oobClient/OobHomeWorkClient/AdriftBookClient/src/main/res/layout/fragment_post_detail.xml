@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.jianguo.adriftbookclient.customviews.MyScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <TextView
+            android:id="@+id/fragment_post_detail_post_content"
+            style="@style/commen_textview_style"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:singleLine="false"
+            android:text="这是帖子内容详情页"/>
+
+        <ListView
+            android:id="@+id/fragment_post_detail_book_lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_post_detail_post_content"
+            android:cacheColorHint="@android:color/transparent"
+            android:scrollbars="none"/>
+
+        <LinearLayout
+            android:id="@+id/fragment_post_detail_comments_lr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_post_detail_book_lv"
+            android:orientation="vertical"/>
+
+
+    </RelativeLayout>
+</com.jianguo.adriftbookclient.customviews.MyScrollView>
