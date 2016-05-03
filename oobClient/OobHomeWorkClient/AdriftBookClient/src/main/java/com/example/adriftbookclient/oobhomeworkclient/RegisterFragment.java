@@ -91,9 +91,9 @@ public class RegisterFragment extends BackStackFragmentWithProgressDialog
         {
             Bundle bundle = new Bundle();
             bundle.putString(LoginFragment.USER_NAME,
-                    userNameEt.getText().toString());
+                    userNameEt.getText().toString().trim());
             bundle.putString(LoginFragment.PASSWORD,
-                    passwordEt.getText().toString());
+                    passwordEt.getText().toString().trim());
             onClickListener.onClick(v, bundle);
         }
     }
@@ -113,9 +113,9 @@ public class RegisterFragment extends BackStackFragmentWithProgressDialog
     }
     @Override public void afterTextChanged(Editable s)
     {
-        if (userNameEt.getText().length() >= 2 &&
-                passwordEt.getText().length() >= 6 &&
-                verifyPasswordEt.getText().length() >= 6)
+        if (userNameEt.getText().toString().trim().length() >= 2 &&
+                passwordEt.getText().toString().trim().length() >= 6 &&
+                verifyPasswordEt.getText().toString().trim().length() >= 6)
             registerBt.setEnabled(true);
         else
             registerBt.setEnabled(false);

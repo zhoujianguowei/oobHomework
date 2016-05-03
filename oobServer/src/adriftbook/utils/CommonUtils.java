@@ -40,6 +40,7 @@ public class CommonUtils
         {
             e.printStackTrace();
         }
+        System.out.println("postcontent:"+postContent);
         for (int i = 0; i < nameValuePairs.length; i++)
         {
             if (nameValuePairs[i] == null || nameValuePairs[i].trim().equals(""))

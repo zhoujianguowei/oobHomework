@@ -158,7 +158,7 @@ public class CommentAdriftBookFragment extends BackStackFragmentWithProgressDial
     }
     private void startDeliverComment()
     {
-        String deliverCommentUrl = Constant.CONSTANT_IP + "/comment?user_id=" +
+        String deliverCommentUrl = Constant.CONSTANT_IP + "comment?user_id=" +
                 PostMainActivity.CURRENT_USER.getUserId() + "&book_id=" +
                 book.getBookId();
         HashMap<String, String> requestBody = new HashMap<>();

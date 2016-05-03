@@ -36,7 +36,7 @@ public class LoginFragment extends BackStackFragmentWithProgressDialog
     public static final String USER_NAME = "user_name";
     public static final String PASSWORD = "password";
     public static final String USER_INFO_RECORD = "user_info";
-    public static final String TAG="loginfragment";
+    public static final String TAG = "loginfragment";
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -111,8 +111,8 @@ public class LoginFragment extends BackStackFragmentWithProgressDialog
             editor.apply();
             return;
         }
-        editor.putString(User.USER_NAME, userNameEt.getText().toString());
-        editor.putString(User.PASSWORD, passwordEt.getText().toString());
+        editor.putString(User.USER_NAME, userNameEt.getText().toString().trim());
+        editor.putString(User.PASSWORD, passwordEt.getText().toString().trim());
         editor.apply();
     }
     @Override public void onClick(View v)
@@ -120,8 +120,8 @@ public class LoginFragment extends BackStackFragmentWithProgressDialog
         if (loginFragmentOnClickListener != null)
         {
             Bundle bundle = new Bundle();
-            bundle.putString(USER_NAME, userNameEt.getText().toString());
-            bundle.putString(PASSWORD, passwordEt.getText().toString());
+            bundle.putString(USER_NAME, userNameEt.getText().toString().trim());
+            bundle.putString(PASSWORD, passwordEt.getText().toString().trim());
             loginFragmentOnClickListener.onClick(v, bundle);
         }
     }
@@ -138,8 +138,8 @@ public class LoginFragment extends BackStackFragmentWithProgressDialog
         if (TextUtils.isEmpty(userNameEt.getText()) ||
                 TextUtils.isEmpty(passwordEt.getText()))
             loginBt.setEnabled(false);
-        else if (userNameEt.getText().length() < 2 ||
-                passwordEt.getText().length() < 6)
+        else if (userNameEt.getText().toString().trim().length() < 2 ||
+                passwordEt.getText().toString().trim().length() < 6)
             loginBt.setEnabled(false);
         else
             loginBt.setEnabled(true);
