@@ -329,7 +329,7 @@ public class MysqlCheckUtil
                         commentContent + "'," + time.getTimeInMillis() + "," +
                         userId + "," + bookId + ")";
         MysqlDbConnection.execute(updateCommentTable);
-        String updateBookTable = "update book set book rating=" + rating +
+        String updateBookTable = "update book set rating=" + rating +
                 ",reviewPeopleCount=reviewPeopleCount+1";
         MysqlDbConnection.execute(updateBookTable);
     }

@@ -1,4 +1,6 @@
 package adriftbook.utils;
+import com.sun.org.glassfish.gmbal.NameValue;
+
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.RequestFacade;
 
@@ -7,6 +9,8 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.net.URLDecoder;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,16 +27,33 @@ public class CommonUtils
     public static Map<String, String> getVolleyPostRequestParams(
             HttpServletRequest req)
     {
-        String postContent = getVolleyRequestString(req);
-        System.out.println("comment:"+postContent);
         HashMap<String, String> requestParams = new HashMap<>();
-        String[] nameValuePairs = postContent.split("&");
+        String postContent = null;
+        String[] nameValuePairs = null;
+        try
+        {
+            postContent = URLDecoder.decode(new String(getRequestPostData(req),
+                    Constant.DEFAULT_CODE), Constant.DEFAULT_CODE);
+            nameValuePairs = postContent.split("&");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
         for (int i = 0; i < nameValuePairs.length; i++)
         {
             if (nameValuePairs[i] == null || nameValuePairs[i].trim().equals(""))
                 continue;
-            String[] namValue = nameValuePairs[i].split("=");
-            requestParams.put(namValue[0], namValue[1]);
+            String[] nameValue = nameValuePairs[i].split("=");
+            /**
+             * 中文编码传输特殊处理
+             */
+            int index = nameValue[1].indexOf("%");
+            if (index > 0)
+                requestParams
+                        .put(nameValue[0], nameValue[1].substring(0, index - 1));
+            else
+                requestParams.put(nameValue[0], nameValue[1]);
         }
         return requestParams;
     }
@@ -60,29 +81,13 @@ public class CommonUtils
         }
         return postData;
     }
-    public static String getVolleyRequestString(HttpServletRequest req)
-    {
-        return getVolleyRequestBody(getRequestPostData(req));
-    }
-    public static String getVolleyRequestBody(byte[] postData)
-    {
-        String res = null;
-        try
-        {
-            res = new String(postData, Constant.DEFAULT_CODE);
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            e.printStackTrace();
-        }
-        return res;
-    }
     /**
      * get post requestbody,and its content is string type
      * @param inputStream
      * @return
      */
-    public static String getDatas(ServletInputStream inputStream)
+    public static String getDatasFromServletInputStream(
+            ServletInputStream inputStream)
     {
         // TODO Auto-generated method stub
         StringBuilder builder = new StringBuilder();

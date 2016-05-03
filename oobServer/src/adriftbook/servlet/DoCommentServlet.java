@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import adriftbook.entity.AdriftBook;
+import adriftbook.entity.Comment;
 import adriftbook.utils.CodeTransformUtil;
 import adriftbook.utils.CommonUtils;
 import adriftbook.utils.Constant;
@@ -37,16 +39,13 @@ public class DoCommentServlet extends HttpServlet
         filterSet.add("book_id");
         if (!RequestFilter.isRequestParamsLegal(req, resp, filterSet))
             return;
-        /*Map<String,String> requestParams=CommonUtils.getVolleyPostRequestParams(req);
-        System.out.println("params:"+requestParams);*//*Map<String,String> requestParams=CommonUtils.getVolleyPostRequestParams(req);
-        System.out.println("params:"+requestParams);*/
-        System.out.println(CommonUtils.getVolleyRequestString(req));
+        Map<String, String> requestParams = CommonUtils
+                .getVolleyPostRequestParams(req);
         JSONObject obj = new JSONObject();
         int userId = Integer
                 .parseInt(CodeTransformUtil.getParameter(req, "user_id"));
         int bookId = Integer
                 .parseInt(CodeTransformUtil.getParameter(req, "book_id"));
-//        System.out.println("body:"+commentContent);
         try
         {
             obj.put(Constant.STATUS_KEY, Constant.FAIL_VALUE);
@@ -55,7 +54,10 @@ public class DoCommentServlet extends HttpServlet
             else
             {
                 obj.put(Constant.STATUS_KEY, Constant.SUCCESS_VALUE);
-//                MysqlCheckUtil.doComment(userId,bookId,);
+                MysqlCheckUtil.doComment(userId, bookId,
+                        Float.parseFloat(requestParams.get(
+                                AdriftBook.RATING)),
+                        requestParams.get(Comment.COMMENT_CONTENT));
             }
         }
         catch (JSONException e)
