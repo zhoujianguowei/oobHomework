@@ -14,11 +14,12 @@ public class MyStringRequest extends StringRequest
 
     private Map<String, String> requestBody;
     private volatile boolean hasSetRequestQueue;
-    public MyStringRequest(String url, Map<String, String> requestBody,
+    public MyStringRequest(int methodType, String url,
+                           Map<String, String> requestBody,
                            Response.Listener<String> listener,
                            Response.ErrorListener errorListener)
     {
-        this(url, listener, errorListener);
+        super(methodType, url, listener, errorListener);
         this.requestBody = requestBody;
     }
     public MyStringRequest(String url,

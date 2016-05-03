@@ -42,6 +42,7 @@ public class PostDetailFragment extends BackStackFragmentWithProgressDialog
     public static final int PER_BOOK_ITEM_IMAGE_HEIGHT =
             ScreenSize.getScreenHeight() / 6;
     ArrayList<Comment> commentList = new ArrayList<>();
+    public static final String TAG="postdetailfragment";
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState)
     {

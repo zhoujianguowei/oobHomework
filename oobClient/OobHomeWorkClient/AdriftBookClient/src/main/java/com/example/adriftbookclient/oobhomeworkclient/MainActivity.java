@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -30,7 +29,7 @@ import adriftbook.entity.User;
 import utils.JsonEntityParser;
 import utils.MyStringRequest;
 import utils.ScreenSize;
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends SupActivityHandleFragment
         implements FileChooserFragment.FileChooserFragmentListItemClickListener,
         LoginFragment.LoginFragmentOnClickListener,
         RegisterFragment.RegisterFragmentOnClickListener
@@ -41,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     LoginFragment loginFragment;
     RegisterFragment registerFragment;
     FragmentTransaction transaction;
+    private String currentTag = null;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -48,16 +48,15 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ScreenSize.initial(getApplicationContext());
         fragmentManager = getSupportFragmentManager();
-        if (loginFragment == null)
-        {
-            transaction = fragmentManager.beginTransaction();
-            loginFragment = new LoginFragment();
-            transaction.add(R.id.activity_main_navigation_bar_fr_container,
-                    new NavigationBarFragment(), NavigationBarFragment.TAG);
-            transaction.add(R.id.activity_main_content_fr_container, loginFragment);
+        transaction = fragmentManager.beginTransaction();
+        loginFragment = new LoginFragment();
+        transaction.add(R.id.activity_main_navigation_bar_fr_container,
+                new NavigationBarFragment(), NavigationBarFragment.TAG);
+        transaction.add(R.id.activity_main_content_fr_container, loginFragment,
+                LoginFragment.TAG);
 //            transaction.addToBackStack(null);
-            transaction.commit();
-        }
+        transaction.commit();
+        setTapFragment(fragmentManager,LoginFragment.TAG);
     }
     @Override public void onListItemClickListener(Option option)
     {
@@ -78,11 +77,12 @@ public class MainActivity extends AppCompatActivity
                         R.id.activity_main_navigation_bar_fr_container,
                         new NavigationBarFragment(), NavigationBarFragment.TAG);
                 transaction.add(R.id.activity_main_content_fr_container,
-                        registerFragment);
+                        registerFragment, RegisterFragment.TAG);
                 transaction.hide(loginFragment);
                 transaction.show(registerFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
+                setTapFragment(fragmentManager,RegisterFragment.TAG);
                 break;
             case R.id.fragment_register_register_bt:
                 startRegisterRequest(bundle);
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity
             @Override public void onErrorResponse(VolleyError error)
             {
                 loginFragment.dismissProgressDialog();
-                Toast.makeText(MainActivity.this, "服务器内部错误"+error.getMessage(),
+                Toast.makeText(MainActivity.this, "服务器内部错误" + error.getMessage(),
                         Toast.LENGTH_SHORT)
                         .show();
             }
@@ -237,5 +237,9 @@ public class MainActivity extends AppCompatActivity
         new LoadEntityUtils(getApplicationContext(), handler)
                 .loadPosts(1, 1, 1, 1, null);
         loginFragment.showProgressDialog("获取文件列表");
+    }
+    @Override protected void onSaveInstanceState(Bundle outState)
+    {
+//        super.onSaveInstanceState(outState);
     }
 }

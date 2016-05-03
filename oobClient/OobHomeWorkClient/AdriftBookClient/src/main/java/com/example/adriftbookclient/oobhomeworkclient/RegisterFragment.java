@@ -26,6 +26,7 @@ public class RegisterFragment extends BackStackFragmentWithProgressDialog
     EditText passwordEt;
     EditText verifyPasswordEt;
     Button registerBt;
+    public static final String TAG = "registerfragment";
     private RegisterFragmentOnClickListener onClickListener;
 
     interface RegisterFragmentOnClickListener

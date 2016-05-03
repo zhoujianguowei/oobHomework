@@ -5,7 +5,6 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff.Mode;
@@ -107,7 +106,7 @@ public class BitmapUtil
                 opts.inSampleSize = (int) ((x + y) / 2);
                 opts.inJustDecodeBounds = false;
                 bm = BitmapFactory.decodeByteArray(data, 0, data.length, opts);
-            } else
+            }/* else
             {
                 if (!bm.isMutable())
                     bm = convertToMutable(bm);
@@ -121,7 +120,7 @@ public class BitmapUtil
                 matrix.setScale(scaleValue, scaleValue);
                 canvas.drawBitmap(bm, matrix, new Paint());
                 bm = createBm;
-            }
+            }*/
         }
         return bm;
     }

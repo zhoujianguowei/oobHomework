@@ -1,4 +1,6 @@
 package adriftbook.utils;
+import com.mysql.jdbc.MySQLConnection;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,6 +12,8 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Set;
+
+import javax.xml.transform.Result;
 
 import adriftbook.entity.AdriftBook;
 import adriftbook.entity.Comment;
@@ -160,7 +164,7 @@ public class MysqlCheckUtil
             resJson.put(Post.POST_TYPE, post.getPostType());
             resJson.put(Post.POST_CONTENT,
                     post.getPostContent().getPostContentDetail());
-            resJson.put(Post.POST_ID,post.getPostId());
+            resJson.put(Post.POST_ID, post.getPostId());
             if (params.length > 0)
             {
                 JSONObject userJson = getJsonObj(
@@ -294,5 +298,56 @@ public class MysqlCheckUtil
         resMap.put(Post.POSTS_COUNT_KEY, postsCount);
         resMap.put(Post.POSTS_KEY, posts);
         return resMap;
+    }
+    /**
+     *
+     * @param userId
+     * @param bookId
+     * @param rating
+     */
+    public synchronized static void doComment(int userId, int bookId, float rating,
+                                              String commentContent)
+    {
+        String execuryBookStr =
+                "select * from book where book_id=" + bookId + " limit 0,1";
+        ResultSet rSet = MysqlDbConnection.getResultSet(execuryBookStr);
+        try
+        {
+            rSet.next();
+            int reviewPeopleCount = rSet.getInt("reviewPeopleCount");
+            float ratePre = rSet.getFloat("rating");
+            rating =
+                    (reviewPeopleCount * ratePre + rating) / (reviewPeopleCount + 1);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        Calendar time = Calendar.getInstance();
+        String updateCommentTable =
+                "insert into comment(commentcontent,reviewdate,user_id,book_id) values('" +
+                        commentContent + "'," + time.getTimeInMillis() + "," +
+                        userId + "," + bookId + ")";
+        MysqlDbConnection.execute(updateCommentTable);
+        String updateBookTable = "update book set book rating=" + rating +
+                ",reviewPeopleCount=reviewPeopleCount+1";
+        MysqlDbConnection.execute(updateBookTable);
+    }
+    public static boolean isCommentExists(int userId, int bookId)
+    {
+        String sqlString = "select count(*) from comment where user_id=" + userId +
+                " and book_id=" + bookId + " limit 0,1";
+        ResultSet rSet = MysqlDbConnection.getResultSet(sqlString);
+        try
+        {
+            rSet.next();
+            if (rSet.getInt(1) > 0)
+                return true;
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

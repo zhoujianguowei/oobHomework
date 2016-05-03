@@ -36,6 +36,7 @@ public class LoginFragment extends BackStackFragmentWithProgressDialog
     public static final String USER_NAME = "user_name";
     public static final String PASSWORD = "password";
     public static final String USER_INFO_RECORD = "user_info";
+    public static final String TAG="loginfragment";
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)

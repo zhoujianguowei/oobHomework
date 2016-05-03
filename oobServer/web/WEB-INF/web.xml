@@ -19,6 +19,10 @@
         <servlet-name>GetPostDetail</servlet-name>
         <servlet-class>adriftbook.servlet.GetPostDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DoComment</servlet-name>
+        <servlet-class>adriftbook.servlet.DoCommentServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -34,5 +38,9 @@
     <servlet-mapping>
         <servlet-name>GetPostDetail</servlet-name>
         <url-pattern>/get_post_detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DoComment</servlet-name>
+        <url-pattern>/comment</url-pattern>
     </servlet-mapping>
 </web-app>

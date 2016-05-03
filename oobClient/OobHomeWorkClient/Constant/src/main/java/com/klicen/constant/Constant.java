@@ -22,4 +22,5 @@ public class Constant
             CONSTANT_IP + "upload/bookImage/";
     public static final String UPLOAD_EBOOK_FILE_DIR =
             CONSTANT_IP + "upload/ebookFile/";
+
 }

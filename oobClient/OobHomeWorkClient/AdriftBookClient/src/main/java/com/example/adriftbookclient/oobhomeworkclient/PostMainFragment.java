@@ -55,6 +55,7 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
     PopupWindow popupWindow;
     private int currentPage = 1;
     LinearLayout pageContainer;
+    public static final String TAG="postmainfragment";
     private void updateLabelStatus(ArrayList<Post> postList)
     {
         if (postList.isEmpty())

@@ -9,10 +9,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import adriftbook.entity.AdriftBook;
 import adriftbook.entity.Comment;
 import adriftbook.entity.EBook;
@@ -34,8 +36,15 @@ public class GetPostDetailServlet extends HttpServlet
 //        super.doGet(req, resp);
         doPost(req, resp);
     }
+    private void updatePostReadCount(int postId)
+    {
+        String sqlString =
+                "update post set readcount=readcount+1 where post_id=" + postId;
+        MysqlDbConnection.execute(sqlString);
+    }
     private ArrayList<AdriftBook> getBooks(int postId)
     {
+        updatePostReadCount(postId);
         ArrayList<AdriftBook> adriftBooks = new ArrayList<>();
         String sqlString = "select * from book where post_id=" + postId;
         ResultSet rSet = MysqlDbConnection.getResultSet(sqlString);
@@ -96,6 +105,7 @@ public class GetPostDetailServlet extends HttpServlet
         }
         return commentList;
     }
+
     @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException
     {

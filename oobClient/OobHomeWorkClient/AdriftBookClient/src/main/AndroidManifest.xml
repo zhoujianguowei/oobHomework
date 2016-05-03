@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.example.adriftbookclient.oobhomeworkclient"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest package="com.example.adriftbookclient.oobhomeworkclient"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -18,13 +17,12 @@
         android:icon="@mipmap/book_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -34,10 +32,10 @@
         <activity
             android:name=".PostMainActivity"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
-
-
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".SupActivityHandleFragment">
+        </activity>
     </application>
 
 </manifest>
