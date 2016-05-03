@@ -330,7 +330,7 @@ public class MysqlCheckUtil
                         userId + "," + bookId + ")";
         MysqlDbConnection.execute(updateCommentTable);
         String updateBookTable = "update book set rating=" + rating +
-                ",reviewPeopleCount=reviewPeopleCount+1";
+                ",reviewPeopleCount=reviewPeopleCount+1 where book_id="+bookId;
         MysqlDbConnection.execute(updateBookTable);
     }
     public static boolean isCommentExists(int userId, int bookId)

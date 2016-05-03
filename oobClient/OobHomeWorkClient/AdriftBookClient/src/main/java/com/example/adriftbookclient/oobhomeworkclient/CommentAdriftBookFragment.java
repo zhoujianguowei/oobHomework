@@ -1,9 +1,9 @@
 package com.example.adriftbookclient.oobhomeworkclient;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +24,14 @@ import com.android.volley.toolbox.Volley;
 import com.klicen.constant.Constant;
 import com.klicen.navigationbar.BackStackFragmentWithProgressDialog;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import adriftbook.entity.AdriftBook;
 import adriftbook.entity.Comment;
+import adriftbook.entity.Post;
 import utils.MyStringRequest;
 import utils.ScreenSize;
 /**
@@ -42,12 +46,24 @@ public class CommentAdriftBookFragment extends BackStackFragmentWithProgressDial
     TextView bookId;
     TextView bookName;
     TextView author;
+    TextView rating;
     Button ebookUrl;
     RatingBar ratingBar;
     TextView commentContent;
     Button deliverComment;
     AdriftBook book;
+    Post post;
     public static final String TAG = "commentadriftbookfragment";
+    public CommentAdriftBookOnFinisheListener getCommentFinishListener()
+    {
+        return commentFinishListener;
+    }
+    public void setCommentFinishListener(
+            CommentAdriftBookOnFinisheListener commentFinishListener)
+    {
+        this.commentFinishListener = commentFinishListener;
+    }
+    CommentAdriftBookOnFinisheListener commentFinishListener;
     @Override protected View onTitleCreate()
     {
         TextView tv = new TextView(getActivity());
@@ -65,6 +81,7 @@ public class CommentAdriftBookFragment extends BackStackFragmentWithProgressDial
                 .inflate(R.layout.fragment_comment_adriftbook, container, false);
         Bundle bundle = getArguments();
         book = (AdriftBook) bundle.getSerializable("book");
+        post = (Post) bundle.getSerializable("post");
         bookId = (TextView) view.findViewById(R.id.post_detail_book_item_book_id);
         bookId.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimensionPixelSize(R.dimen.middle));
@@ -77,6 +94,9 @@ public class CommentAdriftBookFragment extends BackStackFragmentWithProgressDial
                 .findViewById(R.id.post_detail_book_item_book_author);
         author.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimensionPixelSize(R.dimen.middle));
+        rating = (TextView) view
+                .findViewById(R.id.post_detail_book_item_book_rating);
+        rating.setVisibility(View.GONE);
         ebookUrl = (Button) view.findViewById(R.id.post_detail_book_item_ebookurl);
 //        if (book.getType() == AdriftBook.ENTITYBOOK)
         ebookUrl.setVisibility(View.GONE);
@@ -110,6 +130,23 @@ public class CommentAdriftBookFragment extends BackStackFragmentWithProgressDial
         ratingBar.setRating(5);
         return view;
     }
+    @Override public void onResume()
+    {
+        super.onResume();
+        Fragment postDetailFragment = getFragmentManager().findFragmentByTag(
+                PostDetailFragment.TAG);
+        /**
+         * 更新评论时候需要使用
+         */
+        if (postDetailFragment!=null&&postDetailFragment instanceof CommentAdriftBookOnFinisheListener)
+            setCommentFinishListener(
+                    (CommentAdriftBookOnFinisheListener) postDetailFragment);
+    }
+    @Override public void onDetach()
+    {
+        super.onDetach();
+        setCommentFinishListener(null);
+    }
     @Override public void onClick(View v)
     {
         switch (v.getId())
@@ -134,12 +171,34 @@ public class CommentAdriftBookFragment extends BackStackFragmentWithProgressDial
                 {
                     @Override public void onResponse(String response)
                     {
-                        Log.e("comment", response);
+                        try
+                        {
+                            JSONObject recJObj = new JSONObject(response);
+                            if (recJObj.optString(Constant.STATUS_KEY)
+                                    .equals(Constant.SUCCESS_VALUE))
+                            {
+                                Toast.makeText(getActivity(), "评论成功",
+                                        Toast.LENGTH_LONG).show();
+                                if (commentFinishListener != null)
+                                    commentFinishListener.onCommentBookFinish(
+                                            post, book);
+                                getFragmentManager().popBackStack();
+                            } else
+                                Toast.makeText(getActivity(),
+                                        recJObj.optString(Constant.INFO_KEY),
+                                        Toast.LENGTH_LONG).show();
+                        }
+                        catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener()
         {
             @Override public void onErrorResponse(VolleyError error)
             {
+                Toast.makeText(getActivity(), "服务器内部错误" + error.getMessage(),
+                        Toast.LENGTH_LONG).show();
             }
         });
         RequestQueue commentQueqe = Volley.newRequestQueue(getActivity());
@@ -168,6 +227,6 @@ public class CommentAdriftBookFragment extends BackStackFragmentWithProgressDial
     interface CommentAdriftBookOnFinisheListener
     {
 
-        void commentBookFinish();
+        void onCommentBookFinish(Post post, AdriftBook book);
     }
 }

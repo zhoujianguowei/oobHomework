@@ -92,7 +92,7 @@ public class PostMainActivity extends SupActivityHandleFragment
     {
         Toast.makeText(this, "下载文件", Toast.LENGTH_LONG).show();
     }
-    @Override public void onBookItemClick(AdriftBook book, Bitmap bm)
+    @Override public void onBookItemClick(AdriftBook book, Bitmap bm, Post post)
     {
         CommentAdriftBookFragment commentFragment = new CommentAdriftBookFragment();
         Bundle bundle = new Bundle();
@@ -100,6 +100,7 @@ public class PostMainActivity extends SupActivityHandleFragment
         bundle.putParcelable("bitmap", BitmapUtil
                 .getThumbBitmap(bm, PostDetailFragment.PER_BOOK_ITEM_IMAGE_WIDTH,
                         PostDetailFragment.PER_BOOK_ITEM_IMAGE_HEIGHT));
+        bundle.putSerializable("post", post);
         commentFragment.setArguments(bundle);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.activity_post_navigation_bar_fr_container,

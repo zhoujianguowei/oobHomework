@@ -17,18 +17,21 @@ import com.klicen.navigationbar.BackStackFragmentWithProgressDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import adapter.BookBaseAdapter;
 import adriftbook.entity.AdriftBook;
 import adriftbook.entity.Comment;
 import adriftbook.entity.Post;
+import utils.CommentComparator;
 import utils.ScreenSize;
 /**
  * Created by Administrator on 2016/5/1.
  */
 public class PostDetailFragment extends BackStackFragmentWithProgressDialog
         implements
-        Handler.Callback, AdapterView.OnItemClickListener
+        Handler.Callback, AdapterView.OnItemClickListener,
+        CommentAdriftBookFragment.CommentAdriftBookOnFinisheListener
 {
 
     TextView postContentTv;
@@ -42,7 +45,8 @@ public class PostDetailFragment extends BackStackFragmentWithProgressDialog
     public static final int PER_BOOK_ITEM_IMAGE_HEIGHT =
             ScreenSize.getScreenHeight() / 6;
     ArrayList<Comment> commentList = new ArrayList<>();
-    public static final String TAG="postdetailfragment";
+    public static final String TAG = "postdetailfragment";
+    Post post;
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState)
     {
@@ -53,6 +57,7 @@ public class PostDetailFragment extends BackStackFragmentWithProgressDialog
         commentsContainer = (LinearLayout) view
                 .findViewById(R.id.fragment_post_detail_comments_lr);
         Bundle bundle = getArguments();
+        post = (Post) bundle.getSerializable("post");
         postContentTv.setText("\t" + bundle.getString(Post.POST_CONTENT));
         bookAdapter = new BookBaseAdapter(getActivity(), bookList);
         configureBookList(bundle);
@@ -65,6 +70,7 @@ public class PostDetailFragment extends BackStackFragmentWithProgressDialog
         commentList.clear();
         for (AdriftBook book : bookList)
             commentList.addAll(book.getComments());
+        Collections.sort(commentList, new CommentComparator());
         commentsContainer.removeAllViews();
         for (int i = 0; i < commentList.size(); i++)
         {
@@ -100,8 +106,8 @@ public class PostDetailFragment extends BackStackFragmentWithProgressDialog
         bookInfoLvParams.height = bookList.size() >= 4 ?
                 3 * PER_BOOK_ITEM_HEIGHT : bookList.size() * PER_BOOK_ITEM_HEIGHT;
         bookInfoLv.setLayoutParams(bookInfoLvParams);
-        bookAdapter.notifyDataSetChanged();
         configureComments();
+        bookAdapter.notifyDataSetChanged();
     }
     @Override public void onResume()
     {
@@ -121,6 +127,7 @@ public class PostDetailFragment extends BackStackFragmentWithProgressDialog
     }
     @Override public boolean handleMessage(Message msg)
     {
+        configureBookList((Bundle) msg.obj);
         return true;
     }
     @Override
@@ -131,12 +138,16 @@ public class PostDetailFragment extends BackStackFragmentWithProgressDialog
             AdriftBook book = (AdriftBook) bookAdapter.getItem(position);
             ((OnBookListItemClickListener) getActivity())
                     .onBookItemClick(book, bookAdapter.getSpecifyBitmap(
-                            book.getBookImageUrl()));
+                            book.getBookImageUrl()), post);
         }
+    }
+    @Override public void onCommentBookFinish(Post post, AdriftBook book)
+    {
+        new LoadEntityUtils(getActivity(), new Handler(this)).loadComments(post);
     }
     interface OnBookListItemClickListener
     {
 
-        void onBookItemClick(AdriftBook book, Bitmap bm);
+        void onBookItemClick(AdriftBook book, Bitmap bm, Post post);
     }
 }

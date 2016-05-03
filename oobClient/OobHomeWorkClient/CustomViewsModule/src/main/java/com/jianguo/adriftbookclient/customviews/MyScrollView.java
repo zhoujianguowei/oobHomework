@@ -1,7 +1,6 @@
 package com.jianguo.adriftbookclient.customviews;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -49,7 +48,6 @@ public class MyScrollView extends ScrollView
     {
         if (slop == 0)
             slop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
-        Log.e("dispatchTouchEvent", ev.getActionMasked() + "");
         return super.dispatchTouchEvent(ev);
     }
     private void resetCoordination()

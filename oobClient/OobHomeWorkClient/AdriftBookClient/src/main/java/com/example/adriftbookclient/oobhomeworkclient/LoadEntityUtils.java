@@ -93,6 +93,7 @@ public class LoadEntityUtils
                         bundle.putSerializable(AdriftBook.BOOKS_KEY, books);
                         bundle.putString(Post.POST_CONTENT,
                                 post.getPostContent().getPostContentDetail());
+                        bundle.putSerializable("post",post);
                         Message msg = Message.obtain();
                         msg.obj = bundle;
                         handler.sendMessage(msg);

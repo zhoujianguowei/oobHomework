@@ -45,15 +45,7 @@ public class CommonUtils
             if (nameValuePairs[i] == null || nameValuePairs[i].trim().equals(""))
                 continue;
             String[] nameValue = nameValuePairs[i].split("=");
-            /**
-             * 中文编码传输特殊处理
-             */
-            int index = nameValue[1].indexOf("%");
-            if (index > 0)
-                requestParams
-                        .put(nameValue[0], nameValue[1].substring(0, index - 1));
-            else
-                requestParams.put(nameValue[0], nameValue[1]);
+            requestParams.put(nameValue[0], nameValue[1]);
         }
         return requestParams;
     }
