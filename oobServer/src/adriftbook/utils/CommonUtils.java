@@ -6,9 +6,11 @@ import org.apache.catalina.connector.RequestFacade;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,7 +42,7 @@ public class CommonUtils
         {
             e.printStackTrace();
         }
-        System.out.println("postcontent:"+postContent);
+        System.out.println("postcontent:" + postContent);
         for (int i = 0; i < nameValuePairs.length; i++)
         {
             if (nameValuePairs[i] == null || nameValuePairs[i].trim().equals(""))
@@ -49,6 +51,15 @@ public class CommonUtils
             requestParams.put(nameValue[0], nameValue[1]);
         }
         return requestParams;
+    }
+    private static void getByteStr(byte[] bytes)
+    {
+        if(bytes==null)
+            return;
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < bytes.length && bytes[i] != '\0'; i++)
+            builder.append(bytes[i] + " ");
+        System.out.println(builder.toString());
     }
     public static byte[] getRequestPostData(HttpServletRequest req)
     {
@@ -66,12 +77,17 @@ public class CommonUtils
                         .getDeclaredField("postData");
                 postDataField.setAccessible(true);
                 postData = (byte[]) postDataField.get(requestObj);
+               /* postDataField.set(requestObj,null);
+                Method readChunkedPostBody =requestObj.getClass().getDeclaredMethod("readChunkedPostBody",null);
+                readChunkedPostBody.setAccessible(true);
+                postData= (byte[]) readChunkedPostBody.invoke(requestObj,null);*/
             }
-            catch (IllegalAccessException | NoSuchFieldException e)
+            catch (Exception e)
             {
                 e.printStackTrace();
             }
         }
+        getByteStr(postData);
         return postData;
     }
     /**
@@ -80,7 +96,7 @@ public class CommonUtils
      * @return
      */
     public static String getDatasFromServletInputStream(
-            ServletInputStream inputStream)
+            InputStream inputStream)
     {
         // TODO Auto-generated method stub
         StringBuilder builder = new StringBuilder();

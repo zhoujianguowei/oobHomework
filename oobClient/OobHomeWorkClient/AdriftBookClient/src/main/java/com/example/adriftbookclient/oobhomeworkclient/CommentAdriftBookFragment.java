@@ -119,7 +119,6 @@ public class CommentAdriftBookFragment extends BackStackFragmentWithProgressDial
         deliverComment = (Button) view
                 .findViewById(R.id.fragment_comment_adriftbook_deliver_comment);
         commentContent.addTextChangedListener(this);
-        deliverComment.setEnabled(false);
         deliverComment.setOnClickListener(this);
         bookId.setText(book.getBookId() + "");
         if (bundle.containsKey("bitmap"))

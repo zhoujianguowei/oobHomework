@@ -41,6 +41,8 @@ public class DoCommentServlet extends HttpServlet
             return;
         Map<String, String> requestParams = CommonUtils
                 .getVolleyPostRequestParams(req);
+        System.out.println("datas:"+CommonUtils.getDatasFromServletInputStream(req.getInputStream()));
+
         JSONObject obj = new JSONObject();
         int userId = Integer
                 .parseInt(CodeTransformUtil.getParameter(req, "user_id"));
