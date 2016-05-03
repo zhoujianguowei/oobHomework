@@ -118,6 +118,7 @@ public class CommentAdriftBookFragment extends BackStackFragmentWithProgressDial
         contentParams.height = ScreenSize.getScreenHeight() / 4;
         deliverComment = (Button) view
                 .findViewById(R.id.fragment_comment_adriftbook_deliver_comment);
+        deliverComment.setEnabled(false);
         commentContent.addTextChangedListener(this);
         deliverComment.setOnClickListener(this);
         bookId.setText(book.getBookId() + "");
@@ -137,7 +138,8 @@ public class CommentAdriftBookFragment extends BackStackFragmentWithProgressDial
         /**
          * 更新评论时候需要使用
          */
-        if (postDetailFragment!=null&&postDetailFragment instanceof CommentAdriftBookOnFinisheListener)
+        if (postDetailFragment != null &&
+                postDetailFragment instanceof CommentAdriftBookOnFinisheListener)
             setCommentFinishListener(
                     (CommentAdriftBookOnFinisheListener) postDetailFragment);
     }

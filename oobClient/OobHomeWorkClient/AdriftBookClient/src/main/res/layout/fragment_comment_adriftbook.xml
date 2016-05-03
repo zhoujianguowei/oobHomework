@@ -39,7 +39,6 @@
             android:hint="输入评论内容"
             android:padding="6dp"
             android:textSize="@dimen/large"
-            android:text="天气不错，nice? 好人 "
             />
 
         <Button

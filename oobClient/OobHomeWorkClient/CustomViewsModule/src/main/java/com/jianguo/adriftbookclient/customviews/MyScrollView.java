@@ -22,6 +22,24 @@ public class MyScrollView extends ScrollView
     private float downX, downY, moveX, moveY, upX, upY;
     private int slop = 0;
     private static final float VERTICAL_GRADIENT = 2;
+    private boolean downwardScroll = false;  //下拉滚动
+    private boolean upwardScroll = false;  //上拉滚动
+    public boolean isUpwardScroll()
+    {
+        return upwardScroll;
+    }
+    public void setUpwardScroll(boolean upwardScroll)
+    {
+        this.upwardScroll = upwardScroll;
+    }
+    public boolean isDownwardScroll()
+    {
+        return downwardScroll;
+    }
+    public void setDownwardScroll(boolean downwardScroll)
+    {
+        this.downwardScroll = downwardScroll;
+    }
     @Override public void addView(View child, int width, int height)
     {
         childrenStateChanged = true;
@@ -54,8 +72,29 @@ public class MyScrollView extends ScrollView
     {
         downX = downY = moveX = moveY = upX = upY = 0;
     }
-    private boolean isLastItemVisible(AbsListView lv)
+    private boolean isFirstItemVisibleTotal(AbsListView lv)
     {
+        if (lv.getChildCount() == 0)
+            return true;
+        int firstVisibleItem = lv.getFirstVisiblePosition();
+        if (firstVisibleItem > 0)
+            return false;
+//        int[] firstChildLocation = new int[2];
+//        int[] lvLocation = new int[2];
+        View firstChild = lv.getChildAt(0);
+//        firstChild.getLocationOnScreen(firstChildLocation);
+//        lv.getLocationOnScreen(lvLocation);
+        return firstChild.getTop() >= 0;
+    }
+    /**
+     * listview的最后一个item完全显示出来
+     * @param lv
+     * @return
+     */
+    private boolean isLastItemVisibleTotal(AbsListView lv)
+    {
+        if (lv.getChildCount() == 0)
+            return true;
         final ListAdapter adapter = lv.getAdapter();
         if (null == adapter || adapter.isEmpty())
         {
@@ -63,17 +102,23 @@ public class MyScrollView extends ScrollView
         }
         final int lastItemPosition = adapter.getCount() - 1;
         final int lastVisiblePosition = lv.getLastVisiblePosition();
-
+        int[] lvLocation = new int[2];
+        int[] lastChildLocation = new int[2];
         if (lastVisiblePosition >= lastItemPosition)
         {
            /* final int childIndex =
                     lastVisiblePosition - lv.getFirstVisiblePosition();
             final int index = Math.min(childIndex, childCount - 1);*/
             final int childCount = lv.getChildCount();
-            final View lastVisibleChild = lv.getChildAt(childCount-1);
-            if (lastVisibleChild != null)
+            final View lastChild = lv.getChildAt(childCount - 1);
+            lv.getLocationOnScreen(lvLocation);
+            lastChild.getLocationOnScreen(lastChildLocation);
+            int lvAbsoluteYCoordination = lvLocation[1] + lv.getHeight();
+            int lastChildAbsoluteYCoordination =
+                    lastChildLocation[1] + lastChild.getHeight();
+            if (lastChild != null)
             {
-                return lastVisibleChild.getBottom() <= lv.getBottom();
+                return lastChildAbsoluteYCoordination <= lvAbsoluteYCoordination;
             }
         }
         return false;
@@ -118,21 +163,32 @@ public class MyScrollView extends ScrollView
                         上拉listview的时候，如果没有到达listview的底部，不拦截，如果到达，进行拦截
                          *//*
                         if (distanceY <= -slop && checkArea(ev, lv))
-                            interceted = isLastItemVisible(lv) ? true : false;*/
+                            interceted = isLastItemVisibleTotal(lv) ? true : false;*/
                         if (checkArea(ev, lv))
                         {
                             interceted = false;
                             if (distanceY <= -slop)
-                            /**
-                             * 当前的item已经滑动到listview的底部，并且还在向下滑动
-                             * 拦截该MotionEvent,同时ScrollView滚动
-                             */
-                                if (isLastItemVisible(lv))
+                            {
+                                /**
+                                 * 当前的item已经滑动到listview的底部，并且还在向上滑动
+                                 * 拦截该MotionEvent,同时ScrollView滚动
+                                 */
+                                if (upwardScroll && isLastItemVisibleTotal(lv))
                                 {
                                     interceted = true;
                                     smoothScrollBy((int) distanceX, (int) distanceY);
-                                } else
-                                    interceted = false;
+                                }
+                            } else if (distanceY >= slop)
+                            {
+                                /**
+                                 * 当前的item是ListView的第一个item并且还在向下滑动
+                                 */
+                                if (downwardScroll && isFirstItemVisibleTotal(lv))
+                                {
+                                    interceted = true;
+                                    smoothScrollBy((int) distanceX, (int) distanceY);
+                                }
+                            }
                         }
                     }
                 }

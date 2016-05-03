@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jianguo.adriftbookclient.customviews.MyScrollView;
 import com.klicen.navigationbar.BackStackFragmentWithProgressDialog;
 
 import java.text.SimpleDateFormat;
@@ -63,6 +64,10 @@ public class PostDetailFragment extends BackStackFragmentWithProgressDialog
         configureBookList(bundle);
         bookInfoLv.setAdapter(bookAdapter);
         bookInfoLv.setOnItemClickListener(this);
+        MyScrollView myScrollView = (MyScrollView) view
+                .findViewById(R.id.fragment_post_detail_myscrollview);
+        myScrollView.setDownwardScroll(true);
+        myScrollView.setUpwardScroll(true);
         return view;
     }
     private void configureComments()
