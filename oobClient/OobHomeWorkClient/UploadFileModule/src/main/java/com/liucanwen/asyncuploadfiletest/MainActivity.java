@@ -2,7 +2,6 @@ package com.liucanwen.asyncuploadfiletest;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,7 +14,6 @@ import org.apache.http.Header;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 public class MainActivity extends Activity
 {
 
@@ -34,7 +32,7 @@ public class MainActivity extends Activity
         String url = Constant.CONSTANT_IP + "upload";
         //手机端要上传的文件，首先要保存你手机上存在该文件
         String filePath = Environment.getExternalStorageDirectory()
-                + "/Android/上传图片.jpg";
+                + "/Download/beauty.jpg";
         AsyncHttpClient httpClient = new AsyncHttpClient();
         RequestParams param = new RequestParams();
         try
@@ -52,27 +50,15 @@ public class MainActivity extends Activity
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes)
                 {
-                    Toast.makeText(MainActivity.this, "上传成功", Toast.LENGTH_LONG)
-                            .show();
+//                    Toast.makeText(MainActivity.this, "上传成功", Toast.LENGTH_LONG)
+//                            .show();
+                    uploadInfo.setText("上传成功");
                 }
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes,
                                       Throwable throwable)
                 {
-                    try
-                    {
-                        Toast.makeText(MainActivity.this,
-                                "上传失败",
-                                Toast.LENGTH_LONG)
-                                .show();
-                        if (bytes != null)
-                            Log.e("failure",
-                                    new String(bytes, Constant.DEFAULT_CODE));
-                    }
-                    catch (UnsupportedEncodingException e)
-                    {
-                        e.printStackTrace();
-                    }
+                    uploadInfo.setText("上传失败");
                 }
             });
         }

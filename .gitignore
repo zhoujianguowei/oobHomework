@@ -1,8 +1,0 @@
-out
-*.iml
-
-build
-*.txt
-keystore
-*.jks
-*.idea
