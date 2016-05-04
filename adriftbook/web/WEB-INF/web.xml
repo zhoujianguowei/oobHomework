@@ -23,6 +23,10 @@
         <servlet-name>DoComment</servlet-name>
         <servlet-class>adriftbook.servlet.DoCommentServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UploadFile</servlet-name>
+        <servlet-class>adriftbook.servlet.UploadFileServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -42,5 +46,9 @@
     <servlet-mapping>
         <servlet-name>DoComment</servlet-name>
         <url-pattern>/comment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadFile</servlet-name>
+        <url-pattern>/upload</url-pattern>
     </servlet-mapping>
 </web-app>
