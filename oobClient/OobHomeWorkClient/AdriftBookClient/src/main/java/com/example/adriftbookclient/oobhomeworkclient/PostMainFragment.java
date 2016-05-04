@@ -55,7 +55,7 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
     PopupWindow popupWindow;
     private int currentPage = 1;
     LinearLayout pageContainer;
-    public static final String TAG="postmainfragment";
+    public static final String TAG = "postmainfragment";
     private void updateLabelStatus(ArrayList<Post> postList)
     {
         if (postList.isEmpty())
@@ -257,17 +257,30 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
     {
         View view = LayoutInflater.from(getActivity())
                 .inflate(R.layout.fragment_post_main_pop_setting, null);
+        TextView sendPostTv = (TextView) view
+                .findViewById(R.id.fragment_post_main_pop_window_sendpost_tv);
+        TextView downloadTv = (TextView) view
+                .findViewById(R.id.fragment_post_main_pop_window_download_tv);
+        TextView myInfoTv = (TextView) view
+                .findViewById(R.id.fragment_post_main_pop_window_myinfo_tv);
+        TextView settingTv = (TextView) view
+                .findViewById(R.id.fragment_post_main_pop_window_set_tv);
         view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         popupWindow = new PopupWindow(view, view.getMeasuredWidth(),
                 view.getMeasuredHeight());
         popupWindow.setTouchable(true);
         popupWindow.setOutsideTouchable(true);
+        //必须设置，否则在外面点击不会消失
         popupWindow.setAnimationStyle(R.anim.fab_in);
         //to enforece popupWindow dismiss outside of popupWindow, you have to set this
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         settingIv = new ImageView(getActivity());
         settingIv.setImageResource(R.mipmap.setting_icon);
         settingIv.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        sendPostTv.setOnClickListener(this);
+        downloadTv.setOnClickListener(this);
+        myInfoTv.setOnClickListener(this);
+        settingTv.setOnClickListener(this);
         return settingIv;
     }
     @Override public void onMenuClick(View view)
@@ -319,6 +332,21 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
             currentPage = getPageNum((TextView) v);
             showProgressDialog("数据加载中");
             onRefresh();
+            return;
+        }
+        switch (v.getId())
+        {
+            case R.id.fragment_post_main_pop_window_download_tv:
+            case R.id.fragment_post_main_pop_window_myinfo_tv:
+            case R.id.fragment_post_main_pop_window_sendpost_tv:
+            case R.id.fragment_post_main_pop_window_set_tv:
+                if (getActivity() instanceof OnPopupWindowItemClickListener)
+                {
+                    ((OnPopupWindowItemClickListener) getActivity())
+                            .onPopupItemClick(v);
+                }
+                popupWindow.dismiss();
+                break;
         }
     }
     @Override public boolean handleMessage(Message msg)
@@ -337,5 +365,11 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
     {
 
         void onItemClick(Post post);
+    }
+
+    interface OnPopupWindowItemClickListener
+    {
+
+        void onPopupItemClick(View view);
     }
 }

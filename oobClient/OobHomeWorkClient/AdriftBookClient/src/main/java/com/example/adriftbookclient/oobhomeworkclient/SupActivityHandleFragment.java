@@ -11,7 +11,7 @@ public class SupActivityHandleFragment extends AppCompatActivity
     public static final String CURRENT_FRAGMENT_TAG_KEY = "current_fragment_tag_key";
     String[] tags = new String[]{"registerfragment", "loginfragment",
             "postmainfragment", "postdetailfragment",
-            "commentadriftbookfragment"};
+            "commentadriftbookfragment","sendpostfragment"};
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

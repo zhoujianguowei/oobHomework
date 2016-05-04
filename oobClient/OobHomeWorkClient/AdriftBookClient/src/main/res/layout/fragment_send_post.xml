@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.jianguo.adriftbookclient.customviews.MyScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Spinner
+            android:id="@+id/fragment_send_post_post_type_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:entries="@array/post_type_arrays"
+            />
+
+        <RelativeLayout
+            android:id="@+id/fragment_send_post_post_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_send_post_post_type_spinner"
+            android:gravity="left|top">
+
+
+            <EditText
+                android:id="@+id/fragment_send_post_post_title_et"
+                style="@style/common_edittext_style"
+                android:hint="帖子标题,不低于4个字符"
+                android:maxEms="20"
+                />
+
+            <EditText
+                android:id="@+id/fragment_send_post_post_content_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_send_post_post_title_et"
+                android:layout_margin="10dp"
+                android:background="@drawable/comment_item_background"
+                android:hint="帖子内容,不低于6个字符"
+                android:padding="8dp"
+                android:singleLine="false"
+                android:gravity="left|top"/>
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/fragment_send_post_upload_book_lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_send_post_post_container"
+            android:cacheColorHint="@android:color/transparent"
+            />
+
+        <Button
+            android:id="@+id/fragment_send_post_upload_file_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_send_post_upload_book_lv"
+            android:layout_marginTop="10dp"
+            android:text="上传资源"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/xx_large"
+            />
+
+        <Button
+            android:id="@+id/fragment_send_post_start_upload_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_send_post_upload_file_bt"
+            android:layout_centerHorizontal="true"
+            android:text="开始上传"
+            android:textColor="@color/red"
+            android:textSize="@dimen/huge_large"
+            />
+
+    </RelativeLayout>
+
+</com.jianguo.adriftbookclient.customviews.MyScrollView>

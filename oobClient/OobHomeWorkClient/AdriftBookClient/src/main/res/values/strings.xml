@@ -15,4 +15,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for
         providing email completions."
     </string>
+    <string-array name="post_type_arrays">
+        <item>帖子类型</item>
+        <item>求漂区</item>
+        <item>放漂区</item>
+        <item>电子书籍</item>
+    </string-array>
 </resources>

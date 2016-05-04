@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/fragment_add_file_author"
+        style="@style/common_edittext_style"
+        android:hint="图书作者"/>
+
+    <EditText
+        android:id="@+id/fragment_add_file_file_name"
+        style="@style/common_edittext_style"
+        android:hint="图书名称"/>
+
+    <TextView
+        android:id="@+id/fragment_add_file_location"
+        style="@style/common_edittext_style"
+        android:text="文件位置"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/fragment_add_file_select_file_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="选择上传图书文件"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/large"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragment_add_file_deliver_file_bt"
+        android:text="确定"
+        android:textColor="@color/shallow_blue"
+        android:layout_gravity="right"
+        android:textSize="@dimen/x_large"
+        android:layout_marginTop="20dp"/>
+</LinearLayout>

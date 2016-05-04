@@ -28,6 +28,7 @@ public class Post implements Serializable
     private int postType;  //1求漂区，2放漂区，3电子书籍
     private int readCount;
     private String labelStatus="";
+    public static final String TAG="post";
     public String getLabelStatus()
     {
         return labelStatus;

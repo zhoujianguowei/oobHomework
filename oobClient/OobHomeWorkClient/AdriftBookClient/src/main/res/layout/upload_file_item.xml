@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/upload_file_item_filename"
+        style="@style/common_edittext_style"
+        android:hint="图书作者:"/>
+
+    <TextView
+        android:id="@+id/upload_file_item_file_author"
+        style="@style/common_edittext_style"
+        android:hint="图书名称:"
+        />
+
+    <TextView
+        android:id="@+id/upload_file_item_file_location"
+        style="@style/common_edittext_style"
+        android:hint="资源位置:"/>
+</LinearLayout>

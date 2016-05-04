@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.klicen.constant.BitmapUtil;
@@ -22,14 +24,17 @@ import adriftbook.entity.User;
 public class PostMainActivity extends SupActivityHandleFragment
         implements PostMainFragment.OnPostItemClickListener, Handler.Callback,
         BookBaseAdapter.OnBookListDownloadButtonClickListener,
-        PostDetailFragment.OnBookListItemClickListener
+        PostDetailFragment.OnBookListItemClickListener,
+        PostMainFragment.OnPopupWindowItemClickListener
 {
 
     PostMainFragment postMainFragment;
     PostDetailFragment postDetailFragment;
+    SendPostFragment sendPostFragment;
     FragmentManager fragmentManager;
     private ProgressDialog progressDialog;
-    public static User CURRENT_USER;
+    public static User user;
+    public static final String SETTING_CONTENT = "setting_content";
     private void showProgressDialog(String msg)
     {
         if (progressDialog == null)
@@ -50,7 +55,7 @@ public class PostMainActivity extends SupActivityHandleFragment
         if (postMainFragment == null)
             postMainFragment = new PostMainFragment();
         postMainFragment.setArguments(getIntent().getExtras());
-        CURRENT_USER = (User) getIntent().getSerializableExtra(User.TAG);
+        user = (User) getIntent().getSerializableExtra(User.TAG);
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.activity_post_navigation_bar_fr_container,
@@ -100,15 +105,36 @@ public class PostMainActivity extends SupActivityHandleFragment
         bundle.putParcelable("bitmap", BitmapUtil
                 .getThumbBitmap(bm, PostDetailFragment.PER_BOOK_ITEM_IMAGE_WIDTH,
                         PostDetailFragment.PER_BOOK_ITEM_IMAGE_HEIGHT));
-        bundle.putSerializable("post", post);
+        bundle.putSerializable(Post.TAG, post);
         commentFragment.setArguments(bundle);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.activity_post_navigation_bar_fr_container,
                 new NavigationBarFragment(), NavigationBarFragment.TAG);
-        transaction.add(R.id.activity_post_content_container, commentFragment);
+        transaction.add(R.id.activity_post_content_container, commentFragment,
+                CommentAdriftBookFragment.TAG);
         transaction.hide(postDetailFragment);
         transaction.addToBackStack(null);
         transaction.commit();
         setTapFragment(fragmentManager, CommentAdriftBookFragment.TAG);
+    }
+    @Override public void onPopupItemClick(View view)
+    {
+        sendPostFragment = new SendPostFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(User.TAG, user);
+        bundle.putString(SETTING_CONTENT,
+                ((TextView) view).getText().toString().trim());
+        sendPostFragment.setArguments(bundle);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.activity_post_navigation_bar_fr_container,
+                new NavigationBarFragment(), NavigationBarFragment.TAG);
+        fragmentTransaction
+                .add(R.id.activity_post_content_container, sendPostFragment,
+                        SendPostFragment.TAG);
+        fragmentTransaction.hide(postMainFragment);
+        fragmentTransaction.show(sendPostFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        setSelectedFragmentTag(SendPostFragment.TAG);
     }
 }

@@ -2,27 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical"
-    android:background="@color/cyan">
+              android:background="@color/cyan"
+              android:orientation="vertical">
 
     <TextView
-        android:id="@+id/fragment_post_main_pop_setting_sendpost_tv"
+        android:id="@+id/fragment_post_main_pop_window_sendpost_tv"
         style="@style/pop_window_setting_edittext_style"
         android:text="发帖"
         />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/shallow_blue"/>
+
     <TextView
-        android:id="@+id/fragment_pop_window_setting_download_tv"
+        android:id="@+id/fragment_post_main_pop_window_download_tv"
         style="@style/pop_window_setting_edittext_style"
         android:text="下载"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/shallow_blue"/>
+
     <TextView
-        android:id="@+id/fragment_pop_window_setting_myinfo_tv"
+        android:id="@+id/fragment_post_main_pop_window_myinfo_tv"
         style="@style/pop_window_setting_edittext_style"
         android:text="个人中心"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/shallow_blue"/>
+
     <TextView
-        android:id="@+id/fragment_pop_window_setting_set_tv"
+        android:id="@+id/fragment_post_main_pop_window_set_tv"
         style="@style/pop_window_setting_edittext_style"
         android:text="设置"/>
 
