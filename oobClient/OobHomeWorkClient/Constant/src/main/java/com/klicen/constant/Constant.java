@@ -14,7 +14,7 @@ public class Constant
     public static final String SUCCESS_VALUE = "success";
     public static final String FAIL_VALUE = "fail";
     public static final String INFO_KEY = "info";
-    public static final String SERVER_CODE = "ISO-8859-1";
+    public static final String SERVER_CODE = "UTF-8";
     public static final String DEFAULT_CODE = "UTF-8";
     public static final int PER_REQUEST_ITEMS = 10;   //每次返回的帖子(post)个数
     public static final String HTTP_CONTENT_TYPE = "Content-Type";//设置请求header字段

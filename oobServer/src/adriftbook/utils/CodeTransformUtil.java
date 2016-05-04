@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 public class CodeTransformUtil
 {
 
-    private static String serverCode = "ISO-8859-1";
+    private static String serverCode = "UTF-8";
     private static String defaulCode = "UTF-8";
     public static void setServerCode(String serverCode)
     {

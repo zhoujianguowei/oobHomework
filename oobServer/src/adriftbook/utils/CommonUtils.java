@@ -1,25 +1,17 @@
 package adriftbook.utils;
-import com.sun.org.glassfish.gmbal.NameValue;
-
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.RequestFacade;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.net.URLDecoder;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-
-import javafx.beans.binding.StringBinding;
 /**
  * Created by Administrator on 2016/4/30.
  */
@@ -42,7 +34,6 @@ public class CommonUtils
         {
             e.printStackTrace();
         }
-        System.out.println("postcontent:" + postContent);
         for (int i = 0; i < nameValuePairs.length; i++)
         {
             if (nameValuePairs[i] == null || nameValuePairs[i].trim().equals(""))
@@ -59,7 +50,6 @@ public class CommonUtils
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < bytes.length && bytes[i] != '\0'; i++)
             builder.append(bytes[i] + " ");
-        System.out.println(builder.toString());
     }
     public static byte[] getRequestPostData(HttpServletRequest req)
     {
