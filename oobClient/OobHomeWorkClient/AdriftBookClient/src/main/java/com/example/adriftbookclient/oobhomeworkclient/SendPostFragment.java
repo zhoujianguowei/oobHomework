@@ -14,11 +14,25 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jianguo.adriftbookclient.customviews.MyScrollView;
+import com.klicen.constant.Constant;
 import com.klicen.navigationbar.BackStackFragmentWithProgressDialog;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.apache.http.Header;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import adapter.UploadFileAdapter;
 import adriftbook.entity.Post;
@@ -32,7 +46,7 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
         View.OnClickListener, AdapterView.OnItemSelectedListener, TextWatcher
 {
 
-    Spinner postType;
+    Spinner postTypeSpinner;
     EditText postTitle;
     EditText postContent;
     Button addFileBt;
@@ -40,11 +54,12 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
     Button startUploadFileBt;
     User user;
     public static final String TAG = "sendpostfragment";
-    private static final int POST_CONTENT_HEIGHT = ScreenSize.getScreenHeight() / 4;
+    private static final int POST_CONTENT_HEIGHT = ScreenSize.getScreenHeight() / 5;
     private String[] arrayString = new String[]{"求漂区", "放漂区", "电子书籍"};
     boolean isSpinnerFirstSetAdapter = true;
     ArrayList<UploadFile> uploadFileList = new ArrayList<>();
     UploadFileAdapter uploadFileAdapter;
+    private int currentPostType;
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState)
     {
@@ -55,7 +70,7 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
         myScrollView.setDownwardScroll(true);
         myScrollView.setUpwardScroll(true);
         user = (User) getArguments().getSerializable(User.TAG);
-        postType = (Spinner) view
+        postTypeSpinner = (Spinner) view
                 .findViewById(R.id.fragment_send_post_post_type_spinner);
         postTitle = (EditText) view
                 .findViewById(R.id.fragment_send_post_post_title_et);
@@ -67,7 +82,7 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                 Post.REQUEST_BOOK_AREA);
         fileLv.setAdapter(uploadFileAdapter);
         addFileBt = (Button) view
-                .findViewById(R.id.fragment_send_post_upload_file_bt);
+                .findViewById(R.id.fragment_send_post_add_file_bt);
         startUploadFileBt = (Button) view
                 .findViewById(R.id.fragment_send_post_start_upload_bt);
         //没有选择发帖类型，不可编辑
@@ -79,22 +94,36 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
         startUploadFileBt.setEnabled(false);
         postTitle.addTextChangedListener(this);
         postContent.addTextChangedListener(this);
-        postType.setOnItemSelectedListener(this);
+        postTypeSpinner.setOnItemSelectedListener(this);
         String[] spinnerFirstArrays = getResources()
                 .getStringArray(R.array.post_type_arrays);
-        postType.setAdapter(new ArrayAdapter<String>(getActivity(),
+        postTypeSpinner.setAdapter(new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, spinnerFirstArrays));
         addFileBt.setOnClickListener(this);
         postTitle.addTextChangedListener(this);
         postContent.addTextChangedListener(this);
         startUploadFileBt.setOnClickListener(this);
-        RelativeLayout.LayoutParams postContentParams = (RelativeLayout.LayoutParams) postContent
-                .getLayoutParams();
-        postContentParams.height = POST_CONTENT_HEIGHT;
+        postContent.setMinHeight(ScreenSize.getScreenHeight() / 10);
+     /*   RelativeLayout.LayoutParams postContentParams = (RelativeLayout.LayoutParams)
+                postContent
+                        .getLayoutParams();
+        postContentParams.height= POST_CONTENT_HEIGHT;*/
         return view;
     }
     @Override public void onClick(View v)
     {
+        switch (v.getId())
+        {
+            case R.id.fragment_send_post_start_upload_bt:
+                if (uploadFileList.isEmpty())
+                {
+                    Toast.makeText(getActivity(), "你还没有添加图书", Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }
+                startUploadFiles(user.getUserId(), uploadFileList);
+                return;
+        }
         if (getActivity() instanceof SendPostFragmentOnClickListener)
         {
             /**
@@ -102,8 +131,131 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
              */
             ((SendPostFragmentOnClickListener) getActivity())
                     .sendPostFragmentOnClick(
-                            v, postType.getSelectedItemPosition() + 1);
+                            v, postTypeSpinner.getSelectedItemPosition() + 1);
         }
+    }
+    private InputStream getInputStream(Object obj, String character)
+    {
+        InputStream inputStream = null;
+        try
+        {
+            if (obj instanceof String || obj instanceof Number)
+                inputStream = new ByteArrayInputStream(
+                        obj.toString().getBytes(character));
+            else if (obj instanceof File)
+                inputStream = new FileInputStream((File) obj);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return inputStream;
+    }
+    /**
+     * 上传文件
+     * @param userId
+     * @param uploadFileList
+     */
+    protected void startUploadFiles(int userId, ArrayList<UploadFile> uploadFileList)
+    {
+        RequestParams requestParams = new RequestParams();
+        requestParams.put(User.USER_ID,
+                getInputStream(userId + "", Constant.DEFAULT_CODE));
+        requestParams.put("bookcount", uploadFileList.size());
+        requestParams.put(Post.POST_TYPE, currentPostType);
+        requestParams.put(Post.POST_TITLE, postTitle.getText().toString().trim());
+        requestParams
+                .put(Post.POST_CONTENT, postContent.getText().toString().trim());
+        ArrayList<HashMap<String, Object>> mapList = new ArrayList<>();
+        //不能使用Map传输资源文件，否则服务端无法接收,改成post[index][item]的形式
+        //然后直接放在RequestParams中
+        int i = 0;
+        for (UploadFile uploadFile : uploadFileList)
+        {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put(UploadFile.FILE_NAME,
+                    getInputStream(uploadFile.getFileName(), Constant.DEFAULT_CODE));
+            map.put(UploadFile.FILE_AUTHOR,
+                    getInputStream(uploadFile.getFileAuthor(),
+                            Constant.DEFAULT_CODE));
+            File file = uploadFile.getFile();
+            try
+            {
+                if (file != null)
+                {
+//                map.put(UploadFile.FILE,
+//                        file);
+                    requestParams
+                            .put(Post.TAG + "[" + i + "]" + "[" + UploadFile.FILE +
+                                            "]",
+                                    file);
+                }
+                File imageFile = uploadFile.getImageFile();
+                if (imageFile != null)
+                {
+//                map.put(UploadFile.IMAGE_FILE,
+//                        getInputStream(file, Constant.DEFAULT_CODE));
+                    requestParams
+                            .put(Post.TAG + "[" + i + "]" + "[" +
+                                            UploadFile.IMAGE_FILE + "]",
+                                    imageFile);
+                }
+            }
+            catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+            mapList.add(map);
+            i++;
+        }
+        requestParams.put(Post.TAG, mapList);
+        AsyncHttpClient httpClient = new AsyncHttpClient();
+        httpClient.post(Constant.CONSTANT_IP + "upload", requestParams,
+                new AsyncHttpResponseHandler()
+                {
+                    @Override public void onStart()
+                    {
+                        super.onStart();
+                        Toast.makeText(getActivity(), "开始上传", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers,
+                                          byte[] responseBody)
+                    {
+                        try
+                        {
+                            Toast.makeText(getActivity(),
+                                    new String(responseBody, Constant.DEFAULT_CODE),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        catch (UnsupportedEncodingException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers,
+                                          byte[] responseBody,
+                                          Throwable error)
+                    {
+                        try
+                        {
+                            if (responseBody != null && responseBody.length > 0)
+                                Toast.makeText(getActivity(),
+                                        new String(responseBody,
+                                                Constant.DEFAULT_CODE),
+                                        Toast.LENGTH_LONG).show();
+                            else
+                                Toast.makeText(getActivity(), "服务器内部错误",
+                                        Toast.LENGTH_LONG).show();
+                        }
+                        catch (UnsupportedEncodingException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
     @Override protected View onTitleCreate()
     {
@@ -133,11 +285,11 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                 postTitle.setFocusableInTouchMode(true);
                 postContent.setFocusable(true);
                 postContent.setFocusableInTouchMode(true);
-                postType.setAdapter(new ArrayAdapter<String>(getActivity(),
+                postTypeSpinner.setAdapter(new ArrayAdapter<String>(getActivity(),
                         android.R.layout.simple_list_item_1, arrayString));
                 if (position != 0)
                 {
-                    postType.setSelection(position - 1);
+                    postTypeSpinner.setSelection(position - 1);
                     handleSelectedPost(position - 1);
                 }
                 isSpinnerFirstSetAdapter = false;
@@ -148,7 +300,11 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
         {
             postTitle.setText("");
             postContent.setText("");
+            addFileBt.setEnabled(false);
+            startUploadFileBt.setEnabled(false);
+            currentPostType = position + 1;
             uploadFileList.clear();
+            uploadFileAdapter.notifyDataSetChanged();
             handleSelectedPost(position);
         }
     }

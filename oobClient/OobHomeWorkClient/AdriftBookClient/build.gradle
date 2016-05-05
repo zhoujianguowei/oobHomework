@@ -28,4 +28,6 @@ dependencies {
     compile project(':NavigationBar')
     compile project(':CustomViewsModule')
     compile project(':PullRefreshLayoutLibraryModule')
+    compile files('libs/httpclient-4.4.1.1.jar')
+
 }

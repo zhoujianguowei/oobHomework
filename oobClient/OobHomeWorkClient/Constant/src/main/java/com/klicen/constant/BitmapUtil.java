@@ -30,7 +30,7 @@ public class BitmapUtil
     /**
      * 默认Bitmap压缩文件大小
      */
-    private static final int DEFAULT_COMPRESS_BITMAP_SIZE = 5* 1024 * 100;
+    private static final int DEFAULT_COMPRESS_BITMAP_SIZE = 5 * 1024 * 100;
     /**
      * Converts a immutable bitmap to a mutable bitmap. This operation doesn't allocates
      * more memory that there is already allocated.
@@ -128,6 +128,32 @@ public class BitmapUtil
             }*/
         }
         return bm;
+    }
+    public static File getClipBitmapFile(String location, String fileName, Bitmap bm,
+                                         int requireWidth, int requireHeight)
+    {
+        File newFile = null;
+        if (location != null && fileName != null)
+            newFile = new File(location, fileName);
+        else
+            newFile = new File(
+                    Environment.getExternalStorageDirectory() + File.separator +
+                            "#new#.png");
+        try
+        {
+            newFile.createNewFile();
+            FileOutputStream outputStream = new FileOutputStream(newFile);
+            bm = getThumbBitmap(bm, requireWidth, requireHeight);
+            byte[] bmBytes = Bitmap2Bytes(bm);
+            outputStream.write(bmBytes);
+            bm.recycle();
+            outputStream.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return newFile;
     }
     public static File saveAndCompressBitmap(String location, String fileName,
                                              Bitmap bm, int compressSize)

@@ -12,6 +12,10 @@ public class UploadFile implements Serializable
     private File imageFile;
     private File file;
     private String description;
+    public static final String FILE_NAME="file_name";
+    public static final String FILE_AUTHOR="file_author";
+    public static final String IMAGE_FILE="image_file";
+    public static final String FILE="file";
     public File getImageFile()
     {
         return imageFile;

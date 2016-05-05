@@ -30,6 +30,7 @@ import adriftbook.entity.AdriftBook;
 import adriftbook.entity.Post;
 import adriftbook.entity.UploadFile;
 import adriftbook.entity.User;
+import utils.ScreenSize;
 /**
  * Created by Administrator on 2016/4/28.
  */
@@ -64,9 +65,10 @@ public class PostMainActivity extends SupActivityHandleFragment
                 File captureFile = new File(captureImagePath);
                 if (!captureFile.exists())
                     return;
-                BitmapUtil.saveAndCompressBitmap(captureFile.getParent(),
-                        captureFile.getName(),
-                        BitmapFactory.decodeFile(captureImagePath), -1);
+                BitmapUtil.getClipBitmapFile(captureFile.getParent(),
+                        captureFile.getName(), BitmapFactory.decodeFile(
+                                captureImagePath), ScreenSize.getScreenWidth() / 6,
+                        ScreenSize.getScreenHeight() / 7);
                 addFileFragment
                         .refreshSelectFile(captureFile, AddFileFragment.IMAGE_TYPE);
             } else if (requestCode == SELECT_FILE_REQUESTCODE)
@@ -185,7 +187,7 @@ public class PostMainActivity extends SupActivityHandleFragment
     {
         switch (v.getId())
         {
-            case R.id.fragment_send_post_upload_file_bt:
+            case R.id.fragment_send_post_add_file_bt:
                 addFileFragment = new AddFileFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt(Post.POST_TYPE, postType);
@@ -244,8 +246,7 @@ public class PostMainActivity extends SupActivityHandleFragment
             case R.id.fragment_add_file_deliver_file_bt:
                 sendPostFragment.refreshBookLv(uploadFile, 1);
                 fragmentManager.popBackStack();
-                setTapFragment(fragmentManager,SendPostFragment.TAG);
-
+                setTapFragment(fragmentManager, SendPostFragment.TAG);
                 break;
         }
     }
