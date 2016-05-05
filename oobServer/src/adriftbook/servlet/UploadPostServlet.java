@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import adriftbook.entity.Post;
 import adriftbook.entity.SubUploadFile;
 import adriftbook.entity.User;
+import adriftbook.utils.CommonUtils;
 import adriftbook.utils.Constant;
 /**
  * Created by Administrator on 2016/5/4.
@@ -34,12 +35,12 @@ import adriftbook.utils.Constant;
 public class UploadPostServlet extends HttpServlet
 {
 
-    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException
-    {
-//        super.doGet(req, resp);
-        doPost(req, resp);
-    }
+    //    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+//            throws ServletException, IOException
+//    {
+////        super.doGet(req, resp);
+//        doPost(req, resp);
+//    }
     @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException
     {
@@ -50,6 +51,7 @@ public class UploadPostServlet extends HttpServlet
                 .write(("当前根目录是:" + uploadRootPath).getBytes(Constant.DEFAULT_CODE));*/
 //        DiskFileItemFactory diskFileItemFactory=new DiskFileItemFactory();
         resp.setContentType("text/html");
+        System.out.println("请求到达了");
         // 创建文件项目工厂对象
         DiskFileItemFactory factory = new DiskFileItemFactory();
         // 设置文件上传路径
@@ -82,9 +84,10 @@ public class UploadPostServlet extends HttpServlet
             {
                 String name = item.getFieldName();
                 if (name.equals("content"))
-                    inputStream2File(item.getInputStream(),
-                            uploadRoot +
-                                    File.separator + item.getName());
+//                    inputStream2File(item.getInputStream(),
+//                            uploadRoot +
+//                                    File.separator + item.getName());
+                    postContent = inputStream2String(item.getInputStream());
                 if (name.equals("bookcount"))
                     bookCount = Integer.parseInt(item.getString());
                 if (name.equals(User.USER_ID))
@@ -119,12 +122,12 @@ public class UploadPostServlet extends HttpServlet
                     if (item.equals(SubUploadFile.FILE))
                     {
                         uploadFileList.get(index)
-                                .setFile(new File(getUploadFileName(listItem)));
+                                .setFile(new File(listItem.getName()));
                         uploadFileList.get(index).setFileInputStream(is);
                     } else if (item.equals(SubUploadFile.IMAGE_FILE))
                     {
                         uploadFileList.get(index)
-                                .setImageFile(new File(getUploadFileName(listItem)));
+                                .setImageFile(new File(listItem.getName()));
                         uploadFileList.get(index).setImageInputStream(is);
                     } else if (item.equals(SubUploadFile.FILE_AUTHOR))
                         uploadFileList.get(index)
@@ -150,22 +153,37 @@ public class UploadPostServlet extends HttpServlet
      * @param subUploadFile
      * @param userId
      */
-    private void writeFileToStorage(SubUploadFile subUploadFile, String upload,
+    private void writeFileToStorage(SubUploadFile subUploadFile, String uploadRoot,
                                     int userId)
     {
-        File imageDir = new File(upload, "bookImage");
-        File fileDir = new File(upload, "ebookFile");
+        File imageDir = new File(uploadRoot, "bookImage");
+        File fileDir = new File(uploadRoot, "ebookFile");
+        if (!imageDir.exists())
+            imageDir.mkdirs();
+        if (!fileDir.exists())
+            fileDir.mkdirs();
         File imageFile = subUploadFile.getImageFile();
         File file = subUploadFile.getFile();
         Calendar calendar = Calendar.getInstance();
+        String extentionName = null;
         if (imageFile != null)
         {
+            int index = imageFile.getName().lastIndexOf(".");
+            String imageName = userId + "" + calendar.getTimeInMillis() +
+                    imageFile.getName().substring(index);
             inputStream2File(subUploadFile.getImageInputStream(), new File(imageDir,
-                    userId + "" + calendar.getTimeInMillis() + "img.jpg"));
+                    CommonUtils.transformFileNameToOctalByteString(
+                            imageName)));
         }
         if (file != null)
-            inputStream2File(subUploadFile.getImageInputStream(),
-                    new File(userId + "" + calendar.getTimeInMillis()));
+        {
+            int index = file.getName().lastIndexOf(".");
+            String fileName = userId + "" + calendar.getTimeInMillis() +
+                    file.getName().substring(index);
+            inputStream2File(subUploadFile.getFileInputStream(),
+                    new File(fileDir, CommonUtils
+                            .transformFileNameToOctalByteString(fileName)));
+        }
     }
     /**
      * 获取上传文件的文件名称
@@ -242,7 +260,7 @@ public class UploadPostServlet extends HttpServlet
     public static void inputStream2File(InputStream is, String savePath)
             throws Exception
     {
-        System.out.println("文件保存路径为:" + savePath);
+//        System.out.println("文件保存路径为:" + savePath);
         File file = new File(savePath);
         InputStream inputSteam = is;
         BufferedInputStream fis = new BufferedInputStream(inputSteam);

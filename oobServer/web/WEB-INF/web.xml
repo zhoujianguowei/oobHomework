@@ -25,7 +25,7 @@
     </servlet>
     <servlet>
         <servlet-name>UploadFile</servlet-name>
-        <servlet-class>adriftbook.servlet.UploadFileServlet</servlet-class>
+        <servlet-class>adriftbook.servlet.UploadPostServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
