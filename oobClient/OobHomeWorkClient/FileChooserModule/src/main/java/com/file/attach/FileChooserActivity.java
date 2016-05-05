@@ -1,5 +1,7 @@
 package com.file.attach;
+import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -74,6 +76,10 @@ public class FileChooserActivity extends ListActivity
         } else
         {
             onFileClick(o);
+            Intent intent = getIntent();
+            intent.putExtra("path", o.getPath());
+            setResult(Activity.RESULT_OK, intent);
+            FileChooserActivity.this.finish();
         }
     }
     /*

@@ -9,8 +9,17 @@ public class UploadFile implements Serializable
 
     private String fileName;
     private String fileAuthor;
+    private File imageFile;
     private File file;
     private String description;
+    public File getImageFile()
+    {
+        return imageFile;
+    }
+    public void setImageFile(File imageFile)
+    {
+        this.imageFile = imageFile;
+    }
     public String getFileName()
     {
         return fileName;

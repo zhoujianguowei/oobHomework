@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
@@ -26,6 +27,10 @@ import java.nio.channels.FileChannel;
 public class BitmapUtil
 {
 
+    /**
+     * 默认Bitmap压缩文件大小
+     */
+    private static final int DEFAULT_COMPRESS_BITMAP_SIZE = 5* 1024 * 100;
     /**
      * Converts a immutable bitmap to a mutable bitmap. This operation doesn't allocates
      * more memory that there is already allocated.
@@ -124,6 +129,34 @@ public class BitmapUtil
         }
         return bm;
     }
+    public static File saveAndCompressBitmap(String location, String fileName,
+                                             Bitmap bm, int compressSize)
+    {
+        if (compressSize <= 0)
+            compressSize = DEFAULT_COMPRESS_BITMAP_SIZE;
+        File newFile = null;
+        if (location != null && fileName != null)
+            newFile = new File(location, fileName);
+        else
+            newFile = new File(
+                    Environment.getExternalStorageDirectory() + File.separator +
+                            "#new#.png");
+        try
+        {
+            newFile.createNewFile();
+            FileOutputStream outputStream = new FileOutputStream(newFile);
+            byte[] bmBytes = getBitmapCompressedBytesByQuality(bm, compressSize);
+//            bm.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.write(bmBytes);
+            outputStream.flush();
+            outputStream.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return newFile;
+    }
     public static Bitmap getThumbBitmap(String path, float width, float height)
     {
         Options opts = new Options();
@@ -208,14 +241,17 @@ public class BitmapUtil
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         // 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         bm.compress(Bitmap.CompressFormat.JPEG, 90, baos);
-        int options = 80;
-        while (baos.toByteArray().length / 1024 > size)
+        int options = 83;
+        while (baos.toByteArray().length > size)
         {
             // 循环判断如果压缩后图片是否大于size KB,大于继续压缩
             baos.reset();// 重置baos即清空baos
             bm.compress(Bitmap.CompressFormat.JPEG, options,
                     baos);// 这里压缩options%，把压缩后的数据存放到baos中
-            options -= 8;// 每次都减少8
+            if (options - 8 > 0)
+                options -= 8;// 每次都减少8
+            else
+                break;
         }
         byte[] b = baos.toByteArray();
         ByteArrayInputStream isBm = new ByteArrayInputStream(
@@ -229,14 +265,19 @@ public class BitmapUtil
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         // 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         bm.compress(Bitmap.CompressFormat.JPEG, 90, baos);
-        int options = 80;
-        while (baos.toByteArray().length / 1024 > size)
+        int options = 83;
+        while (baos.toByteArray().length > size)
         {
             // 循环判断如果压缩后图片是否大于size KB,大于继续压缩
             baos.reset();// 重置baos即清空baos
             bm.compress(Bitmap.CompressFormat.JPEG, options,
                     baos);// 这里压缩options%，把压缩后的数据存放到baos中
-            options -= 8;// 每次都减少8
+            if (options - 10 < 1)
+                break;
+            if (options < 21)
+                options -= 10;
+            else
+                options -= 20;// 每次都减少8
         }
         return baos.toByteArray();
     }

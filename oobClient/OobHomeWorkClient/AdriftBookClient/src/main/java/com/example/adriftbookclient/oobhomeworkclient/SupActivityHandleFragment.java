@@ -11,7 +11,7 @@ public class SupActivityHandleFragment extends AppCompatActivity
     public static final String CURRENT_FRAGMENT_TAG_KEY = "current_fragment_tag_key";
     String[] tags = new String[]{"registerfragment", "loginfragment",
             "postmainfragment", "postdetailfragment",
-            "commentadriftbookfragment","sendpostfragment"};
+            "commentadriftbookfragment", "sendpostfragment","addfilefragment"};
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -23,7 +23,12 @@ public class SupActivityHandleFragment extends AppCompatActivity
             setTapFragment(getSupportFragmentManager(), currentTag);
         }
     }
-    protected void setSelectedFragmentTag(String selectedFragmentTag)
+    @Override protected void onResume()
+    {
+        super.onResume();
+        setTapFragment(getSupportFragmentManager(), currentTag);
+    }
+    protected final void setSelectedFragmentTag(String selectedFragmentTag)
     {
         currentTag = selectedFragmentTag;
     }

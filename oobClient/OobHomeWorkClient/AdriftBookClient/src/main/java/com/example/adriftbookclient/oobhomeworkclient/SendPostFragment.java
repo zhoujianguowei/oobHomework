@@ -15,11 +15,14 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.jianguo.adriftbookclient.customviews.MyScrollView;
 import com.klicen.navigationbar.BackStackFragmentWithProgressDialog;
 
-import java.io.File;
 import java.util.ArrayList;
 
+import adapter.UploadFileAdapter;
+import adriftbook.entity.Post;
+import adriftbook.entity.UploadFile;
 import adriftbook.entity.User;
 import utils.ScreenSize;
 /**
@@ -32,22 +35,25 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
     Spinner postType;
     EditText postTitle;
     EditText postContent;
-    Button addFile;
+    Button addFileBt;
     ListView fileLv;
-    Button startUploadFile;
+    Button startUploadFileBt;
     User user;
     public static final String TAG = "sendpostfragment";
     private static final int POST_CONTENT_HEIGHT = ScreenSize.getScreenHeight() / 4;
     private String[] arrayString = new String[]{"求漂区", "放漂区", "电子书籍"};
     boolean isSpinnerFirstSetAdapter = true;
-    ArrayList<File> fileList = new ArrayList<>();
-    ArrayList<String> fileNameList = new ArrayList<>();
-    ArrayAdapter<String> fileLvAdapter;
+    ArrayList<UploadFile> uploadFileList = new ArrayList<>();
+    UploadFileAdapter uploadFileAdapter;
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState)
     {
 //        return super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_send_post, container, false);
+        MyScrollView myScrollView = (MyScrollView) view
+                .findViewById(R.id.fragment_send_post_myscrollview);
+        myScrollView.setDownwardScroll(true);
+        myScrollView.setUpwardScroll(true);
         user = (User) getArguments().getSerializable(User.TAG);
         postType = (Spinner) view
                 .findViewById(R.id.fragment_send_post_post_type_spinner);
@@ -57,19 +63,20 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                 .findViewById(R.id.fragment_send_post_post_content_et);
         fileLv = (ListView) view
                 .findViewById(R.id.fragment_send_post_upload_book_lv);
-        fileLvAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_dropdown_item_1line, fileNameList);
-        fileLv.setAdapter(fileLvAdapter);
-        addFile = (Button) view.findViewById(R.id.fragment_send_post_upload_file_bt);
-        startUploadFile = (Button) view
+        uploadFileAdapter = new UploadFileAdapter(getActivity(), uploadFileList,
+                Post.REQUEST_BOOK_AREA);
+        fileLv.setAdapter(uploadFileAdapter);
+        addFileBt = (Button) view
+                .findViewById(R.id.fragment_send_post_upload_file_bt);
+        startUploadFileBt = (Button) view
                 .findViewById(R.id.fragment_send_post_start_upload_bt);
         //没有选择发帖类型，不可编辑
         postTitle.setFocusable(false);
         postTitle.setFocusableInTouchMode(false);
         postContent.setFocusable(false);
         postContent.setFocusableInTouchMode(false);
-        addFile.setEnabled(false);
-        startUploadFile.setEnabled(false);
+        addFileBt.setEnabled(false);
+        startUploadFileBt.setEnabled(false);
         postTitle.addTextChangedListener(this);
         postContent.addTextChangedListener(this);
         postType.setOnItemSelectedListener(this);
@@ -77,8 +84,10 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                 .getStringArray(R.array.post_type_arrays);
         postType.setAdapter(new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, spinnerFirstArrays));
-        addFile.setOnClickListener(this);
-        startUploadFile.setOnClickListener(this);
+        addFileBt.setOnClickListener(this);
+        postTitle.addTextChangedListener(this);
+        postContent.addTextChangedListener(this);
+        startUploadFileBt.setOnClickListener(this);
         RelativeLayout.LayoutParams postContentParams = (RelativeLayout.LayoutParams) postContent
                 .getLayoutParams();
         postContentParams.height = POST_CONTENT_HEIGHT;
@@ -86,6 +95,15 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
     }
     @Override public void onClick(View v)
     {
+        if (getActivity() instanceof SendPostFragmentOnClickListener)
+        {
+            /**
+             * 需要与post的postype保持一致
+             */
+            ((SendPostFragmentOnClickListener) getActivity())
+                    .sendPostFragmentOnClick(
+                            v, postType.getSelectedItemPosition() + 1);
+        }
     }
     @Override protected View onTitleCreate()
     {
@@ -118,32 +136,44 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                 postType.setAdapter(new ArrayAdapter<String>(getActivity(),
                         android.R.layout.simple_list_item_1, arrayString));
                 if (position != 0)
+                {
                     postType.setSelection(position - 1);
+                    handleSelectedPost(position - 1);
+                }
                 isSpinnerFirstSetAdapter = false;
+                return;
             }
         }
         if (!isSpinnerFirstSetAdapter)
         {
+            postTitle.setText("");
+            postContent.setText("");
+            uploadFileList.clear();
             handleSelectedPost(position);
         }
     }
     /**
      *
      * @param selectedFile 添加的文件
-     * @param type 如果为0那么删除所有文件，为1添加文件
+     * @param operationType 如果为0那么删除所有文件，其它添加文件
      */
-    void refreshBookLv(File selectedFile, int type)
+    public void refreshBookLv(UploadFile selectedFile, int operationType)
     {
-        if (type == 0)
+        if (operationType == 0)
+            uploadFileList.clear();
+        else
+            uploadFileList.add(selectedFile);
+        if (uploadFileList.size() > 0)
+            addFileBt.setText("继续添加");
+        else
+            addFileBt.setText("上传资源");
+        if (uploadFileList.size() >= 4)
         {
-            fileList.clear();
-            fileNameList.clear();
-        } else
-        {
-            fileList.add(selectedFile);
-            fileNameList.add(selectedFile.getName());
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) fileLv
+                    .getLayoutParams();
+            params.height = 3 * PostDetailFragment.PER_BOOK_ITEM_HEIGHT;
         }
-        fileLvAdapter.notifyDataSetChanged();
+        uploadFileAdapter.notifyDataSetChanged();
     }
     /**
      * 对于不同类型的post处理类型有所差异
@@ -154,11 +184,13 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
         switch (arrayString[position].trim())
         {
             case "求漂区":
-
+                uploadFileAdapter.setPostType(Post.REQUEST_BOOK_AREA);
                 break;
             case "放漂区":
+                uploadFileAdapter.setPostType(Post.SEND_BOOK_AREA);
                 break;
             case "电子书籍":
+                uploadFileAdapter.setPostType(Post.EBOOK_AREA);
                 break;
         }
     }
@@ -175,5 +207,20 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
     }
     @Override public void afterTextChanged(Editable s)
     {
+        if (postTitle.getText().toString().trim().length() < 4 ||
+                postContent.getText().toString().trim().length() < 6)
+        {
+            addFileBt.setEnabled(false);
+            startUploadFileBt.setEnabled(false);
+        } else
+        {
+            addFileBt.setEnabled(true);
+            startUploadFileBt.setEnabled(true);
+        }
+    }
+    interface SendPostFragmentOnClickListener
+    {
+
+        void sendPostFragmentOnClick(View v, int postType);
     }
 }
