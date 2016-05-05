@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import adriftbook.entity.Post;
+import adriftbook.entity.SubUploadFile;
 import adriftbook.entity.User;
 import adriftbook.utils.Constant;
 /**
@@ -119,7 +120,7 @@ public class UploadPostServlet extends HttpServlet
                     {
                         uploadFileList.get(index)
                                 .setFile(new File(getUploadFileName(listItem)));
-                        uploadFileList.get(index).setFileInputstream(is);
+                        uploadFileList.get(index).setFileInputStream(is);
                     } else if (item.equals(SubUploadFile.IMAGE_FILE))
                     {
                         uploadFileList.get(index)
