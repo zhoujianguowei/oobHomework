@@ -25,11 +25,13 @@ public class AdriftBook
     public static final int ENTITYBOOK = 0;
     public AdriftBook()
     {
+        rating=0;
     }
     @Override public String toString()
     {
         return "AdriftBook{" +
-                "bookId=" + bookId +
+                "comments=" + comments +
+                ", bookId=" + bookId +
                 ", bookName='" + bookName + '\'' +
                 ", author='" + author + '\'' +
                 ", rating=" + rating +

@@ -1,4 +1,8 @@
 package adriftbook.utils;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -22,7 +26,7 @@ public class MysqlDbConnection
     private static String password = "hello";
     private static Connection conn;
     private static Object obj = new Object();
-    public static Connection getConnection()
+    public static synchronized Connection getConnection()
     {
         try
         {
@@ -36,7 +40,27 @@ public class MysqlDbConnection
         }
         return conn;
     }
-    public static synchronized void execute(String sqlString)
+    /**
+     * 原子提交时候需要使用
+     * @param conn
+     * @param sqlString
+     */
+    public static void executeWithoutCloseConnection(Connection conn,
+                                                     String sqlString)
+    {
+        PreparedStatement preparedStatement = null;
+        try
+        {
+            preparedStatement = conn.prepareStatement(sqlString);
+            preparedStatement.execute(sqlString);
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    public static void execute(String sqlString)
     {
         Connection conn = getConnection();
         PreparedStatement preparedStatement = null;
@@ -60,6 +84,23 @@ public class MysqlDbConnection
             synchronized (MysqlDbConnection.class)
             {
                 Connection conn = getConnection();
+                rSet = conn.prepareStatement(sqlString).executeQuery();
+            }
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return rSet;
+    }
+    public static ResultSet getResultSet(Connection conn, String sqlString)
+    {
+        ResultSet rSet = null;
+        try
+        {
+            synchronized (MysqlDbConnection.class)
+            {
                 rSet = conn.prepareStatement(sqlString).executeQuery();
             }
         }
@@ -273,6 +314,23 @@ public class MysqlDbConnection
                         comment.getCommentBook().getBookId() + ")";
         MysqlDbConnection.execute(sqlString);
     }
+    public static InputStream getInputStream(Object obj, String character)
+    {
+        InputStream inputStream = null;
+        try
+        {
+            if (obj instanceof String || obj instanceof Number)
+                inputStream = new ByteArrayInputStream(
+                        obj.toString().getBytes(character));
+            else if (obj instanceof File)
+                inputStream = new FileInputStream((File) obj);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return inputStream;
+    }
     /**
      * 连接数据库netbookstore,同时预先插入图书
      *
@@ -289,8 +347,10 @@ public class MysqlDbConnection
        /* ArrayList<AdriftBook> books = getBooks();
         for (AdriftBook book : books)
             insertBookTable(book);*/
-        ArrayList<Comment> comments = getComments();
+    /*    ArrayList<Comment> comments = getComments();
         for (Comment comment : comments)
-            insertCommentTable(comment);
+            insertCommentTable(comment);*/
+        InputStream is=getInputStream("我是好人",Constant.DEFAULT_CODE);
+        System.out.println();
     }
 }

@@ -12,10 +12,37 @@ public class UploadFile implements Serializable
     private File imageFile;
     private File file;
     private String description;
-    public static final String FILE_NAME="file_name";
-    public static final String FILE_AUTHOR="file_author";
-    public static final String IMAGE_FILE="image_file";
-    public static final String FILE="file";
+    private String imageFileUrl;
+    public String getFileUrl()
+    {
+        return fileUrl;
+    }
+    public void setFileUrl(String fileUrl)
+    {
+        this.fileUrl = fileUrl;
+    }
+    public String getImageFileUrl()
+    {
+        return imageFileUrl;
+    }
+    @Override public String toString()
+    {
+        return "UploadFile{" +
+                "fileName='" + fileName + '\'' +
+                ", fileAuthor='" + fileAuthor + '\'' +
+                ", imageFileUrl='" + imageFileUrl + '\'' +
+                ", fileUrl='" + fileUrl + '\'' +
+                '}';
+    }
+    public void setImageFileUrl(String imageFileUrl)
+    {
+        this.imageFileUrl = imageFileUrl;
+    }
+    private String fileUrl;
+    public static final String FILE_NAME = "file_name";
+    public static final String FILE_AUTHOR = "file_author";
+    public static final String IMAGE_FILE = "image_file";
+    public static final String FILE = "file";
     public File getImageFile()
     {
         return imageFile;

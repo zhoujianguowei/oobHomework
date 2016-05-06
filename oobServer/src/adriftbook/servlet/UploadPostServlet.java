@@ -12,6 +12,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -24,11 +27,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import adriftbook.entity.AdriftBook;
+import adriftbook.entity.EBook;
 import adriftbook.entity.Post;
+import adriftbook.entity.PostContent;
 import adriftbook.entity.SubUploadFile;
 import adriftbook.entity.User;
 import adriftbook.utils.CommonUtils;
 import adriftbook.utils.Constant;
+import adriftbook.utils.MysqlCheckUtil;
+import adriftbook.utils.MysqlDbConnection;
+
+import static adriftbook.utils.CommonUtils.transformFileNameToOctalByteString;
 /**
  * Created by Administrator on 2016/5/4.
  */
@@ -139,14 +149,158 @@ public class UploadPostServlet extends HttpServlet
             }
             for (int i = 0; i < uploadFileList.size(); i++)
                 writeFileToStorage(uploadFileList.get(i), uploadRoot, userId);
+            //数据库相关操作
+            Post post = new Post();
+            post.setPostContent(new PostContent(postContent));
+            post.setPostTitle(postTitle);
+            post.setPostType(postType);
+            post.setReadCount(0);
+            post.setPostUser(MysqlCheckUtil.getUserInfo(userId));
+            ArrayList<AdriftBook> adriftBookArrayList = getAdriftbookList(
+                    uploadFileList, postType);
+            //做原子提交操作
+            Connection connection = MysqlDbConnection.getConnection();
+            connection.setAutoCommit(false);
+            int postId = insertPostTable(connection, post);
+            insertBookTable(connection, postId, adriftBookArrayList, postType);
+            connection.commit();
             resJObj.put(Constant.STATUS_KEY, Constant.SUCCESS_VALUE);
             resJObj.put(Constant.INFO_KEY, "文件上传成功");
+            System.out.println("文件上传成功");
         }
         catch (Exception e)
         {
             e.printStackTrace();
+            System.out.println("文件上传失败");
         }
         outputStream.write(resJObj.toString().getBytes(Constant.DEFAULT_CODE));
+    }
+    private void insertBookTable(Connection connection, int postId,
+                                 ArrayList<AdriftBook> adriftBookArrayList,
+                                 int postType)
+    {
+        ResultSet rSet = MysqlDbConnection
+                .getResultSet(connection, "select max(book_id) from book");
+        int bookId = -1;
+        try
+        {
+            rSet.next();
+            bookId = rSet.getInt(1);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return;
+        }
+        bookId++;
+        for (AdriftBook adriftBook : adriftBookArrayList)
+        {
+            String insertBookStr = null;
+            if (postType == Post.EBOOK_AREA)
+            {
+                EBook eBook = (EBook) adriftBook;
+                if (eBook.getBookImageUrl() != null)
+                    insertBookStr =
+                            "insert into book(book_id,bookname,author,type,bookimageurl,ebookurl,post_id) values(" +
+                                    bookId + ",'" + eBook.getBookName() + "','" +
+                                    eBook.getAuthor() + "," + eBook.getType() +
+                                    ",'" + eBook.getBookImageUrl() + "','" +
+                                    eBook.getEbookUrl() + "'," + postId + ")";
+                else
+                    insertBookStr =
+                            "insert into book(book_id,bookname,author,type,ebookurl,post_id) values(" +
+                                    bookId + ",'" + eBook.getBookName() + "','" +
+                                    eBook.getAuthor() + "," + eBook.getType() +
+                                    ",'" +
+                                    eBook.getEbookUrl() + "'," + postId + ")";
+            } else
+            {
+                if (adriftBook.getBookImageUrl() != null)
+                    insertBookStr =
+                            "insert into book(book_id,bookname,author,type,bookimageurl,post_id) values(" +
+                                    bookId + ",'" + adriftBook.getBookName() +
+                                    "','" +
+                                    adriftBook.getAuthor() + "," +
+                                    adriftBook.getType() +
+                                    ",'" + adriftBook.getBookImageUrl() + "'," +
+                                    postId + ")";
+                else
+                    insertBookStr =
+                            "insert into book(book_id,bookname,author,type,post_id) values(" +
+                                    bookId + ",'" + adriftBook.getBookName() +
+                                    "','" +
+                                    adriftBook.getAuthor() + "," +
+                                    adriftBook.getType() +
+                                    "," +
+                                    postId + ")";
+            }
+            MysqlDbConnection
+                    .executeWithoutCloseConnection(connection, insertBookStr);
+            bookId++;
+        }
+    }
+    /**
+     * 向post表格插入数据
+     * @param post
+     * @return
+     */
+    private int insertPostTable(Connection connection, Post post)
+    {
+        ResultSet rSet = null;
+        rSet = MysqlDbConnection
+                .getResultSet(connection, "select max(post_id) from post");
+        int insertPostId = -1;
+        try
+        {
+            rSet.next();
+            int maxId = rSet.getInt(1);
+            post.setPostId(maxId + 1);
+            insertPostId = maxId + 1;
+            String insertPostSqlString =
+                    "insert into post(post_id,posttitle,content,posttype,postdate,readcount,user_id) values(" +
+                            post.getPostId() + ",'" + post.getPostTitle() + "','" +
+                            post.getPostContent().getPostContentDetail() + "'," +
+                            post.getPostType() + "," +
+                            Calendar.getInstance().getTimeInMillis() + "," +
+                            post.getReadCount() + "," +
+                            post.getPostUser().getUserId() + ")";
+            MysqlDbConnection
+                    .executeWithoutCloseConnection(connection, insertPostSqlString);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return insertPostId;
+    }
+    private ArrayList<AdriftBook> getAdriftbookList(
+            ArrayList<SubUploadFile> uploadFileList, int postType)
+    {
+        ArrayList<AdriftBook> adriftBooks = new ArrayList<AdriftBook>();
+        if (postType == Post.EBOOK_AREA)
+            for (SubUploadFile uploadFile : uploadFileList)
+            {
+                EBook eBook = new EBook();
+                eBook.setEbookUrl(uploadFile.getFileUrl());
+                eBook.setBookImageUrl(uploadFile.getImageFileUrl());
+                eBook.setAuthor(uploadFile.getFileAuthor());
+                eBook.setBookName(uploadFile.getFileName());
+                eBook.setType(AdriftBook.EBOOK);
+                adriftBooks.add(eBook);
+            }
+        else
+        {
+            for (SubUploadFile uploadFile : uploadFileList)
+            {
+                AdriftBook adriftBook = new AdriftBook();
+                adriftBook.setBookImageUrl(uploadFile.getImageFileUrl());
+                adriftBook.setAuthor(uploadFile.getFileAuthor());
+                adriftBook.setBookName(uploadFile.getFileName());
+                adriftBook.setType(AdriftBook.ENTITYBOOK);
+                adriftBooks.add(adriftBook);
+            }
+        }
+        return adriftBooks;
     }
     /**
      * 根据posttype写入到指定的文件位置
@@ -171,22 +325,28 @@ public class UploadPostServlet extends HttpServlet
             int index = imageFile.getName().lastIndexOf(".");
             String imageName = userId + "" + calendar.getTimeInMillis() +
                     imageFile.getName().substring(index);
+            imageName = CommonUtils.transformFileNameToOctalByteString(
+                    imageName);
+            subUploadFile
+                    .setImageFileUrl(imageName);
             inputStream2File(subUploadFile.getImageInputStream(), new File(imageDir,
-                    CommonUtils.transformFileNameToOctalByteString(
-                            imageName)));
+                    imageName));
         }
         if (file != null)
         {
             int index = file.getName().lastIndexOf(".");
             String fileName = userId + "" + calendar.getTimeInMillis() +
                     file.getName().substring(index);
+            fileName = transformFileNameToOctalByteString(fileName);
+            subUploadFile.setFileUrl(fileName);
             inputStream2File(subUploadFile.getFileInputStream(),
-                    new File(fileDir, CommonUtils
-                            .transformFileNameToOctalByteString(fileName)));
+                    new File(fileDir,
+                            fileName));
         }
     }
     /**
-     * 获取上传文件的文件名称
+     * 获取上传文件的文件名称，File类型通过Map形式上传，只能获得文件名
+     * 获取不到对应的输入流
      * @param fileItem
      * @return
      */
