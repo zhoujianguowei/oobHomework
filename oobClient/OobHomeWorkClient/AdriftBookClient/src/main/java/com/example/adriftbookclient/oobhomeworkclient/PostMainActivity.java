@@ -259,18 +259,19 @@ public class PostMainActivity extends SupActivityHandleFragment
                         PostMainActivity.SELECT_FILE_REQUESTCODE);
                 break;
             case R.id.fragment_add_file_deliver_file_bt:
-                sendPostFragment.refreshBookLv(uploadFile, 1);
                 fragmentManager.popBackStack();
 //                setTapFragment(fragmentManager, SendPostFragment.TAG);
-                addFragmentTag(SendPostFragment.TAG);
+//                addFragmentTag(SendPostFragment.TAG);
+                sendPostFragment.refreshBookLv(uploadFile, 1);
                 break;
         }
     }
     @Override public void onPostSendFinish()
     {
-        fragmentManager.popBackStack();
+        if (!postMainFragment.isVisible())
+            fragmentManager.popBackStack();
         postMainFragment.onRefresh();
 //        setTapFragment(fragmentManager, PostMainFragment.TAG);
-        addFragmentTag(PostMainFragment.TAG);
+//        addFragmentTag(PostMainFragment.TAG);
     }
 }

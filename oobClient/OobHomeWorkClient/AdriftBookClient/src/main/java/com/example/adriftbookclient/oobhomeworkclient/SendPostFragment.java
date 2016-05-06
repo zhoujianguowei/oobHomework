@@ -250,10 +250,9 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                                           byte[] responseBody)
                     {
                         dismissProgressDialog();
-                        if (size <= boundaryUploadFileSize)
-                            if (getActivity() instanceof OnPostSentFinishListerner)
-                                ((OnPostSentFinishListerner) getActivity())
-                                        .onPostSendFinish();
+                        if (getActivity() instanceof OnPostSentFinishListerner)
+                            ((OnPostSentFinishListerner) getActivity())
+                                    .onPostSendFinish();
                         Toast toast = Toast.makeText(getActivity(), "文件上传成功",
                                 Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER, 0, 0);
