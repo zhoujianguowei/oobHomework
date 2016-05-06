@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.jianguo.adriftbookclient.customviews.MyScrollView;
 import com.klicen.constant.Constant;
-import com.klicen.navigationbar.BackStackFragmentWithProgressDialog;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -216,7 +215,7 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
         httpClient.setResponseTimeout(60000);
         httpClient.setMaxRetriesAndTimeout(10, 3000);
         final long size = computeUploadFileSize(uploadFileList);
-        //大于10M扩大延迟时间
+        //大于5M扩大延迟时间
         if (size > boundaryUploadFileSize)
         {
             httpClient.setConnectTimeout(300000);

@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jianguo.adriftbookclient.customviews.MyScrollView;
-import com.klicen.navigationbar.BackStackFragmentWithProgressDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -98,6 +98,7 @@ public class PostMainActivity extends SupActivityHandleFragment
         setContentView(R.layout.activity_post_main);
         if (postMainFragment == null)
             postMainFragment = new PostMainFragment();
+        postMainFragment.setRetainInstance(true);
         postMainFragment.setArguments(getIntent().getExtras());
         user = (User) getIntent().getSerializableExtra(User.TAG);
         fragmentManager = getSupportFragmentManager();
@@ -107,7 +108,8 @@ public class PostMainActivity extends SupActivityHandleFragment
         transaction.add(R.id.activity_post_content_container, postMainFragment,
                 PostMainFragment.TAG);
         transaction.commit();
-        setTapFragment(fragmentManager, PostMainFragment.TAG);
+//        setTapFragment(fragmentManager, PostMainFragment.TAG);
+        addFragmentTag(PostMainFragment.TAG);
     }
     @Override public void onItemClick(Post post)
     {
@@ -134,7 +136,8 @@ public class PostMainActivity extends SupActivityHandleFragment
         transaction.hide(postMainFragment);
         transaction.addToBackStack(null);
         transaction.commit();
-        setTapFragment(fragmentManager, PostDetailFragment.TAG);
+//        setTapFragment(fragmentManager, PostDetailFragment.TAG);
+        addFragmentTag(PostDetailFragment.TAG);
         return true;
     }
     @Override public void onItemClick(String ebookUrl)
@@ -159,7 +162,8 @@ public class PostMainActivity extends SupActivityHandleFragment
         transaction.hide(postDetailFragment);
         transaction.addToBackStack(null);
         transaction.commit();
-        setTapFragment(fragmentManager, CommentAdriftBookFragment.TAG);
+//        setTapFragment(fragmentManager, CommentAdriftBookFragment.TAG);
+        addFragmentTag(CommentAdriftBookFragment.TAG);
     }
     @Override public void onPopupItemClick(View view)
     {
@@ -186,7 +190,8 @@ public class PostMainActivity extends SupActivityHandleFragment
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 //        setSelectedFragmentTag(SendPostFragment.TAG);
-                setTapFragment(fragmentManager, SendPostFragment.TAG);
+//                setTapFragment(fragmentManager, SendPostFragment.TAG);
+                addFragmentTag(SendPostFragment.TAG);
                 break;
             case R.id.fragment_post_main_pop_window_download_tv:
                 break;
@@ -216,7 +221,8 @@ public class PostMainActivity extends SupActivityHandleFragment
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 //                setSelectedFragmentTag(AddFileFragment.TAG);
-                setTapFragment(fragmentManager, AddFileFragment.TAG);
+//                setTapFragment(fragmentManager, AddFileFragment.TAG);
+                addFragmentTag(AddFileFragment.TAG);
                 break;
         }
     }
@@ -255,7 +261,8 @@ public class PostMainActivity extends SupActivityHandleFragment
             case R.id.fragment_add_file_deliver_file_bt:
                 sendPostFragment.refreshBookLv(uploadFile, 1);
                 fragmentManager.popBackStack();
-                setTapFragment(fragmentManager, SendPostFragment.TAG);
+//                setTapFragment(fragmentManager, SendPostFragment.TAG);
+                addFragmentTag(SendPostFragment.TAG);
                 break;
         }
     }
@@ -263,6 +270,7 @@ public class PostMainActivity extends SupActivityHandleFragment
     {
         fragmentManager.popBackStack();
         postMainFragment.onRefresh();
-        setTapFragment(fragmentManager, PostMainFragment.TAG);
+//        setTapFragment(fragmentManager, PostMainFragment.TAG);
+        addFragmentTag(PostMainFragment.TAG);
     }
 }

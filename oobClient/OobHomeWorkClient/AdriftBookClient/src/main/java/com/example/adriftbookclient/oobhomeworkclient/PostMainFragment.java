@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.klicen.constant.Constant;
-import com.klicen.navigationbar.BackStackFragmentWithProgressDialog;
 
 import java.util.ArrayList;
 
@@ -72,6 +71,7 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
                                        Bundle savedInstanceState)
     {
 //        return super.onCreateView(inflater, container, savedInstanceState);
+
         View view = inflater.inflate(R.layout.fragment_post_main, container, false);
         requestBookCb = (CheckBox) view
                 .findViewById(R.id.fragment_post_main_requestbook_cb);

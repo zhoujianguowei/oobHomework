@@ -22,7 +22,6 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.klicen.constant.Constant;
-import com.klicen.navigationbar.BackStackFragmentWithProgressDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;

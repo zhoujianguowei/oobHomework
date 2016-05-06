@@ -13,8 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.klicen.navigationbar.BackStackFragmentWithProgressDialog;
-
 import java.io.File;
 
 import adriftbook.entity.Post;

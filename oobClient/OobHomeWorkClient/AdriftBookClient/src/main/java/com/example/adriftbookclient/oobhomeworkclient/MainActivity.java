@@ -56,7 +56,8 @@ public class MainActivity extends SupActivityHandleFragment
                 LoginFragment.TAG);
 //            transaction.addToBackStack(null);
         transaction.commit();
-        setTapFragment(fragmentManager,LoginFragment.TAG);
+//        setTapFragment(fragmentManager,LoginFragment.TAG);
+        addFragmentTag(LoginFragment.TAG);
     }
     @Override public void onListItemClickListener(Option option)
     {
@@ -82,7 +83,8 @@ public class MainActivity extends SupActivityHandleFragment
                 transaction.show(registerFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-                setTapFragment(fragmentManager,RegisterFragment.TAG);
+//                setTapFragment(fragmentManager, RegisterFragment.TAG);
+                addFragmentTag(RegisterFragment.TAG);
                 break;
             case R.id.fragment_register_register_bt:
                 startRegisterRequest(bundle);

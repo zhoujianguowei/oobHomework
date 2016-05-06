@@ -12,8 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.klicen.navigationbar.BackStackFragmentWithProgressDialog;
-
 import utils.ScreenSize;
 /**
  * Created by Administrator on 2016/4/27.
