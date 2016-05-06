@@ -62,7 +62,6 @@ public class UploadPostServlet extends HttpServlet
                 .write(("当前根目录是:" + uploadRootPath).getBytes(Constant.DEFAULT_CODE));*/
 //        DiskFileItemFactory diskFileItemFactory=new DiskFileItemFactory();
         resp.setContentType("text/html");
-        System.out.println("请求到达了");
         // 创建文件项目工厂对象
         DiskFileItemFactory factory = new DiskFileItemFactory();
         // 设置文件上传路径

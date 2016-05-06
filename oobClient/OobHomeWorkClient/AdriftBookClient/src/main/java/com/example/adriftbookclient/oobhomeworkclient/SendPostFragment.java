@@ -3,6 +3,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +31,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import adapter.UploadFileAdapter;
 import adriftbook.entity.Post;
@@ -60,6 +62,7 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
     ArrayList<UploadFile> uploadFileList = new ArrayList<>();
     UploadFileAdapter uploadFileAdapter;
     private int currentPostType;
+    private long boundaryUploadFileSize = 5 * 1024 * 1024L;
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState)
     {
@@ -209,6 +212,16 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
         }
         requestParams.put(Post.TAG, mapList);
         AsyncHttpClient httpClient = new AsyncHttpClient();
+        httpClient.setConnectTimeout(30000);
+        httpClient.setResponseTimeout(60000);
+        httpClient.setMaxRetriesAndTimeout(10, 3000);
+        final long size = computeUploadFileSize(uploadFileList);
+        //大于10M扩大延迟时间
+        if (size > boundaryUploadFileSize)
+        {
+            httpClient.setConnectTimeout(300000);
+            httpClient.setResponseTimeout(600000);
+        }
         httpClient.post(Constant.CONSTANT_IP + "upload", requestParams,
                 new AsyncHttpResponseHandler()
                 {
@@ -217,16 +230,35 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                         super.onStart();
                       /*  Toast.makeText(getActivity(), "开始上传", Toast.LENGTH_SHORT)
                                 .show();*/
-                        showProgressDialog("玩命上传中，请稍候");
+                        if (size > boundaryUploadFileSize)
+                        {
+                            showProgressDialog("文件较大，5秒后转入后台上传");
+                            Timer timer = new Timer();
+                            TimerTask backTask = new TimerTask()
+                            {
+                                @Override public void run()
+                                {
+                                    dismissProgressDialog();
+                                    getFragmentManager().popBackStack();
+                                }
+                            };
+                            timer.schedule(backTask, 5000);
+                        } else
+                            showProgressDialog("玩命上传中，请稍候");
                     }
                     @Override
                     public void onSuccess(int statusCode, Header[] headers,
                                           byte[] responseBody)
                     {
                         dismissProgressDialog();
-                        if (getActivity() instanceof OnPostSentFinishListerner)
-                            ((OnPostSentFinishListerner) getActivity())
-                                    .onPostSendFinish();
+                        if (size <= boundaryUploadFileSize)
+                            if (getActivity() instanceof OnPostSentFinishListerner)
+                                ((OnPostSentFinishListerner) getActivity())
+                                        .onPostSendFinish();
+                        Toast toast = Toast.makeText(getActivity(), "文件上传成功",
+                                Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
                     }
                     @Override
                     public void onFailure(int statusCode, Header[] headers,
@@ -234,23 +266,29 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                                           Throwable error)
                     {
                         dismissProgressDialog();
-                        try
-                        {
-                            if (responseBody != null && responseBody.length > 0)
-                                Toast.makeText(getActivity(),
-                                        new String(responseBody,
-                                                Constant.DEFAULT_CODE),
-                                        Toast.LENGTH_LONG).show();
-                            else
-                                Toast.makeText(getActivity(), "服务器内部错误",
-                                        Toast.LENGTH_LONG).show();
-                        }
-                        catch (UnsupportedEncodingException e)
-                        {
-                            e.printStackTrace();
-                        }
+                        Toast toast = Toast.makeText(getActivity(), "文件上传失败",
+                                Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
                     }
                 });
+    }
+    /**
+     * 计算上传文件的文件大小
+     * @param uploadFileList
+     * @return
+     */
+    private long computeUploadFileSize(ArrayList<UploadFile> uploadFileList)
+    {
+        long size = 0;
+        for (UploadFile uploadFile : uploadFileList)
+        {
+            if (uploadFile.getFile() != null)
+                size += uploadFile.getFile().length();
+            if (uploadFile.getImageFile() != null)
+                size += uploadFile.getImageFile().length();
+        }
+        return size;
     }
     @Override protected View onTitleCreate()
     {

@@ -53,7 +53,6 @@ public class MysqlDbConnection
         try
         {
             preparedStatement = conn.prepareStatement(sqlString);
-            System.out.println("sqlString:" + sqlString);
             preparedStatement.execute(sqlString);
         }
         catch (SQLException e)
