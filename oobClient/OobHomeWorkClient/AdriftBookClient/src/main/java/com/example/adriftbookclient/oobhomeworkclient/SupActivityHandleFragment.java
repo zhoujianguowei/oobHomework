@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+
+import java.util.HashMap;
+import java.util.Stack;
 public class SupActivityHandleFragment extends AppCompatActivity
 {
 
@@ -11,7 +14,8 @@ public class SupActivityHandleFragment extends AppCompatActivity
     public static final String CURRENT_FRAGMENT_TAG_KEY = "current_fragment_tag_key";
     String[] tags = new String[]{"registerfragment", "loginfragment",
             "postmainfragment", "postdetailfragment",
-            "commentadriftbookfragment", "sendpostfragment","addfilefragment"};
+            "commentadriftbookfragment", "sendpostfragment", "addfilefragment"};
+    protected Stack<HashMap<String, Fragment>> stackFragment = new Stack<>();
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

@@ -39,7 +39,8 @@ public class PostMainActivity extends SupActivityHandleFragment
         PostDetailFragment.OnBookListItemClickListener,
         PostMainFragment.OnPopupWindowItemClickListener,
         SendPostFragment.SendPostFragmentOnClickListener,
-        AddFileFragment.AddFileFragmentOnClickListener
+        AddFileFragment.AddFileFragmentOnClickListener,
+        SendPostFragment.OnPostSentFinishListerner
 {
 
     public static final int CAPTURE_PICTURE_REQUEST = 1;//打开相机
@@ -162,25 +163,34 @@ public class PostMainActivity extends SupActivityHandleFragment
     }
     @Override public void onPopupItemClick(View view)
     {
-        sendPostFragment = new SendPostFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(User.TAG, user);
-        bundle.putString(SETTING_CONTENT,
-                ((TextView) view).getText().toString().trim());
-        sendPostFragment.setArguments(bundle);
-        FragmentTransaction fragmentTransaction = fragmentManager
-                .beginTransaction();
-        fragmentTransaction.add(R.id.activity_post_navigation_bar_fr_container,
-                new NavigationBarFragment(), NavigationBarFragment.TAG);
-        fragmentTransaction
-                .add(R.id.activity_post_content_container, sendPostFragment,
-                        SendPostFragment.TAG);
-        fragmentTransaction.hide(postMainFragment);
-        fragmentTransaction.show(sendPostFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        switch (view.getId())
+        {
+            case R.id.fragment_post_main_pop_window_sendpost_tv:
+                sendPostFragment = new SendPostFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(User.TAG, user);
+                bundle.putString(SETTING_CONTENT,
+                        ((TextView) view).getText().toString().trim());
+                sendPostFragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = fragmentManager
+                        .beginTransaction();
+                fragmentTransaction
+                        .add(R.id.activity_post_navigation_bar_fr_container,
+                                new NavigationBarFragment(),
+                                NavigationBarFragment.TAG);
+                fragmentTransaction
+                        .add(R.id.activity_post_content_container, sendPostFragment,
+                                SendPostFragment.TAG);
+                fragmentTransaction.hide(postMainFragment);
+                fragmentTransaction.show(sendPostFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
 //        setSelectedFragmentTag(SendPostFragment.TAG);
-        setTapFragment(fragmentManager, SendPostFragment.TAG);
+                setTapFragment(fragmentManager, SendPostFragment.TAG);
+                break;
+            case R.id.fragment_post_main_pop_window_download_tv:
+                break;
+        }
     }
     @Override public void sendPostFragmentOnClick(View v, int postType)
     {
@@ -248,5 +258,11 @@ public class PostMainActivity extends SupActivityHandleFragment
                 setTapFragment(fragmentManager, SendPostFragment.TAG);
                 break;
         }
+    }
+    @Override public void onPostSendFinish()
+    {
+        fragmentManager.popBackStack();
+        postMainFragment.onRefresh();
+        setTapFragment(fragmentManager, PostMainFragment.TAG);
     }
 }

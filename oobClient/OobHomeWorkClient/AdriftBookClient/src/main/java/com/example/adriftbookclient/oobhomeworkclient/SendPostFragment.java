@@ -215,29 +215,25 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                     @Override public void onStart()
                     {
                         super.onStart();
-                        Toast.makeText(getActivity(), "开始上传", Toast.LENGTH_SHORT)
-                                .show();
+                      /*  Toast.makeText(getActivity(), "开始上传", Toast.LENGTH_SHORT)
+                                .show();*/
+                        showProgressDialog("玩命上传中，请稍候");
                     }
                     @Override
                     public void onSuccess(int statusCode, Header[] headers,
                                           byte[] responseBody)
                     {
-                        try
-                        {
-                            Toast.makeText(getActivity(),
-                                    new String(responseBody, Constant.DEFAULT_CODE),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        catch (UnsupportedEncodingException e)
-                        {
-                            e.printStackTrace();
-                        }
+                        dismissProgressDialog();
+                        if (getActivity() instanceof OnPostSentFinishListerner)
+                            ((OnPostSentFinishListerner) getActivity())
+                                    .onPostSendFinish();
                     }
                     @Override
                     public void onFailure(int statusCode, Header[] headers,
                                           byte[] responseBody,
                                           Throwable error)
                     {
+                        dismissProgressDialog();
                         try
                         {
                             if (responseBody != null && responseBody.length > 0)
@@ -377,5 +373,11 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
     {
 
         void sendPostFragmentOnClick(View v, int postType);
+    }
+
+    interface OnPostSentFinishListerner
+    {
+
+        void onPostSendFinish();
     }
 }
