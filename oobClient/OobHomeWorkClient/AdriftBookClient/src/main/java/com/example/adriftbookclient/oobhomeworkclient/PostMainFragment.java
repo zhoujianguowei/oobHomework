@@ -112,7 +112,8 @@ public class PostMainFragment extends BackStackFragmentWithProgressDialog implem
     private void configurePageContainer(int postCount, int currentPage)
     {
         pageContainer.removeAllViews();
-        int totalPage = (int) Math.ceil(postCount / Constant.PER_REQUEST_ITEMS);
+        int totalPage = (int) Math
+                .ceil(postCount * 1.0 / Constant.PER_REQUEST_ITEMS);
         TextView pageTv = null;
         int pageIndex = 1;
         if (totalPage <= 10)

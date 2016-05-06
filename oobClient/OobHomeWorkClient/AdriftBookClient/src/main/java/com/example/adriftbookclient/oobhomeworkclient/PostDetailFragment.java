@@ -41,10 +41,6 @@ public class PostDetailFragment extends BackStackFragmentWithProgressDialog
     BookBaseAdapter bookAdapter;
     LinearLayout commentsContainer;
     public static final int PER_BOOK_ITEM_HEIGHT = ScreenSize.getScreenHeight() / 5;
-    public static final int PER_BOOK_ITEM_IMAGE_WIDTH =
-            ScreenSize.getScreenWidth() / 4;
-    public static final int PER_BOOK_ITEM_IMAGE_HEIGHT =
-            ScreenSize.getScreenHeight() / 6;
     ArrayList<Comment> commentList = new ArrayList<>();
     public static final String TAG = "postdetailfragment";
     Post post;

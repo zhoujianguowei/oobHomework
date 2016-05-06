@@ -30,7 +30,6 @@ import adriftbook.entity.AdriftBook;
 import adriftbook.entity.Post;
 import adriftbook.entity.UploadFile;
 import adriftbook.entity.User;
-import utils.ScreenSize;
 /**
  * Created by Administrator on 2016/4/28.
  */
@@ -67,8 +66,8 @@ public class PostMainActivity extends SupActivityHandleFragment
                     return;
                 BitmapUtil.getClipBitmapFile(captureFile.getParent(),
                         captureFile.getName(), BitmapFactory.decodeFile(
-                                captureImagePath), ScreenSize.getScreenWidth() / 6,
-                        ScreenSize.getScreenHeight() / 7);
+                                captureImagePath), 400,
+                        300);
                 addFileFragment
                         .refreshSelectFile(captureFile, AddFileFragment.IMAGE_TYPE);
             } else if (requestCode == SELECT_FILE_REQUESTCODE)
@@ -147,8 +146,8 @@ public class PostMainActivity extends SupActivityHandleFragment
         Bundle bundle = new Bundle();
         bundle.putSerializable("book", book);
         bundle.putParcelable("bitmap", BitmapUtil
-                .getThumbBitmap(bm, PostDetailFragment.PER_BOOK_ITEM_IMAGE_WIDTH,
-                        PostDetailFragment.PER_BOOK_ITEM_IMAGE_HEIGHT));
+                .getThumbBitmap(bm, BookBaseAdapter.PER_BOOK_ITEM_IMAGE_WIDTH,
+                        BookBaseAdapter.PER_BOOK_ITEM_IMAGE_HEIGHT));
         bundle.putSerializable(Post.TAG, post);
         commentFragment.setArguments(bundle);
         FragmentTransaction transaction = fragmentManager.beginTransaction();

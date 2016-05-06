@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -45,20 +46,23 @@ public class MysqlDbConnection
      * @param conn
      * @param sqlString
      */
-    public static void executeWithoutCloseConnection(Connection conn,
-                                                     String sqlString)
+    public static boolean executeWithoutCloseConnection(Connection conn,
+                                                        String sqlString)
     {
         PreparedStatement preparedStatement = null;
         try
         {
             preparedStatement = conn.prepareStatement(sqlString);
+            System.out.println("sqlString:" + sqlString);
             preparedStatement.execute(sqlString);
         }
         catch (SQLException e)
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
     public static void execute(String sqlString)
     {
@@ -350,7 +354,12 @@ public class MysqlDbConnection
     /*    ArrayList<Comment> comments = getComments();
         for (Comment comment : comments)
             insertCommentTable(comment);*/
-        InputStream is=getInputStream("我是好人",Constant.DEFAULT_CODE);
-        System.out.println();
+       /* InputStream is = getInputStream("我是好人", Constant.DEFAULT_CODE);
+        System.out.println(UploadPostServlet.inputStream2String(is));*/
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(1462523757446L);
+        SimpleDateFormat dateFormat = new SimpleDateFormat();
+        dateFormat.applyPattern("yyyy:MM:dd HH:mm:ss");
+        System.out.println(dateFormat.format(calendar.getTime()));
     }
 }

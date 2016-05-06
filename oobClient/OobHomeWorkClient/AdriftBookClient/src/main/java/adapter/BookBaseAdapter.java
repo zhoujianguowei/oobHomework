@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,7 +15,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.example.adriftbookclient.oobhomeworkclient.BitmapCache;
-import com.example.adriftbookclient.oobhomeworkclient.PostDetailFragment;
 import com.example.adriftbookclient.oobhomeworkclient.R;
 import com.klicen.constant.Constant;
 
@@ -25,12 +23,18 @@ import java.util.ArrayList;
 
 import adriftbook.entity.AdriftBook;
 import adriftbook.entity.EBook;
+import utils.ScreenSize;
 /**
  * Created by Administrator on 2016/5/2.
  */
 public class BookBaseAdapter extends BaseAdapter
 {
 
+    public static final int PER_BOOK_ITEM_IMAGE_WIDTH =
+            ScreenSize.getScreenWidth() / 3;
+    public static final int PER_BOOK_ITEM_IMAGE_HEIGHT = (int) (
+            PER_BOOK_ITEM_IMAGE_WIDTH * 4.0 / 3);
+    ;
     private Context context;
     private ArrayList<AdriftBook> bookList;
     private RequestQueue requestQueue;
@@ -53,8 +57,8 @@ public class BookBaseAdapter extends BaseAdapter
                             ImageView.ScaleType.class);
             method.setAccessible(true);
             cacheKey = (String) method.invoke(ImageLoader.class,
-                    new Object[]{url, PostDetailFragment.PER_BOOK_ITEM_IMAGE_WIDTH,
-                            PostDetailFragment.PER_BOOK_ITEM_IMAGE_HEIGHT,
+                    new Object[]{url, PER_BOOK_ITEM_IMAGE_WIDTH,
+                            PER_BOOK_ITEM_IMAGE_HEIGHT,
                             ImageView.ScaleType.CENTER_INSIDE});
         }
         catch (Exception e)
@@ -111,8 +115,8 @@ public class BookBaseAdapter extends BaseAdapter
                             R.mipmap.wrong);
             imageLoader
                     .get(imageUrl, listener,
-                            PostDetailFragment.PER_BOOK_ITEM_IMAGE_WIDTH,
-                            PostDetailFragment.PER_BOOK_ITEM_IMAGE_HEIGHT);
+                            PER_BOOK_ITEM_IMAGE_WIDTH,
+                            PER_BOOK_ITEM_IMAGE_HEIGHT);
         }
         bookId.setText(Html.fromHtml(
                 "<font color=red>编号：<font>" + currnetBook.getBookId() + ""));
@@ -140,10 +144,10 @@ public class BookBaseAdapter extends BaseAdapter
                                                     .getBookImageUrl());
             }
         });
-        AbsListView.LayoutParams params = new AbsListView.LayoutParams(
+      /*  AbsListView.LayoutParams params = new AbsListView.LayoutParams(
                 AbsListView.LayoutParams.MATCH_PARENT,
                 PostDetailFragment.PER_BOOK_ITEM_HEIGHT);
-        convertView.setLayoutParams(params);
+        convertView.setLayoutParams(params);*/
         return convertView;
     }
     public OnBookListDownloadButtonClickListener getOnBookListDownloadButtonClickListener()

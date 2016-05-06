@@ -9,7 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.adriftbookclient.oobhomeworkclient.PostDetailFragment;
 import com.example.adriftbookclient.oobhomeworkclient.R;
 import com.klicen.constant.BitmapUtil;
 
@@ -70,8 +69,8 @@ public class UploadFileAdapter extends BaseAdapter
         {
             iv.setImageBitmap(BitmapUtil
                     .getThumbBitmap(currentFile.getImageFile().getAbsolutePath(),
-                            PostDetailFragment.PER_BOOK_ITEM_IMAGE_WIDTH,
-                            PostDetailFragment.PER_BOOK_ITEM_IMAGE_HEIGHT));
+                            BookBaseAdapter.PER_BOOK_ITEM_IMAGE_WIDTH,
+                            BookBaseAdapter.PER_BOOK_ITEM_IMAGE_HEIGHT));
             fileImageLocation.setText(Html.fromHtml(
                     "图片位置:<font color=red>" + currentFile.getImageFile().getName() +
                             "</font>"));

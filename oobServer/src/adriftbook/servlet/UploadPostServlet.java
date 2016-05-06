@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -162,22 +163,29 @@ public class UploadPostServlet extends HttpServlet
             Connection connection = MysqlDbConnection.getConnection();
             connection.setAutoCommit(false);
             int postId = insertPostTable(connection, post);
-            insertBookTable(connection, postId, adriftBookArrayList, postType);
+            if (!insertBookTable(connection, postId, adriftBookArrayList, postType))
+            {
+                connection.rollback();
+                resJObj.put(Constant.STATUS_KEY, "数据库插入异常");
+                outputStream
+                        .write(resJObj.toString().getBytes(Constant.DEFAULT_CODE));
+                connection.close();
+                return;
+            }
             connection.commit();
+            connection.close();
             resJObj.put(Constant.STATUS_KEY, Constant.SUCCESS_VALUE);
             resJObj.put(Constant.INFO_KEY, "文件上传成功");
-            System.out.println("文件上传成功");
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            System.out.println("文件上传失败");
         }
         outputStream.write(resJObj.toString().getBytes(Constant.DEFAULT_CODE));
     }
-    private void insertBookTable(Connection connection, int postId,
-                                 ArrayList<AdriftBook> adriftBookArrayList,
-                                 int postType)
+    private boolean insertBookTable(Connection connection, int postId,
+                                    ArrayList<AdriftBook> adriftBookArrayList,
+                                    int postType)
     {
         ResultSet rSet = MysqlDbConnection
                 .getResultSet(connection, "select max(book_id) from book");
@@ -190,7 +198,7 @@ public class UploadPostServlet extends HttpServlet
         catch (SQLException e)
         {
             e.printStackTrace();
-            return;
+            return false;
         }
         bookId++;
         for (AdriftBook adriftBook : adriftBookArrayList)
@@ -203,14 +211,14 @@ public class UploadPostServlet extends HttpServlet
                     insertBookStr =
                             "insert into book(book_id,bookname,author,type,bookimageurl,ebookurl,post_id) values(" +
                                     bookId + ",'" + eBook.getBookName() + "','" +
-                                    eBook.getAuthor() + "," + eBook.getType() +
+                                    eBook.getAuthor() + "'," + eBook.getType() +
                                     ",'" + eBook.getBookImageUrl() + "','" +
                                     eBook.getEbookUrl() + "'," + postId + ")";
                 else
                     insertBookStr =
                             "insert into book(book_id,bookname,author,type,ebookurl,post_id) values(" +
                                     bookId + ",'" + eBook.getBookName() + "','" +
-                                    eBook.getAuthor() + "," + eBook.getType() +
+                                    eBook.getAuthor() + "'," + eBook.getType() +
                                     ",'" +
                                     eBook.getEbookUrl() + "'," + postId + ")";
             } else
@@ -220,7 +228,7 @@ public class UploadPostServlet extends HttpServlet
                             "insert into book(book_id,bookname,author,type,bookimageurl,post_id) values(" +
                                     bookId + ",'" + adriftBook.getBookName() +
                                     "','" +
-                                    adriftBook.getAuthor() + "," +
+                                    adriftBook.getAuthor() + "'," +
                                     adriftBook.getType() +
                                     ",'" + adriftBook.getBookImageUrl() + "'," +
                                     postId + ")";
@@ -229,15 +237,19 @@ public class UploadPostServlet extends HttpServlet
                             "insert into book(book_id,bookname,author,type,post_id) values(" +
                                     bookId + ",'" + adriftBook.getBookName() +
                                     "','" +
-                                    adriftBook.getAuthor() + "," +
+                                    adriftBook.getAuthor() + "'," +
                                     adriftBook.getType() +
                                     "," +
                                     postId + ")";
             }
-            MysqlDbConnection
-                    .executeWithoutCloseConnection(connection, insertBookStr);
+            if (
+                    !MysqlDbConnection
+                            .executeWithoutCloseConnection(connection,
+                                    insertBookStr))
+                return false;
             bookId++;
         }
+        return true;
     }
     /**
      * 向post表格插入数据
@@ -261,11 +273,12 @@ public class UploadPostServlet extends HttpServlet
                             post.getPostId() + ",'" + post.getPostTitle() + "','" +
                             post.getPostContent().getPostContentDetail() + "'," +
                             post.getPostType() + "," +
-                            Calendar.getInstance().getTimeInMillis() + "," +
+                            Calendar.getInstance(Locale.CHINA).getTimeInMillis() + "," +
                             post.getReadCount() + "," +
                             post.getPostUser().getUserId() + ")";
-            MysqlDbConnection
-                    .executeWithoutCloseConnection(connection, insertPostSqlString);
+            if (!MysqlDbConnection
+                    .executeWithoutCloseConnection(connection, insertPostSqlString))
+                return -1;
         }
         catch (SQLException e)
         {
@@ -369,7 +382,6 @@ public class UploadPostServlet extends HttpServlet
                 e.printStackTrace();
             }
         }
-        System.out.println("fileName:" + fileName);
         return fileName;
     }
     /**

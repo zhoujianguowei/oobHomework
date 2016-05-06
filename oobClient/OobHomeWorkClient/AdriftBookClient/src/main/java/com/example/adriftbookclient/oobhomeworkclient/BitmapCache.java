@@ -4,6 +4,8 @@ import android.support.v4.util.LruCache;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.klicen.constant.BitmapUtil;
+
+import adapter.BookBaseAdapter;
 /**
  * Created by Administrator on 2016/5/2.
  */
@@ -39,7 +41,7 @@ public class BitmapCache implements ImageLoader.ImageCache
     public void putBitmap(String url, Bitmap bitmap)
     {
         mCache.put(url, BitmapUtil
-                .getThumbBitmap(bitmap, PostDetailFragment.PER_BOOK_ITEM_IMAGE_WIDTH,
-                        PostDetailFragment.PER_BOOK_ITEM_IMAGE_HEIGHT));
+                .getThumbBitmap(bitmap, BookBaseAdapter.PER_BOOK_ITEM_IMAGE_WIDTH,
+                        BookBaseAdapter.PER_BOOK_ITEM_IMAGE_HEIGHT));
     }
 }

@@ -174,10 +174,9 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
         {
             HashMap<String, Object> map = new HashMap<>();
             map.put(UploadFile.FILE_NAME,
-                    getInputStream(uploadFile.getFileName(), Constant.DEFAULT_CODE));
+                    uploadFile.getFileName());
             map.put(UploadFile.FILE_AUTHOR,
-                    getInputStream(uploadFile.getFileAuthor(),
-                            Constant.DEFAULT_CODE));
+                    uploadFile.getFileAuthor());
             File file = uploadFile.getFile();
             try
             {

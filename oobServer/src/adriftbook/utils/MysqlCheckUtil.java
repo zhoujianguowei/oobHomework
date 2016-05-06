@@ -1,6 +1,4 @@
 package adriftbook.utils;
-import com.mysql.jdbc.MySQLConnection;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,8 +10,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Set;
-
-import javax.xml.transform.Result;
 
 import adriftbook.entity.AdriftBook;
 import adriftbook.entity.Comment;
@@ -141,8 +137,7 @@ public class MysqlCheckUtil
             resJson.put(User.REGISTER_DATE,
                     user.getRegisterDate().getTimeInMillis());
             resJson.put(User.PASSWORD, user.getPassword());
-        }
-        else if (obj instanceof Comment)
+        } else if (obj instanceof Comment)
         {
             Comment comment = (Comment) obj;
             resJson.put(Comment.COMMENT_CONTENT, comment.getCommentContent());
@@ -154,8 +149,7 @@ public class MysqlCheckUtil
                         MysqlCheckUtil.getUserInfo(params[0]));
                 resJson.put("user", userJson);
             }
-        }
-        else if (obj instanceof Post)
+        } else if (obj instanceof Post)
         {
             Post post = (Post) obj;
             resJson.put(Post.POST_TITLE, post.getPostTitle());
@@ -176,8 +170,7 @@ public class MysqlCheckUtil
                 JSONArray commentJArray=new JSONArray();
             resJson.put("comment",)
             }*/
-        }
-        else if (obj instanceof AdriftBook)
+        } else if (obj instanceof AdriftBook)
         {
             AdriftBook book = (AdriftBook) obj;
             resJson.put(AdriftBook.BOOK_ID, book.getBookId());
@@ -269,9 +262,9 @@ public class MysqlCheckUtil
                     postsCount = rSet.getInt(1);
                 sqlString += " order by postdate desc limit " + m + "," + n + "";
                 rSet = MysqlDbConnection.getResultSet(sqlString);
-                Calendar calendar = Calendar.getInstance();
                 while (rSet.next())
                 {
+                    Calendar calendar = Calendar.getInstance();
                     int userId = rSet.getInt("user_id");
                     User user = MysqlCheckUtil.getUserInfo(userId);
                     Post post = new Post();
@@ -280,7 +273,6 @@ public class MysqlCheckUtil
                     post.setPostTitle(rSet.getString("posttitle"));
                     post.setPostDate(calendar);
                     post.setPostType(rSet.getInt("posttype"));
-                    post.setPostId(rSet.getInt("post.post_id"));
                     post.setReadCount(rSet.getInt("readcount"));
                     PostContent postContent = new PostContent(
                             rSet.getString("content"));
@@ -330,7 +322,7 @@ public class MysqlCheckUtil
                         userId + "," + bookId + ")";
         MysqlDbConnection.execute(updateCommentTable);
         String updateBookTable = "update book set rating=" + rating +
-                ",reviewPeopleCount=reviewPeopleCount+1 where book_id="+bookId;
+                ",reviewPeopleCount=reviewPeopleCount+1 where book_id=" + bookId;
         MysqlDbConnection.execute(updateBookTable);
     }
     public static boolean isCommentExists(int userId, int bookId)
