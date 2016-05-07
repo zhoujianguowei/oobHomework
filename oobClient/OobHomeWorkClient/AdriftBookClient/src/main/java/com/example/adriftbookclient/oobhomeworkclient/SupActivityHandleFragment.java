@@ -16,12 +16,13 @@ public class SupActivityHandleFragment extends AppCompatActivity implements
             "commentadriftbookfragment", "sendpostfragment", "addfilefragment"};
     protected int preBackStackRecordsCount = -1;
     protected Stack<String> fragmentTagStack = new Stack<>();
-    public static final int REQUEST_SUCCESS=1;
-    public static final int REQUEST_FAIL=2;
+    public static final int REQUEST_SUCCESS = 1;
+    public static final int REQUEST_FAIL = 2;
     FragmentManager fragmentManager;
     /**
      * 当fragment从backstack中弹出时候，重置stack
      */
+    private boolean hasSaveInstance = false;
     protected String popFragmentTag()
     {
         String nextTag = null;
@@ -39,6 +40,43 @@ public class SupActivityHandleFragment extends AppCompatActivity implements
         fragmentManager = getSupportFragmentManager();
         preBackStackRecordsCount = fragmentManager.getBackStackEntryCount();
         fragmentManager.addOnBackStackChangedListener(this);
+        hasSaveInstance = false;
+    }
+    @Override protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        hasSaveInstance = true;
+    }
+    /**
+     * 显示指定tag的fragment，同时将该tag之前的所有fragment弹出栈
+     * @param tag
+     */
+    protected void showSpecifyTag(String tag)
+    {
+        //没有找到指定的tag或者当前activity不可见
+        if (!findFragmentTag(fragmentTagStack, tag) || hasSaveInstance)
+            return;
+        else
+            do
+            {
+                if (fragmentTagStack.peek().equals(tag))
+                    break;
+//                fragmentTagStack.pop();
+                fragmentManager.popBackStackImmediate();
+            } while (fragmentTagStack.size() > 0);
+        setTapFragment(fragmentTagStack.peek());
+    }
+    private boolean findFragmentTag(Stack<String> tagStack, String tag)
+    {
+        Stack<String> copyTagStack = new Stack<>();
+        copyTagStack.addAll(tagStack);
+        while (copyTagStack.size() > 0)
+        {
+            if (copyTagStack.peek().equals(tag))
+                break;
+            copyTagStack.pop();
+        }
+        return copyTagStack.size() == 0 ? false : true;
     }
     protected void addFragmentTag(String fragmentTag)
     {
@@ -103,7 +141,7 @@ public class SupActivityHandleFragment extends AppCompatActivity implements
         //当前是pop操作
         if (currentBackstackRecordsCount < preBackStackRecordsCount)
             popFragmentTag();
-        Log.i("stack",fragmentTagStack.toString());
-        preBackStackRecordsCount=currentBackstackRecordsCount;
+        Log.i("stack", fragmentTagStack.toString());
+        preBackStackRecordsCount = currentBackstackRecordsCount;
     }
 }

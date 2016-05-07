@@ -1,6 +1,11 @@
 package com.example.adriftbookclient.oobhomeworkclient;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,7 +17,9 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Gravity;
+import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +62,9 @@ public class PostMainActivity extends SupActivityHandleFragment
     public static User user;
     public static final String SETTING_CONTENT = "setting_content";
     private String captureImagePath;
+    public static int UPLOAD_NOTIFICATION_ID = 1;
+    public static int UPLOAD_NOTIFICAITON_STATUS_ID = 2;
+    NotificationManager notificationManager;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -97,6 +107,8 @@ public class PostMainActivity extends SupActivityHandleFragment
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_main);
+        notificationManager = (NotificationManager) getSystemService(
+                Context.NOTIFICATION_SERVICE);
         if (postMainFragment == null)
             postMainFragment = new PostMainFragment();
         postMainFragment.setRetainInstance(true);
@@ -266,25 +278,59 @@ public class PostMainActivity extends SupActivityHandleFragment
                 break;
         }
     }
+    @Override public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (SendPostFragment.getPostStatus() ==
+                SendPostFragment.POST_STATUS_SEND_ONGOING)
+        {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("文件上传中,取消上传吗？");
+            builder.setPositiveButton("等待上传", null).setNegativeButton("取消上传",
+                    new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            SendPostFragment.httpClient.cancelAllRequests(true);
+                            SendPostFragment.setPostStatus(
+                                    SendPostFragment.POST_STATUS_SEND_FINISH);
+                            notificationManager.cancel(UPLOAD_NOTIFICATION_ID);
+                        }
+                    }).show();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     @Override public void onPostSendFinish(int requestStatus, byte[] responseBody)
     {
-        if (!postMainFragment.isVisible())
-            fragmentManager.popBackStack();
+        showSpecifyTag(PostMainFragment.TAG);
+        Log.i("上传状态", "finish");
 //        AlertDialog.Builder builder=AlertDialog.
-        Toast toast = Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, 0);
+//        Toast toast = Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG);
+//        toast.setGravity(Gravity.CENTER, 0, 0);
 //        toast.setView();
+        notificationManager.cancel(UPLOAD_NOTIFICATION_ID);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                getApplicationContext());
+        builder.setSmallIcon(R.mipmap.upload_status_small_icon);
+        builder.setTicker("传输结束");
+        builder.setAutoCancel(true);
+        builder.setContentTitle("文件上传状态");
+        builder.setContentIntent(PendingIntent
+                .getActivity(getApplicationContext(), 1,
+                        new Intent(this, this.getClass()),
+                        PendingIntent.FLAG_UPDATE_CURRENT));
         switch (requestStatus)
         {
             case REQUEST_FAIL:
-                toast.setText("文件上传失败");
+                builder.setContentText("文件上传失败");
                 break;
             case REQUEST_SUCCESS:
-                toast.setText("文件上传成功");
+                builder.setContentText("文件上传成功");
                 postMainFragment.onRefresh();
                 break;
         }
-        toast.show();
+        notificationManager.notify(UPLOAD_NOTIFICAITON_STATUS_ID, builder.build());
 //        setTapFragment(fragmentManager, PostMainFragment.TAG);
 //        addFragmentTag(PostMainFragment.TAG);
     }

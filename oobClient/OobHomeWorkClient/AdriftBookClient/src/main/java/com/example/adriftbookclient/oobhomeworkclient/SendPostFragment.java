@@ -1,5 +1,9 @@
 package com.example.adriftbookclient.oobhomeworkclient;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -31,8 +35,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import adapter.UploadFileAdapter;
 import adriftbook.entity.Post;
@@ -61,11 +63,40 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
     UploadFileAdapter uploadFileAdapter;
     private int currentPostType;
     private long boundaryUploadFileSize = 5 * 1024 * 1024L;
+    protected static AsyncHttpClient httpClient;
+    //post send的各种状态
+    public static final int POST_STATUS_NO_SEND = 1;
+    public static final int POST_STATUS_SEND_ONGOING = 2;
+    public static final int POST_STATUS_SEND_FINISH = 3;
+    public static int getPostStatus()
+    {
+        return postStatus;
+    }
+    public static void setPostStatus(int postStatus)
+    {
+        SendPostFragment.postStatus = postStatus;
+    }
+    private static int postStatus = POST_STATUS_NO_SEND;
+    /**
+     * 不要使用getactivity这种形式的回调函数，因为当activity进行onstop但是没有
+     * ondestory的时候该fragment会调用detach方法，所以getactivity返回null
+     */
+    private OnPostSentFinishListerner postSendFinishListener;
+    public OnPostSentFinishListerner getPostSendFinishListener()
+    {
+        return postSendFinishListener;
+    }
+    public void setPostSendFinishListener(
+            OnPostSentFinishListerner postSendFinishListener)
+    {
+        this.postSendFinishListener = postSendFinishListener;
+    }
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState)
     {
 //        return super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_send_post, container, false);
+        httpClient = new AsyncHttpClient();
         MyScrollView myScrollView = (MyScrollView) view
                 .findViewById(R.id.fragment_send_post_myscrollview);
         myScrollView.setDownwardScroll(true);
@@ -105,6 +136,7 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
         postContent.addTextChangedListener(this);
         startUploadFileBt.setOnClickListener(this);
         postContent.setMinHeight(ScreenSize.getScreenHeight() / 10);
+        setPostSendFinishListener((PostMainActivity) getActivity());
      /*   RelativeLayout.LayoutParams postContentParams = (RelativeLayout.LayoutParams)
                 postContent
                         .getLayoutParams();
@@ -120,6 +152,13 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                 {
                     Toast.makeText(getActivity(), "你还没有添加图书", Toast.LENGTH_LONG)
                             .show();
+                    return;
+                }
+                //只允许一次发送一个帖子
+                if (getPostStatus() == POST_STATUS_SEND_ONGOING)
+                {
+                    Toast.makeText(getActivity(), "你还有帖子还在上传中，等稍后再发送帖子",
+                            Toast.LENGTH_LONG).show();
                     return;
                 }
                 startUploadFiles(user.getUserId(), uploadFileList);
@@ -209,7 +248,6 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
             i++;
         }
         requestParams.put(Post.TAG, mapList);
-        AsyncHttpClient httpClient = new AsyncHttpClient();
         httpClient.setConnectTimeout(30000);
         httpClient.setResponseTimeout(60000);
         httpClient.setMaxRetriesAndTimeout(10, 3000);
@@ -226,9 +264,10 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                     @Override public void onStart()
                     {
                         super.onStart();
+                        setPostStatus(POST_STATUS_SEND_ONGOING);
                       /*  Toast.makeText(getActivity(), "开始上传", Toast.LENGTH_SHORT)
                                 .show();*/
-                        if (size > boundaryUploadFileSize)
+                     /*   if (size > boundaryUploadFileSize)
                         {
                             showProgressDialog("文件较大，3秒后转入后台上传");
                             Timer timer = new Timer();
@@ -242,16 +281,42 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                             };
                             timer.schedule(backTask, 3000);
                         } else
-                            showProgressDialog("玩命上传中，请稍候");
+                            showProgressDialog("玩命上传中，请稍候");*/
+                        NotificationManager notificationManager = (NotificationManager) getActivity()
+                                .getSystemService(
+                                        Context.NOTIFICATION_SERVICE);
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                                getActivity());
+                        builder.setOngoing(true);
+                        builder.setAutoCancel(false);
+                        builder.setSmallIcon(R.mipmap.upload_small_icon);
+                        builder.setContentTitle("上传状态");
+                        builder.setTicker("开始上传");
+                        builder.setContentText("正在上传，请稍候");
+                        Intent intent = new Intent(getActivity(),
+                                getActivity().getClass());
+                        intent.setAction(Intent.ACTION_VIEW);
+                     /*   PendingIntent pendingIntent = PendingIntent
+                                .getActivity(getActivity(), 0, intent,
+                                        PendingIntent.FLAG_CANCEL_CURRENT);
+                        builder.setContentIntent(pendingIntent);*/
+                        dismissProgressDialog();
+                        getFragmentManager().popBackStack();
+                        notificationManager
+                                .notify(PostMainActivity.UPLOAD_NOTIFICATION_ID,
+                                        builder.build());
                     }
                     @Override
                     public void onSuccess(int statusCode, Header[] headers,
                                           byte[] responseBody)
                     {
                         dismissProgressDialog();
-                        if (getActivity() instanceof OnPostSentFinishListerner)
-                            ((OnPostSentFinishListerner) getActivity())
-                                    .onPostSendFinish(SupActivityHandleFragment.REQUEST_SUCCESS,responseBody);
+                        setPostStatus(POST_STATUS_SEND_FINISH);
+//                        Log.e("sendpost", "成功");
+                        if (postSendFinishListener != null)
+                            postSendFinishListener.onPostSendFinish(
+                                    SupActivityHandleFragment.REQUEST_SUCCESS,
+                                    responseBody);
                       /*  Toast toast = Toast.makeText(getActivity(), "文件上传成功",
                                 Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER, 0, 0);
@@ -262,10 +327,13 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                                           byte[] responseBody,
                                           Throwable error)
                     {
+//                        Log.e("sendpost", "失败");
                         dismissProgressDialog();
-                        if (getActivity() instanceof OnPostSentFinishListerner)
-                            ((OnPostSentFinishListerner) getActivity())
-                                    .onPostSendFinish(SupActivityHandleFragment.REQUEST_FAIL,responseBody);
+                        setPostStatus(POST_STATUS_SEND_FINISH);
+                        if (postSendFinishListener != null)
+                            postSendFinishListener.onPostSendFinish(
+                                    SupActivityHandleFragment.REQUEST_FAIL,
+                                    responseBody);
                        /* Toast toast = Toast.makeText(getActivity(), "文件上传失败",
                                 Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER, 0, 0);

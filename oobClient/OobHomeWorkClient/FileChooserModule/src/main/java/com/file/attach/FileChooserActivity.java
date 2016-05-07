@@ -89,8 +89,8 @@ public class FileChooserActivity extends ListActivity
     private void onFileClick(Option o)
     {
         formStream(o);
-        Toast.makeText(this, "File Clicked: " + o.getName(), Toast.LENGTH_SHORT)
-                .show();
+       /* Toast.makeText(this, "File Clicked: " + o.getName(), Toast.LENGTH_SHORT)
+                .show();*/
     }
     private void formStream(Option o)
     {
