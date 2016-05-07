@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -39,13 +40,14 @@ import adriftbook.utils.Constant;
 import adriftbook.utils.MysqlCheckUtil;
 import adriftbook.utils.MysqlDbConnection;
 
-import static adriftbook.utils.CommonUtils.transformFileNameToOctalByteString;
+import static adriftbook.utils.CommonUtils.transformFileNameToSpecifyRadixByteString;
 /**
  * Created by Administrator on 2016/5/4.
  */
 public class UploadPostServlet extends HttpServlet
 {
 
+    public static final int TRANSFORM_RADIX = 34;
     //    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 //            throws ServletException, IOException
 //    {
@@ -180,6 +182,7 @@ public class UploadPostServlet extends HttpServlet
         {
             e.printStackTrace();
         }
+        System.out.println("文件操作完成");
         outputStream.write(resJObj.toString().getBytes(Constant.DEFAULT_CODE));
     }
     private boolean insertBookTable(Connection connection, int postId,
@@ -272,7 +275,8 @@ public class UploadPostServlet extends HttpServlet
                             post.getPostId() + ",'" + post.getPostTitle() + "','" +
                             post.getPostContent().getPostContentDetail() + "'," +
                             post.getPostType() + "," +
-                            Calendar.getInstance(Locale.CHINA).getTimeInMillis() + "," +
+                            Calendar.getInstance(Locale.CHINA).getTimeInMillis() +
+                            "," +
                             post.getReadCount() + "," +
                             post.getPostUser().getUserId() + ")";
             if (!MysqlDbConnection
@@ -330,15 +334,21 @@ public class UploadPostServlet extends HttpServlet
             fileDir.mkdirs();
         File imageFile = subUploadFile.getImageFile();
         File file = subUploadFile.getFile();
-        Calendar calendar = Calendar.getInstance();
-        String extentionName = null;
+        User user = MysqlCheckUtil.getUserInfo(userId);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        simpleDateFormat.applyPattern("yyyy年M月d日 H分m分s秒");
+        String extensionName = "";
+        int extensionNameIndex = -1;
         if (imageFile != null)
         {
-            int index = imageFile.getName().lastIndexOf(".");
-            String imageName = userId + "" + calendar.getTimeInMillis() +
-                    imageFile.getName().substring(index);
-            imageName = CommonUtils.transformFileNameToOctalByteString(
-                    imageName);
+            extensionNameIndex = imageFile.getName().lastIndexOf(".");
+            if (extensionNameIndex > 0)
+                extensionName = imageFile.getName().substring(extensionNameIndex);
+            String imageName = user.getUserName() + "" +
+                    simpleDateFormat.format(Calendar.getInstance().getTime()) +
+                    extensionName;
+            imageName = CommonUtils.transformFileNameToSpecifyRadixByteString(
+                    imageName, TRANSFORM_RADIX);
             subUploadFile
                     .setImageFileUrl(imageName);
             inputStream2File(subUploadFile.getImageInputStream(), new File(imageDir,
@@ -346,10 +356,15 @@ public class UploadPostServlet extends HttpServlet
         }
         if (file != null)
         {
-            int index = file.getName().lastIndexOf(".");
-            String fileName = userId + "" + calendar.getTimeInMillis() +
-                    file.getName().substring(index);
-            fileName = transformFileNameToOctalByteString(fileName);
+            extensionName = "";
+            extensionNameIndex = file.getName().lastIndexOf(".");
+            if (extensionNameIndex > 0)
+                extensionName = file.getName().substring(extensionNameIndex);
+            String fileName = user.getUserName() + "" +
+                    simpleDateFormat.format(Calendar.getInstance().getTime()) +
+                    extensionName;
+            fileName = transformFileNameToSpecifyRadixByteString(fileName,
+                    TRANSFORM_RADIX);
             subUploadFile.setFileUrl(fileName);
             inputStream2File(subUploadFile.getFileInputStream(),
                     new File(fileDir,

@@ -16,6 +16,8 @@ public class SupActivityHandleFragment extends AppCompatActivity implements
             "commentadriftbookfragment", "sendpostfragment", "addfilefragment"};
     protected int preBackStackRecordsCount = -1;
     protected Stack<String> fragmentTagStack = new Stack<>();
+    public static final int REQUEST_SUCCESS=1;
+    public static final int REQUEST_FAIL=2;
     FragmentManager fragmentManager;
     /**
      * 当fragment从backstack中弹出时候，重置stack

@@ -3,7 +3,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -231,7 +230,7 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                                 .show();*/
                         if (size > boundaryUploadFileSize)
                         {
-                            showProgressDialog("文件较大，5秒后转入后台上传");
+                            showProgressDialog("文件较大，3秒后转入后台上传");
                             Timer timer = new Timer();
                             TimerTask backTask = new TimerTask()
                             {
@@ -241,7 +240,7 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                                     getFragmentManager().popBackStack();
                                 }
                             };
-                            timer.schedule(backTask, 5000);
+                            timer.schedule(backTask, 3000);
                         } else
                             showProgressDialog("玩命上传中，请稍候");
                     }
@@ -252,11 +251,11 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                         dismissProgressDialog();
                         if (getActivity() instanceof OnPostSentFinishListerner)
                             ((OnPostSentFinishListerner) getActivity())
-                                    .onPostSendFinish();
-                        Toast toast = Toast.makeText(getActivity(), "文件上传成功",
+                                    .onPostSendFinish(SupActivityHandleFragment.REQUEST_SUCCESS,responseBody);
+                      /*  Toast toast = Toast.makeText(getActivity(), "文件上传成功",
                                 Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
+                        toast.show();*/
                     }
                     @Override
                     public void onFailure(int statusCode, Header[] headers,
@@ -264,10 +263,13 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
                                           Throwable error)
                     {
                         dismissProgressDialog();
-                        Toast toast = Toast.makeText(getActivity(), "文件上传失败",
+                        if (getActivity() instanceof OnPostSentFinishListerner)
+                            ((OnPostSentFinishListerner) getActivity())
+                                    .onPostSendFinish(SupActivityHandleFragment.REQUEST_FAIL,responseBody);
+                       /* Toast toast = Toast.makeText(getActivity(), "文件上传失败",
                                 Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
+                        toast.show();*/
                     }
                 });
     }
@@ -414,6 +416,6 @@ public class SendPostFragment extends BackStackFragmentWithProgressDialog implem
     interface OnPostSentFinishListerner
     {
 
-        void onPostSendFinish();
+        void onPostSendFinish(int requestStatus, byte[] requetBody);
     }
 }

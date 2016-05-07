@@ -12,6 +12,7 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -245,8 +246,7 @@ public class PostMainActivity extends SupActivityHandleFragment
                 if (!captureImageFileParent.exists())
                     captureImageFileParent.mkdirs();
                 File captureImageFile = new File(captureImageFileParent,
-                        user.getUserName() + " " +
-                                dateFormat.format(Calendar.getInstance().getTime()) +
+                        dateFormat.format(Calendar.getInstance().getTime()) +
                                 ".jpg");
                 captureImagePath = captureImageFile.getAbsolutePath();
                 Uri uri = Uri.fromFile(captureImageFile);
@@ -266,11 +266,25 @@ public class PostMainActivity extends SupActivityHandleFragment
                 break;
         }
     }
-    @Override public void onPostSendFinish()
+    @Override public void onPostSendFinish(int requestStatus, byte[] responseBody)
     {
         if (!postMainFragment.isVisible())
             fragmentManager.popBackStack();
-        postMainFragment.onRefresh();
+//        AlertDialog.Builder builder=AlertDialog.
+        Toast toast = Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+//        toast.setView();
+        switch (requestStatus)
+        {
+            case REQUEST_FAIL:
+                toast.setText("文件上传失败");
+                break;
+            case REQUEST_SUCCESS:
+                toast.setText("文件上传成功");
+                postMainFragment.onRefresh();
+                break;
+        }
+        toast.show();
 //        setTapFragment(fragmentManager, PostMainFragment.TAG);
 //        addFragmentTag(PostMainFragment.TAG);
     }

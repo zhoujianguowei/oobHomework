@@ -32,8 +32,9 @@ public class MyStringRequest extends StringRequest
     }
     public void setRequestBody(Map<String, String> requestBody)
     {
-        if (hasSetRequestQueue)
-            throw new IllegalStateException("the request has been added into queue");
+        if (hasSetRequestQueue || getMethod() != Method.POST)
+            throw new IllegalStateException(
+                    "the request has been added into queue or it's not a  post request");
         this.requestBody = requestBody;
     }
     public Request<?> setRequestQueue(RequestQueue requestQueue)

@@ -106,51 +106,86 @@ public class CommonUtils
         return builder.toString();
     }
     /**
-     * 将文件名转换成8进制字符串形式
+     * 将文件名转换成指定进制字符串形式
      * @param filename
      * @return
      */
-    public static String transformFileNameToOctalByteString(String filename)
+    public static String transformFileNameToSpecifyRadixByteString(String filename,
+                                                                   int radix)
     {
-        String octalStr = "";
-        String byteSplit = "9";
+        if (radix < Character.MIN_VALUE + 1 || radix > Character.MAX_VALUE - 2)
+            return null;
+        String radixStr = "";
+        String byteSplit = Integer.toString(radix + 1, Character.MAX_RADIX);
+        String negativeFlag = Integer.toString(radix, Character.MAX_RADIX);
         int index = filename.lastIndexOf(".");
-        String extensionName = filename.substring(index + 1);
+        String extensionName = "";
+        if (index > 0)
+            extensionName = filename.substring(index);
+        byte[] bytes = null;
         try
         {
-            byte[] bytes = filename.substring(0, index)
-                    .getBytes(Constant.DEFAULT_CODE);
+            if (index > 0)
+                bytes = filename.substring(0, index)
+                        .getBytes(Constant.DEFAULT_CODE);
+            else
+                bytes = filename.substring(0).getBytes(Constant.DEFAULT_CODE);
             for (byte b : bytes)
             {
                 if (b < 0)
-                    octalStr += "8" + Integer.toString(Math.abs(b), 8) + byteSplit;
+                    radixStr += negativeFlag + Integer.toString(Math.abs(b), radix) +
+                            byteSplit;
                 else
-                    octalStr+=b;
+                    radixStr += Integer.toString(Math.abs(b), radix) + byteSplit;
             }
-            if (octalStr.endsWith(byteSplit))
-                octalStr = octalStr.substring(0, octalStr.length() - 1);
+            if (radixStr.endsWith(byteSplit))
+                radixStr = radixStr.substring(0, radixStr.length() - 1);
         }
         catch (UnsupportedEncodingException e)
         {
             e.printStackTrace();
         }
-        octalStr += "." + extensionName;
-        return octalStr;
+        radixStr += extensionName;
+        return radixStr;
     }
-    public static String transforOctalStringToFileName(String octalStr)
+    public static String transformSpecifyRadixBytesStringToFileName(
+            String radixBytesStr,
+            int radix)
     {
-        String byteSplit = "9";
-        int index = octalStr.lastIndexOf(".");
-        String extensionName = octalStr.substring(index + 1);
-        String[] bytesStr = octalStr.split(byteSplit);
-        byte[] bytes = new byte[bytesStr.length];
-        int i = 0;
-        for (String str : bytesStr)
+        if (radix < Character.MIN_VALUE + 1 || radix > Character.MAX_VALUE - 2)
+            return null;
+        String byteSplit = Integer.toString(radix + 1, Character.MAX_RADIX);
+        String negativeFlag = Integer.toString(radix, Character.MAX_RADIX);
+        int index = radixBytesStr.lastIndexOf(".");
+        String extensionName = "";
+        if (index > 0)
         {
-            if (str.startsWith("8"))
-                str = "-" + byteSplit.substring(1);
-            bytes[i++] = Byte.parseByte(str);
+            extensionName = radixBytesStr.substring(index);
+            radixBytesStr = radixBytesStr.substring(0, index);
         }
-        return bytesStr + extensionName;
+        String[] transformBytestStr = radixBytesStr.split(byteSplit);
+        if (transformBytestStr.length < 1)
+            return null;
+        byte[] bytes = new byte[transformBytestStr.length];
+        int i = 0;
+        for (String byteStr : transformBytestStr)
+        {
+            if (byteStr.startsWith(negativeFlag))
+            {
+                byteStr = byteStr.substring(1);
+                bytes[i++] = (byte) -Integer.valueOf(byteStr, radix);
+            } else
+                bytes[i++] = Integer.valueOf(byteStr, radix)
+                        .byteValue();
+        }
+        try
+        {
+            return new String(bytes, Constant.DEFAULT_CODE) + extensionName;
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
