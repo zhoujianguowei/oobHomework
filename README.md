@@ -45,3 +45,35 @@
 
 此模块下包括用户注册，个人信息，个人书架（外漂书籍），读者足迹（读过别人的书籍），个人读书分享，个人推荐书籍等。
 
+## 截图展示
+
+### 登录注册界面
+
+![注册界面](https://github.com/zhoujianguowei/oobHomework/raw/master/img/1.png)
+
+![登录界面](https://github.com/zhoujianguowei/oobHomework/raw/master/img/2.png) 
+
+### 主界面
+
+查询支持按照书名和作者名称模糊匹配。
+
+![主界面1](https://github.com/zhoujianguowei/oobHomework/raw/master/img/3.png)  ![主界面2](https://github.com/zhoujianguowei/oobHomework/raw/master/img/4.png)
+
+### 帖子详情页面
+
+![帖子详情](https://github.com/zhoujianguowei/oobHomework/raw/master/img/5.png) ![评论](https://github.com/zhoujianguowei/oobHomework/raw/master/img/6.png)
+
+### 发帖页面
+支持发送文本和上传电子书籍以及图片资源，支持批量上传。
+
+![发帖页面](https://github.com/zhoujianguowei/oobHomework/raw/master/img/7.png)
+### 个人中心页面
+一共包括4部分内容：个人基本信息、外漂书籍（自己发布的书籍）、读书分享（自己的评论）、浏览历史。
+
+![个人中心](https://github.com/zhoujianguowei/oobHomework/raw/master/img/8.png) ![外漂书籍](https://github.com/zhoujianguowei/oobHomework/raw/master/img/9.png)
+![读书分享](https://github.com/zhoujianguowei/oobHomework/raw/master/img/10.png)![浏览历史](https://github.com/zhoujianguowei/oobHomework/raw/master/img/11.png)
+
+### 上传下载搜索功能展示
+上传支持进度提示
+![搜索](https://github.com/zhoujianguowei/oobHomework/raw/master/img/12.png) ![上传](https://github.com/zhoujianguowei/oobHomework/raw/master/img/13.png)
+![搜索](https://github.com/zhoujianguowei/oobHomework/raw/master/img/14.png)![搜索](https://github.com/zhoujianguowei/oobHomework/raw/master/img/15.png)
